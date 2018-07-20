@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta content="yes" name="apple-mobile-web-app-capable"> 
+		<meta content="yes" name="apple-touch-fullscreen"> 
+		<meta content="telephone=no,email=no" name="format-detection">
+		<meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes">
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>智能冷链-添加设备</title>
+		<script src="/js/flex.js" type="text/javascript" charset="utf-8"></script>
+	    <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+	    <link rel="stylesheet" type="text/css" href="/css/creatUsers.css"/>
+	</head>
+	<body>
+		<div class="view">
+			<header class="top tc pf">
+				<div class="return pa">
+					<img style="height:17px;width:17px;" src="/images/view-return.png"/>
+				</div>
+				<p class="editName">
+					<span class="listArea">
+						<span class="deviceName">添加设备</span> <span class="traingle-list"></span>
+					</span>
+				</p>
+			</header>
+			<div class="view-content">
+				<h3 class="device-tips tc">请确保输入的设备号与设备背面的编号相同</h3>
+				<ul class="creat-table">
+					<li>
+						<span class="fl" style="margin-right: 0.87rem;">设备类型</span>
+						<div class="type-choose fl">
+							<p class="choose fl">
+								<span></span>
+								<span>A</span>
+							</p>
+							<p class="fr">
+								<span></span>
+								<span>B</span>
+							</p>
+						</div>
+					</li>
+					<li>
+						<input type="text" name="deviceId" id="deviceId" placeholder="请输入设备编号" />
+					</li>
+					<li>
+						<input type="text" name="deviceName" id="deviceName" placeholder="请输入设备名称" />
+					</li>
+				</ul>
+				<div class="creat-btn tc">添加设备</div>
+			</div>
+		</div>
+		<!--提示-->
+		<div class="nodata-tips pf">
+			<div class="tips-mes pa tc">
+				<p class="tip-txt"></p>
+				<p class="ok-btn">好的</p>
+			</div>
+		</div>
+		<script src="/js/jquery-1.11.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/js/addDevice.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
