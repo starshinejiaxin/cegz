@@ -1,8 +1,7 @@
 package com.cegz.api.service;
 
 import com.cegz.api.model.Contacts;
-import com.cegz.api.model.DrivingLicense;
-import com.cegz.api.model.IdCard;
+import com.cegz.api.model.DrivingRegistration;
 
 /**
  * 联系人服务
@@ -13,11 +12,27 @@ public interface ContactsService {
 	/**
 	 * 添加联系人
 	 * @param contacts 联系人信息
-	 * @param card 身份证信息
-	 * @param license 驾驶证信息
 	 * @return
 	 * @author lijiaxin
 	 * @date 2018年7月20日
 	 */
-	int insertData(Contacts contacts, IdCard card, DrivingLicense license);
+	int insertData(Contacts contacts);
+    
+	/**
+	 * 添加行驶证
+	 * @param cdr
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月23日
+	 */
+	int insertContractDriveRegist(DrivingRegistration cdr);
+	
+	/**
+	 * 通过ID获取联系人信息
+	 * @param id
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月23日
+	 */
+	Contacts getContactById(Long id);
 }

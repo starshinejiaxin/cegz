@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cegz.api.dao.DriveRegistrationRepository;
 import com.cegz.api.dao.ContactsRepository;
 import com.cegz.api.dao.DriveLicenseRepository;
 import com.cegz.api.dao.IdCardRepository;
 import com.cegz.api.model.Contacts;
 import com.cegz.api.model.DrivingLicense;
+import com.cegz.api.model.DrivingRegistration;
 import com.cegz.api.model.IdCard;
 import com.cegz.api.service.ContactsService;
 
@@ -24,18 +26,26 @@ public class ContactsServiceImpl implements ContactsService {
 	private ContactsRepository contactsRepository;
 
 	@Autowired
-	private IdCardRepository cardRepository;
+	private DriveRegistrationRepository drivingRegistrationRepository;
 	
-	@Autowired
-	private DriveLicenseRepository licenseRepository;
-	
+		
 	@Override
-	public int insertData(Contacts contacts, IdCard card, DrivingLicense license) {
-		cardRepository.save(card);
-		licenseRepository.save(license);
+	public int insertData(Contacts contacts) {
 		contactsRepository.save(contacts);
 		return 1;
 	}
+
+	@Override
+	public int insertContractDriveRegist(DrivingRegistration dr) {
+		drivingRegistrationRepository.save(dr);
+		return 1;
+	}
+
+	@Override
+	public Contacts getContactById(Long id) {
+		return contactsRepository.getOne(id);
+	}
+	
 	
 	
 }

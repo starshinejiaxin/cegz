@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,12 @@ public class AccountController {
 	private AccountService accountService;
 	
 	/**
+	 * 版本号
+	 */
+	@Value("${server.version}")
+	private String serverVersion;
+	
+	/**
 	 * 账号注册
 	 * @param userName
 	 * @param password
@@ -42,7 +49,14 @@ public class AccountController {
 	 * @date 2018年7月19日
 	 */
 	@PostMapping("regist")
-	public ResultData regist(String userName, String password, String phone) {
+	public ResultData regist(String userName, String password, String code, String version) {
+		
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
 		if (StringUtil.isEmpty(userName)) {
 			return serverAck.getParamError().setMessage("账号不能为空");
 		}
@@ -55,7 +69,12 @@ public class AccountController {
 		if(password.length() > 6) {
 			return serverAck.getParamError().setMessage("密码长度不能小于6位");
 		}
+		if (StringUtil.isEmpty(code)) {
+			return serverAck.getParamError().setMessage("验证码不能为空");
+		}
 		try {
+			// 验证验证码
+			// TODO 
 			// 验证账号是否存在
 			userName = userName.trim();
 			password = password.trim();
@@ -68,7 +87,7 @@ public class AccountController {
 			user.setUserName(userName);
 			String encodePassword = Md5Util.EncoderByMd5(password);
 			user.setPassword(encodePassword);
-			user.setPhone(phone);
+			user.setPhone(userName);
 			user.setCreateTime(new Date());
 			// 生成uuid
 			String uuid = TokenUtil.getUUID();
@@ -95,7 +114,13 @@ public class AccountController {
 	 * @date 2018年7月20日
 	 */
 	@PostMapping("login")
-	public ResultData login(String userName, String password, HttpSession session) {
+	public ResultData login(String userName, String password, String version, HttpSession session) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
 		if (StringUtil.isEmpty(userName)) {
 			return serverAck.getParamError().setMessage("账号不能为空");
 		}

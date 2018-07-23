@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class DrivingRegistration {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	/**
 	 * 车牌号码
 	 */
@@ -100,6 +100,12 @@ public class DrivingRegistration {
 	private Date updateTime;
 	
 	/**
+	 * 车辆出厂日期
+	 */
+	@Column(name = "car_birthday", nullable = false, length = 100)
+	private Date carBirthday;
+	
+	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_time", nullable = false, length = 100)
@@ -108,20 +114,61 @@ public class DrivingRegistration {
 	/**
 	 * 创建用户
 	 */
-	@Column(name = "create_user_id", nullable = false, length = 11)
-	private Integer createUserId;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "create_user_id", nullable = false)
+	private Users createUserId;
 	
 	/**
 	 * 修改用户
 	 */
-	@Column(name = "update_user_id", nullable = false, length = 11)
-	private Integer updateUserId;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "update_user_id", nullable = false)
+	private Users updateUserId;
+	
+	/**
+	 * 保荐方信息
+	 */
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "sponsor_id", nullable = false)
+	private Sponsor sponsor;
 
-	public int getId() {
+	/**
+	 * 联系人信息
+	 */
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "contact_id", nullable = false)
+	private Contacts contact;
+	
+	
+	public Contacts getContact() {
+		return contact;
+	}
+
+	public void setContact(Contacts contact) {
+		this.contact = contact;
+	}
+
+	public Date getCarBirthday() {
+		return carBirthday;
+	}
+
+	public void setCarBirthday(Date carBirthday) {
+		this.carBirthday = carBirthday;
+	}
+
+	public Sponsor getSponsor() {
+		return sponsor;
+	}
+
+	public void setSponsor(Sponsor sponsor) {
+		this.sponsor = sponsor;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -245,21 +292,22 @@ public class DrivingRegistration {
 		this.createTime = createTime;
 	}
 
-	public Integer getCreateUserId() {
+	public Users getCreateUserId() {
 		return createUserId;
 	}
 
-	public void setCreateUserId(Integer createUserId) {
+	public void setCreateUserId(Users createUserId) {
 		this.createUserId = createUserId;
 	}
 
-	public Integer getUpdateUserId() {
+	public Users getUpdateUserId() {
 		return updateUserId;
 	}
 
-	public void setUpdateUserId(Integer updateUserId) {
+	public void setUpdateUserId(Users updateUserId) {
 		this.updateUserId = updateUserId;
 	}
+    
 	
 	
 }

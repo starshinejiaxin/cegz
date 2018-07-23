@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "contacts")
-public class Contacts {
+public class Sponsor {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -22,12 +22,11 @@ public class Contacts {
 	@Column(name = "phone", nullable = false, length = 20)
 	private String phone;
 	
-	@OneToOne(cascade = CascadeType.ALL)
 	/**
-	 * 驾驶证id
+	 * 保荐方类型 1 网约车，2 驾校
 	 */
-	@JoinColumn(name = "driving_license_id")
-	private DrivingLicense drivingLicenseId;
+	@Column(name = "type", nullable = false, length = 20)
+	private Integer type;
 	
 	/**
 	 * 姓名
@@ -36,11 +35,40 @@ public class Contacts {
 	private String name;
 	
 	/**
-	 * 身份证id
+	 * 省份
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "idcard_id")
-	private IdCard idcardId;
+	@Column(name = "province", nullable = false, length = 20)
+	private String province;
+	
+	/**
+	 * 公司名称
+	 */
+	@Column(name = "company", nullable = false, length = 20)
+	private String company;
+	
+	/**
+	 * 营业执照编号
+	 */
+	@Column(name = "business_license", nullable = false, length = 20)
+	private String businessLicense;
+	
+	/**
+	 * 住址
+	 */
+	@Column(name = "address", nullable = false, length = 20)
+	private String address;
+	
+	/**
+	 * email 邮箱
+	 */
+	@Column(name = "email", nullable = false, length = 20)
+	private String email;
+	
+	/**
+	 * 详细住址
+	 */
+	@Column(name = "address_detail", nullable = false, length = 20)
+	private String addressDetail;
 	
 	/**
 	 * 审核状态
@@ -86,13 +114,13 @@ public class Contacts {
 	 */
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
-
+	
 	/**
 	 * 车辆信息列表
 	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "contact")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sponsor")
 	private List<DrivingRegistration> listDrivingRegistration;
-	
+
 	
 	public List<DrivingRegistration> getListDrivingRegistration() {
 		return listDrivingRegistration;
@@ -152,20 +180,60 @@ public class Contacts {
 	}
     
 
-	public DrivingLicense getDrivingLicenseId() {
-		return drivingLicenseId;
+	public Integer getType() {
+		return type;
 	}
 
-	public void setDrivingLicenseId(DrivingLicense drivingLicenseId) {
-		this.drivingLicenseId = drivingLicenseId;
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
-	public IdCard getIdcardId() {
-		return idcardId;
+	public String getProvince() {
+		return province;
 	}
 
-	public void setIdcardId(IdCard idcardId) {
-		this.idcardId = idcardId;
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getBusinessLicense() {
+		return businessLicense;
+	}
+
+	public void setBusinessLicense(String businessLicense) {
+		this.businessLicense = businessLicense;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddressDetail() {
+		return addressDetail;
+	}
+
+	public void setAddressDetail(String addressDetail) {
+		this.addressDetail = addressDetail;
 	}
 
 	public Users getCreateUserId() {

@@ -2,11 +2,14 @@ package com.cegz.api.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,7 +22,7 @@ import javax.persistence.Table;
 public class IdCard {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	/**
 	 * 姓名
 	 */
@@ -95,20 +98,22 @@ public class IdCard {
 	/**
 	 * 创建用户
 	 */
-	@Column(name = "create_user_id", nullable = false, length = 100)
-	private Integer createUserId;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "create_user_id", nullable = false)
+	private Users createUserId;
 	
 	/**
 	 * 修改用户
 	 */
-	@Column(name = "update_user_id", nullable = false, length = 100)
-	private Integer updateUserId;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "update_user_id", nullable = false)
+	private Users updateUserId;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -208,21 +213,20 @@ public class IdCard {
 		this.updateTime = updateTime;
 	}
 
-	public Integer getCreateUserId() {
+	public Users getCreateUserId() {
 		return createUserId;
 	}
 
-	public void setCreateUserId(Integer createUserId) {
+	public void setCreateUserId(Users createUserId) {
 		this.createUserId = createUserId;
 	}
 
-	public Integer getUpdateUserId() {
+	public Users getUpdateUserId() {
 		return updateUserId;
 	}
 
-	public void setUpdateUserId(Integer updateUserId) {
+	public void setUpdateUserId(Users updateUserId) {
 		this.updateUserId = updateUserId;
 	}
-	
 	
 }
