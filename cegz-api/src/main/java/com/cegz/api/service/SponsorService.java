@@ -15,4 +15,13 @@ public interface SponsorService {
 	 * @date 2018年7月23日
 	 */
 	Sponsor getSponSorById(Long id);
+	
+	/**
+	 * 添加保荐方信息
+	 * @param sponsor
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月24日
+	 */
+	int save(Sponsor sponsor);
 }

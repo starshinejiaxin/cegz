@@ -114,14 +114,14 @@ public class DrivingRegistration {
 	/**
 	 * 创建用户
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
 	
 	/**
 	 * 修改用户
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
 	

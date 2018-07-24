@@ -21,6 +21,12 @@ public class SponsorServiceImpl implements SponsorService {
 	public Sponsor getSponSorById(Long id) {
 		return sponsorRepository.getOne((Long)id);
 	}
+
+	@Override
+	public int save(Sponsor sponsor) {
+		sponsorRepository.save(sponsor);
+		return 1;
+	}
 	
 	
 }

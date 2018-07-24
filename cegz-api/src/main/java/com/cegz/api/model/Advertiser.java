@@ -11,8 +11,8 @@ import javax.persistence.*;
  * @date 2018年7月19日
  */
 @Entity
-@Table(name = "sponsor")
-public class Sponsor {
+@Table(name = "advertiser")
+public class Advertiser {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -23,22 +23,22 @@ public class Sponsor {
 	private String phone;
 	
 	/**
-	 * 保荐方类型 1 网约车，2 驾校
-	 */
-	@Column(name = "type", nullable = false, length = 20)
-	private Integer type;
-	
-	/**
 	 * 姓名
 	 */
 	@Column(name = "name", nullable = false, length = 200)
 	private String name;
 	
 	/**
+	 * 营业执照图片地址
+	 */
+	@Column(name = "picture_url", nullable = false, length = 255)
+	private String pictureUrl;
+	
+	/**
 	 * 省份
 	 */
-	@Column(name = "province", nullable = false, length = 50)
-	private String province;
+	@Column(name = "city", nullable = false, length = 20)
+	private String city;
 	
 	/**
 	 * 公司名称
@@ -57,12 +57,6 @@ public class Sponsor {
 	 */
 	@Column(name = "address", nullable = false, length = 100)
 	private String address;
-	
-	/**
-	 * 营业执照图片
-	 */
-	@Column(name = "picture_url", nullable = false, length = 100)
-	private String pictureUrl;
 	
 	/**
 	 * email 邮箱
@@ -85,7 +79,7 @@ public class Sponsor {
 	/**
 	 * 审核结论
 	 */
-	@Column(name = "reason", nullable = false, length = 200)
+	@Column(name = "reason", nullable = false, length = 255)
 	private String reason;
 	
 	
@@ -98,14 +92,14 @@ public class Sponsor {
 	/**
 	 * 创建用户id
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
 	
 	/**
 	 * 修改用户ID
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
 	
@@ -134,6 +128,14 @@ public class Sponsor {
 
 	public void setListDrivingRegistration(List<DrivingRegistration> listDrivingRegistration) {
 		this.listDrivingRegistration = listDrivingRegistration;
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
 	}
 
 	public Long getId() {
@@ -184,22 +186,14 @@ public class Sponsor {
 	public void setIsDeleted(byte isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-    
+   
 
-	public Integer getType() {
-		return type;
+	public String getCity() {
+		return city;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
-
-	public String getProvince() {
-		return province;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getCompany() {
@@ -273,13 +267,7 @@ public class Sponsor {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
-	public String getPictureUrl() {
-		return pictureUrl;
-	}
-
-	public void setPictureUrl(String pictureUrl) {
-		this.pictureUrl = pictureUrl;
-	}
+	
+	
 	
 }

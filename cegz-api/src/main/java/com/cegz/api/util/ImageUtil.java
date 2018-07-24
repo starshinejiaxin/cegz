@@ -38,6 +38,21 @@ public class ImageUtil {
 	 */
 	private static String imgIdCardDir;
 	
+	/**
+	 * 保荐方图片目录
+	 */
+	private static String sponsorDir;
+	
+	/**
+	 * 广告方图片目录
+	 */
+	private static String advertiserDir;
+	
+	/**
+	 * 广告图片目录
+	 */
+	private static String advertisementDir;
+	
 
 	/**
 	 * 保存图片
@@ -142,6 +157,68 @@ public class ImageUtil {
 			upload.mkdirs();
 		String url = upload.getAbsolutePath();
 		imgIdCardDir = url;
+		System.out.println("upload url:" + url);
+		return url;
+	}
+	/**
+	 * 获取广告方图片目录
+	 * @return
+	 * @throws FileNotFoundException
+	 * @author lijiaxin
+	 * @date 2018年7月24日
+	 */
+	public static String getAdvertiserDir() throws FileNotFoundException {
+		if (advertiserDir != null) {
+			return advertiserDir;
+		}
+		String root = getRootImgDir();
+		File upload = new File(root, Constant.STATIC_DIR + Constant.ADVERTISER_IMG_DRI);
+		if (!upload.exists())
+			upload.mkdirs();
+		String url = upload.getAbsolutePath();
+		advertiserDir = url;
+		System.out.println("upload url:" + url);
+		return url;
+	}
+	/**
+	 * 获取广告方图片目录
+	 * @return
+	 * @throws FileNotFoundException
+	 * @author lijiaxin
+	 * @date 2018年7月24日
+	 */
+	public static String getSponsorDir() throws FileNotFoundException {
+		if (sponsorDir != null) {
+			return sponsorDir;
+		}
+		String root = getRootImgDir();
+		File upload = new File(root, Constant.STATIC_DIR + Constant.SPONSOR_IMG_DRI);
+		if (!upload.exists())
+			upload.mkdirs();
+		String url = upload.getAbsolutePath();
+		sponsorDir = url;
+		System.out.println("upload url:" + url);
+		return url;
+	}
+	
+
+	/**
+	 * 获取广告方图片目录
+	 * @return
+	 * @throws FileNotFoundException
+	 * @author lijiaxin
+	 * @date 2018年7月24日
+	 */
+	public static String getAdvertisementDir() throws FileNotFoundException {
+		if (advertisementDir != null) {
+			return advertisementDir;
+		}
+		String root = getRootImgDir();
+		File upload = new File(root, Constant.STATIC_DIR + Constant.ADVERTISEMENT_IMG_DIR);
+		if (!upload.exists())
+			upload.mkdirs();
+		String url = upload.getAbsolutePath();
+		advertisementDir = url;
 		System.out.println("upload url:" + url);
 		return url;
 	}

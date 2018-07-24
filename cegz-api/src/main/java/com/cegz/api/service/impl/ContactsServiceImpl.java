@@ -6,12 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cegz.api.dao.DriveRegistrationRepository;
 import com.cegz.api.dao.ContactsRepository;
-import com.cegz.api.dao.DriveLicenseRepository;
-import com.cegz.api.dao.IdCardRepository;
 import com.cegz.api.model.Contacts;
-import com.cegz.api.model.DrivingLicense;
 import com.cegz.api.model.DrivingRegistration;
-import com.cegz.api.model.IdCard;
 import com.cegz.api.service.ContactsService;
 
 /**

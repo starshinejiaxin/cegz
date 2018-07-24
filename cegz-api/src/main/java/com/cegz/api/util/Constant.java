@@ -65,4 +65,19 @@ public class Constant {
 	 * 行驶证图片目录
 	 */
 	public final static String DRIVE_REGISTRATION_IMG_DRI = "images/drive_registration";
+	
+	/**
+	 * 广告方营业执照图片目录
+	 */
+	public final static String ADVERTISER_IMG_DRI = "images/advertiser";
+	
+	/**
+	 * 保荐方营业执照目录
+	 */
+	public final static String SPONSOR_IMG_DRI = "images/sponsor";
+	
+	/**
+	 * 广告图片目录
+	 */
+	public final static String ADVERTISEMENT_IMG_DIR = "images/advertisement";
 }
