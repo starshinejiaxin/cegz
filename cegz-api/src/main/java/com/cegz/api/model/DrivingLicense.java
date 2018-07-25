@@ -115,14 +115,14 @@ public class DrivingLicense {
 	/**
 	 * 创建userId
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
 	
 	/**
 	 * 修改userId
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
 

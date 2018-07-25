@@ -1,7 +1,6 @@
 package com.cegz.api.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -11,7 +10,7 @@ import javax.persistence.*;
  * @date 2018年7月24日
  */
 @Entity
-@Table(name = "order")
+@Table(name = "order_advertiser")
 public class Order {
 	
 	@Id
@@ -27,13 +26,13 @@ public class Order {
 	/**
 	 * 名称
 	 */
-	@Column(name = "name", nullable = false, length = 255)
+	@Column(name = "order_name", nullable = false, length = 255)
 	private String name;
 	
 	/**
 	 * 订单状态，0 无效，1 进行中，2 完成
 	 */
-	@Column(name = "staus", nullable = false, length = 255)
+	@Column(name = "status", nullable = false, length = 255)
 	private byte status;
 	
 	/**
@@ -45,7 +44,7 @@ public class Order {
 	/**
 	 * 总金额
 	 */
-	@Column(name = "toatl_money", nullable = false, length = 255)
+	@Column(name = "total_money", nullable = false, length = 255)
 	private Double totalMoney;
 	
 	/**
@@ -90,14 +89,14 @@ public class Order {
 	/**
 	 * 创建用户id
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
 	
 	/**
 	 * 修改用户ID
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
 	

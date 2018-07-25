@@ -1,7 +1,6 @@
 package com.cegz.api.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -68,14 +67,14 @@ public class Advertisement {
 	/**
 	 * 创建用户id
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
 	
 	/**
 	 * 修改用户ID
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
 	
@@ -91,6 +90,7 @@ public class Advertisement {
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
 	
+	
 	public Long getId() {
 		return id;
 	}
@@ -98,8 +98,6 @@ public class Advertisement {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	
 
 	public String getTitle() {
 		return title;

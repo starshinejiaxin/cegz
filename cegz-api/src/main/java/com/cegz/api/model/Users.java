@@ -79,16 +79,18 @@ public class Users {
 	/**
 	 * 创建用户
 	 */
-	@Column(name = "create_user_id", nullable = false, length = 100)
-	private Integer createUserId;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "create_user_id", nullable = false)
+	private Users createUserId;
 	
 	/**
 	 * 修改用户
 	 */
-	@Column(name = "update_user_id", nullable = false, length = 100)
-	private Integer updateUserId;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "update_user_id", nullable = false)
+	private Users updateUserId;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
 	private Wallet wallet;
 	
 	
@@ -189,19 +191,19 @@ public class Users {
 		this.updateTime = updateTime;
 	}
 
-	public Integer getCreateUserId() {
+	public Users getCreateUserId() {
 		return createUserId;
 	}
 
-	public void setCreateUserId(Integer createUserId) {
+	public void setCreateUserId(Users createUserId) {
 		this.createUserId = createUserId;
 	}
 	
-	public Integer getUpdateUserId() {
+	public Users getUpdateUserId() {
 		return updateUserId;
 	}
 
-	public void setUpdateUserId(Integer updateUserId) {
+	public void setUpdateUserId(Users updateUserId) {
 		this.updateUserId = updateUserId;
 	}
 	

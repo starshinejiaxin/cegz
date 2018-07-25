@@ -26,7 +26,6 @@ import com.cegz.api.service.AdvertiserService;
 import com.cegz.api.service.PriceService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ImageUtil;
-import com.cegz.api.util.Md5Util;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
@@ -220,7 +219,7 @@ public class AdvertiserController {
 			if (users == null) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
-			String split = ";";
+			String split = ":";
 			String [] priceIdArray = pricesIds.split(split);
 			String [] numbersArray = numbers.split(split);
 			String [] titleArray = titles.split(split);
@@ -233,6 +232,7 @@ public class AdvertiserController {
 			double sumMoney = 0;
 			List<Advertisement> listAdver = new ArrayList<>();
 			List<Order> listOrder = new ArrayList<>();
+			
 			for (int i = 0; i < priceIdArray.length; i++) {
 				if (StringUtil.isEmpty(priceIdArray[i])) {
 					continue;
