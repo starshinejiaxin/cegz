@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- * 联系人实体类
+ * 广告方实体类
  * @author lijiaxin
  * @date 2018年7月19日
  */
@@ -115,20 +115,6 @@ public class Advertiser {
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
 	
-	/**
-	 * 车辆信息列表
-	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sponsor")
-	private List<DrivingRegistration> listDrivingRegistration;
-
-	
-	public List<DrivingRegistration> getListDrivingRegistration() {
-		return listDrivingRegistration;
-	}
-
-	public void setListDrivingRegistration(List<DrivingRegistration> listDrivingRegistration) {
-		this.listDrivingRegistration = listDrivingRegistration;
-	}
 
 	public String getPictureUrl() {
 		return pictureUrl;

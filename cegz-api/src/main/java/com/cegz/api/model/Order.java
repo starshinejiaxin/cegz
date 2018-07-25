@@ -6,12 +6,12 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- * 订单列表
+ * 订单实体类
  * @author lijiaxin
  * @date 2018年7月24日
  */
 @Entity
-@Table(name = "advertisement_type")
+@Table(name = "order")
 public class Order {
 	
 	@Id
@@ -40,7 +40,7 @@ public class Order {
 	 * 发布广告的设备数量
 	 */
 	@Column(name = "total_advertisement", nullable = false, length = 255)
-	private Double totalAdvertisement;
+	private Integer totalAdvertisement;
 	
 	/**
 	 * 总金额
@@ -79,7 +79,7 @@ public class Order {
 	 */
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "advertisement_id", nullable = false)
-	private Users advertisement;
+	private Advertisement advertisement;
 	
 	/**
 	 * 数据是否有效 0 有效，1无效
@@ -114,18 +114,33 @@ public class Order {
 	private Date createTime;
 	
 	/**
-	 * 车辆信息列表
+	 * 投放天数
 	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sponsor")
-	private List<DrivingRegistration> listDrivingRegistration;
+	@Column(name = "days", nullable = false, length = 50)
+	private Integer days;
 
+	/**
+	 * 投放车种，1 网约车，2 教练车 ，3 都是
+	 */
+	@Column(name = "car_type", nullable = false, length = 50)
+	private Integer carType;
 	
-	public List<DrivingRegistration> getListDrivingRegistration() {
-		return listDrivingRegistration;
+	
+	
+	public Integer getCarType() {
+		return carType;
 	}
 
-	public void setListDrivingRegistration(List<DrivingRegistration> listDrivingRegistration) {
-		this.listDrivingRegistration = listDrivingRegistration;
+	public void setCarType(Integer carType) {
+		this.carType = carType;
+	}
+
+	public Integer getDays() {
+		return days;
+	}
+
+	public void setDays(Integer days) {
+		this.days = days;
 	}
 
 	public Long getId() {
@@ -202,11 +217,11 @@ public class Order {
 		this.status = status;
 	}
 
-	public Double getTotalAdvertisement() {
+	public Integer getTotalAdvertisement() {
 		return totalAdvertisement;
 	}
 
-	public void setTotalAdvertisement(Double totalAdvertisement) {
+	public void setTotalAdvertisement(Integer totalAdvertisement) {
 		this.totalAdvertisement = totalAdvertisement;
 	}
 
@@ -250,13 +265,15 @@ public class Order {
 		this.price = price;
 	}
 
-	public Users getAdvertisement() {
+	public Advertisement getAdvertisement() {
 		return advertisement;
 	}
 
-	public void setAdvertisement(Users advertisement) {
+	public void setAdvertisement(Advertisement advertisement) {
 		this.advertisement = advertisement;
 	}
+
+	
 
 	
 }

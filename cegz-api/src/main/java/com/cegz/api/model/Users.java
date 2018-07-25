@@ -87,6 +87,19 @@ public class Users {
 	 */
 	@Column(name = "update_user_id", nullable = false, length = 100)
 	private Integer updateUserId;
+	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId")
+	private Wallet wallet;
+	
+	
+
+	public Wallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
+	}
 
 	public Long getId() {
 		return id;

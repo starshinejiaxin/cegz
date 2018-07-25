@@ -1,17 +1,17 @@
 package com.cegz.api.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 
 /**
- * 广告类型实体类
+ * 钱包实体类
+ *
  * @author lijiaxin
- * @date 2018年7月24日
+ * @date 2018年7月25日
  */
 @Entity
-@Table(name = "advertisement_type")
+@Table(name = "wallet")
 public class Wallet {
 	
 	@Id
@@ -20,20 +20,20 @@ public class Wallet {
 	/**
 	 * 编号
 	 */
-	@Column(name = "type_no", nullable = false, length = 20)
-	private String typeNo;
+	@Column(name = "wallet_no", nullable = false, length = 20)
+	private String walletNo;
+	
+	/**
+	 * 金额
+	 */
+	@Column(name = "money", nullable = false, length = 20)
+	private double money;
 	
 	/**
 	 * 描述
 	 */
 	@Column(name = "remark", nullable = false, length = 20)
 	private Integer remark;
-	
-	/**
-	 * 姓名
-	 */
-	@Column(name = "name", nullable = false, length = 200)
-	private String name;
 	
 	/**
 	 * 数据是否有效 0 有效，1无效
@@ -67,20 +67,7 @@ public class Wallet {
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
 	
-	/**
-	 * 车辆信息列表
-	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sponsor")
-	private List<DrivingRegistration> listDrivingRegistration;
 
-	
-	public List<DrivingRegistration> getListDrivingRegistration() {
-		return listDrivingRegistration;
-	}
-
-	public void setListDrivingRegistration(List<DrivingRegistration> listDrivingRegistration) {
-		this.listDrivingRegistration = listDrivingRegistration;
-	}
 
 	public Long getId() {
 		return id;
@@ -90,15 +77,13 @@ public class Wallet {
 		this.id = id;
 	}
 
-
-	public String getName() {
-		return name;
+	public double getMoney() {
+		return money;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMoney(double money) {
+		this.money = money;
 	}
-
 
 	public byte getIsDeleted() {
 		return isDeleted;
@@ -140,12 +125,12 @@ public class Wallet {
 		this.createTime = createTime;
 	}
 
-	public String getTypeNo() {
-		return typeNo;
+	public String getWalletNo() {
+		return walletNo;
 	}
 
-	public void setTypeNo(String typeNo) {
-		this.typeNo = typeNo;
+	public void setWalletNo(String walletNo) {
+		this.walletNo = walletNo;
 	}
 
 	public Integer getRemark() {

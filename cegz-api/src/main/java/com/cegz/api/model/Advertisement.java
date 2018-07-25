@@ -91,21 +91,6 @@ public class Advertisement {
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
 	
-	/**
-	 * 车辆信息列表
-	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sponsor")
-	private List<DrivingRegistration> listDrivingRegistration;
-
-	
-	public List<DrivingRegistration> getListDrivingRegistration() {
-		return listDrivingRegistration;
-	}
-
-	public void setListDrivingRegistration(List<DrivingRegistration> listDrivingRegistration) {
-		this.listDrivingRegistration = listDrivingRegistration;
-	}
-	
 	public Long getId() {
 		return id;
 	}

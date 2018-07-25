@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @date 2018年7月24日
  */
 @Entity
-@Table(name = "advertisement_type")
+@Table(name = "check_money")
 public class CheckMoney {
 	
 	@Id
@@ -26,7 +26,7 @@ public class CheckMoney {
 	/**
 	 * 描述
 	 */
-	@Column(name = "remark", nullable = false, length = 20)
+	@Column(name = "remark", nullable = false, length = 255)
 	private Integer remark;
 	
 	/**
@@ -74,20 +74,6 @@ public class CheckMoney {
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
 	
-	/**
-	 * 车辆信息列表
-	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sponsor")
-	private List<DrivingRegistration> listDrivingRegistration;
-
-	
-	public List<DrivingRegistration> getListDrivingRegistration() {
-		return listDrivingRegistration;
-	}
-
-	public void setListDrivingRegistration(List<DrivingRegistration> listDrivingRegistration) {
-		this.listDrivingRegistration = listDrivingRegistration;
-	}
 
 	public Long getId() {
 		return id;
