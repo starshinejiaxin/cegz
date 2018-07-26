@@ -1,6 +1,7 @@
 package com.cegz.api.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.AdvertisementType;
@@ -31,7 +32,7 @@ public interface AdvertiserService {
 	 * @author lijiaxin
 	 * @date 2018年7月25日
 	 */
-	AdvertisementType getTypeById(Long id);
+	Optional<AdvertisementType> getTypeById(Long id);
 	
 	/**
 	 * 发布广告

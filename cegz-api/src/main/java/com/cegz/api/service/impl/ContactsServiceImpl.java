@@ -1,5 +1,7 @@
 package com.cegz.api.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +40,8 @@ public class ContactsServiceImpl implements ContactsService {
 	}
 
 	@Override
-	public Contacts getContactById(Long id) {
-		return contactsRepository.getOne(id);
+	public Optional<Contacts> getContactById(Long id) {
+		return contactsRepository.findById(id);
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.cegz.api.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -49,8 +50,8 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 	}
 
 	@Override
-	public AdvertisementType getTypeById(Long id) {
-		return adverTypeRepository.getOne(id);
+	public Optional<AdvertisementType> getTypeById(Long id) {
+		return adverTypeRepository.findById(id);
 	}
 
 	@Override

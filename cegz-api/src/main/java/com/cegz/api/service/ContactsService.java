@@ -1,5 +1,7 @@
 package com.cegz.api.service;
 
+import java.util.Optional;
+
 import com.cegz.api.model.Contacts;
 import com.cegz.api.model.DrivingRegistration;
 
@@ -34,5 +36,5 @@ public interface ContactsService {
 	 * @author lijiaxin
 	 * @date 2018年7月23日
 	 */
-	Contacts getContactById(Long id);
+	Optional<Contacts> getContactById(Long id);
 }

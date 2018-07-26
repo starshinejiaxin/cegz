@@ -3,10 +3,10 @@ package com.cegz.api.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +18,11 @@ import com.cegz.api.config.pojo.ServerAck;
 import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.AdvertisementType;
 import com.cegz.api.model.Advertiser;
-import com.cegz.api.model.Contacts;
 import com.cegz.api.model.Order;
 import com.cegz.api.model.Price;
 import com.cegz.api.model.Users;
 import com.cegz.api.model.Wallet;
 import com.cegz.api.model.view.AdvertisementView;
-import com.cegz.api.model.view.ContactView;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.service.AdvertiserService;
 import com.cegz.api.service.PriceService;
@@ -242,17 +240,26 @@ public class AdvertiserController {
 					continue;
 				}
 				Advertisement adver = new Advertisement();
-				Price price = priceService.getPriceById(Long.parseLong(priceIdArray[i]));
-				if (price == null) {
+				Optional<Price> priceOpt = priceService.getPriceById(Long.parseLong(priceIdArray[i]));
+				if (priceOpt.isPresent()) {
 					return serverAck.getParamError().setMessage("套餐错误");
 				}
+				Price price = priceOpt.get();
 				adver.setTitle(titleArray[i]);
 				// 获取广告类型  图片广告默认ID为1 文字广告ID默认为2
 				if (!StringUtil.isEmpty(titleImagesArray[i])) {
-					AdvertisementType adverType = advertiserService.getTypeById((long)1);
+					Optional<AdvertisementType> adverTypeOpt = advertiserService.getTypeById((long)1);
+					if (!adverTypeOpt.isPresent()) {
+						return serverAck.getServerError();
+					}
+					AdvertisementType adverType = adverTypeOpt.get();
 					adver.setAdvertisementType(adverType);
 				} else {
-					AdvertisementType adverType = advertiserService.getTypeById((long)2);
+					Optional<AdvertisementType> adverTypeOpt = advertiserService.getTypeById((long)2);
+					if (!adverTypeOpt.isPresent()) {
+						return serverAck.getServerError();
+					}
+					AdvertisementType adverType = adverTypeOpt.get();
 					adver.setAdvertisementType(adverType);
 				}
 				adver.setContent(contentArray[i]);

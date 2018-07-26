@@ -1,5 +1,7 @@
 package com.cegz.api.service;
 
+import java.util.Optional;
+
 import com.cegz.api.model.Price;
 
 /**
@@ -16,5 +18,5 @@ public interface PriceService {
 	 * @author lijiaxin
 	 * @date 2018年7月25日
 	 */
-	Price getPriceById(Long id);
+	Optional<Price> getPriceById(Long id);
 }

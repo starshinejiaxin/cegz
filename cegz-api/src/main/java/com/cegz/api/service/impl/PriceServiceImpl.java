@@ -1,5 +1,7 @@
 package com.cegz.api.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,8 @@ public class PriceServiceImpl implements PriceService {
 	private PriceRepository priceRepository;
 
 	@Override
-	public Price getPriceById(Long id) {
-		return priceRepository.getOne(id);
+	public Optional<Price> getPriceById(Long id) {
+		return priceRepository.findById(id);
 	}
 	
 	
