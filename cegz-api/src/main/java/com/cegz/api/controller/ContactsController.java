@@ -198,7 +198,7 @@ public class ContactsController {
 			}
 			// 获取保荐方信息
 			Sponsor sponsor = sponsorService.getSponSorById(sponsorId);
-			if (sponsor == null) {
+			if (sponsor == null || sponsor.getId() == null) {
 				return serverAck.getParamError().setMessage("保荐方ID有误");
 			}
 			
