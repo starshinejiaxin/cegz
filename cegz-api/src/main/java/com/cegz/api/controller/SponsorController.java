@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +52,12 @@ public class SponsorController {
 	private String serverVersion;
 	
 	/**
+	 * 图片根地址
+	 */
+	@Value("${server.image-url}")
+	private String baseImageUrl;
+	
+	/**
 	 * 广告方信息录入
 	 * @param name
 	 * @param phone
@@ -70,7 +75,7 @@ public class SponsorController {
 	 * @date 2018年7月24日
 	 */
 	@PutMapping("regist")
-	public ResultData insertsponsor(@RequestParam("businessFile") MultipartFile businessFile,String name,
+	public ResultData insertsponsor(String businessFile,String name,
 			String phone,
 			String email,
 			String address,
@@ -110,6 +115,9 @@ public class SponsorController {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
+		if (StringUtil.isEmpty(businessFile)) {
+			return serverAck.getParamError().setMessage("营业执照图片不能为空");
+		}
 		if (serverVersion != null && !serverVersion.equals(version)) {
 			return serverAck.getParamError().setMessage("版本错误");
 		}
@@ -129,9 +137,10 @@ public class SponsorController {
 				return serverAck.getParamError().setMessage("token无效");
 			}
 			// 图片保存
-			String filePath = ImageUtil.getSponsorDir();
-			String fileName = ImageUtil.saveImg(businessFile, filePath);
-			String imageUrl = serverUrl + Constant.SPONSOR_IMG_DRI + "/" + fileName;
+//			String filePath = ImageUtil.getSponsorDir();
+//			String fileName = ImageUtil.saveImg(businessFile, filePath);
+//			String imageUrl = serverUrl + Constant.SPONSOR_IMG_DRI + "/" + fileName;
+			String imageUrl = baseImageUrl + businessFile;
 			// 设置广告方信息
 			Sponsor sponsor = new Sponsor();
 			sponsor.setAddress(address);

@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cegz.api.config.pojo.ServerAck;
-import com.cegz.api.model.Contacts;
 import com.cegz.api.model.Users;
-import com.cegz.api.model.view.ContactView;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;

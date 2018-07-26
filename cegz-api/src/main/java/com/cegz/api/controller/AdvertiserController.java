@@ -53,6 +53,9 @@ public class AdvertiserController {
 	@Autowired
 	private PriceService priceService;
 	
+	@Value("${server.image-url}")
+	private String baseImageUrl;
+	
 	/**
 	 * 服务url
 	 */
@@ -83,7 +86,7 @@ public class AdvertiserController {
 	 * @date 2018年7月24日
 	 */
 	@PutMapping("regist")
-	public ResultData insertAdvertiser(@RequestParam("businessFile") MultipartFile businessFile,String name,
+	public ResultData insertAdvertiser(String businessFile,String name,
 			String phone,
 			String email,
 			String address,
@@ -142,9 +145,10 @@ public class AdvertiserController {
 				return serverAck.getParamError().setMessage("token无效");
 			}
 			// 图片保存
-			String filePath = ImageUtil.getAdvertiserDir();
-			String fileName = ImageUtil.saveImg(businessFile, filePath);
-			String imageUrl = serverUrl + Constant.ADVERTISER_IMG_DRI + "/" + fileName;
+//			String filePath = ImageUtil.getAdvertiserDir();
+//			String fileName = ImageUtil.saveImg(businessFile, filePath);
+//			String imageUrl = serverUrl + Constant.ADVERTISER_IMG_DRI + "/" + fileName;
+			String imageUrl = baseImageUrl + businessFile;
 			// 设置广告方信息
 			Advertiser advertiser = new Advertiser();
 			advertiser.setAddress(address);

@@ -65,10 +65,16 @@ public class ContactsController {
 	@Value("${server.version}")
 	private String serverVersion;
 	
+	/**
+	 * 图片根地址
+	 */
+	@Value("${server.image-url}")
+	private String baseImageUrl;
+	
 	@PutMapping("regist")
-	public ResultData insertContacts(@RequestParam("firstCardFile") MultipartFile multipartCardFile,
-			@RequestParam("secondCardFile") MultipartFile multipartSecondCardFile,
-			@RequestParam("driveLicenseFile") MultipartFile multipartLicenseFile, String name, String phone, String token, String version) {
+	public ResultData insertContacts(String firstCardFile,
+			String secondCardFile,
+			String driveLicenseFile, String name, String phone, String token, String version) {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
@@ -84,11 +90,11 @@ public class ContactsController {
 		if (StringUtil.isEmpty(phone)) {
 			return serverAck.getParamError().setMessage("联系人电话不能为空");
 		}
-		if (multipartCardFile.isEmpty()) {
+		if (StringUtil.isEmpty(firstCardFile) || StringUtil.isEmpty(secondCardFile)) {
 			return serverAck.getParamError().setMessage("身份证照片不能为空");
 					
 		}
-		if(multipartLicenseFile.isEmpty()) {
+		if(StringUtil.isEmpty(driveLicenseFile)) {
 			return serverAck.getParamError().setMessage("驾驶证照片不能为空");
 		}
 		try {
@@ -107,16 +113,18 @@ public class ContactsController {
 				return serverAck.getParamError().setMessage("token无效");
 			}
 			// 图片保存
-			String cardFilePath = ImageUtil.getIdCardImgDir();
-			String cardFileName = ImageUtil.saveImg(multipartCardFile, cardFilePath);
-			String secondCardFileName = ImageUtil.saveImg(multipartSecondCardFile, cardFilePath);
-			String licenseFilePath = ImageUtil.getDriveLicenseImgDir();
-			String licenseFileName = ImageUtil.saveImg(multipartLicenseFile, licenseFilePath);
+//			String cardFilePath = ImageUtil.getIdCardImgDir();
+//			String cardFileName = ImageUtil.saveImg(multipartCardFile, cardFilePath);
+//			String secondCardFileName = ImageUtil.saveImg(multipartSecondCardFile, cardFilePath);
+//			String licenseFilePath = ImageUtil.getDriveLicenseImgDir();
+//			String licenseFileName = ImageUtil.saveImg(multipartLicenseFile, licenseFilePath);
 			// 获取图片地址
-			String cardUrl = serverUrl + Constant.CARD_IMG_DRI + "/" + cardFileName;
-			String secondCardUrl = serverUrl + Constant.CARD_IMG_DRI + "/" + secondCardFileName;
-			String licenseUrl = serverUrl + Constant.DRIVE_LICENSE_IMG_DRI + "/" + licenseFileName;
-			// 设置身份证信息
+//			String cardUrl = serverUrl + Constant.CARD_IMG_DRI + "/" + cardFileName;
+//			String secondCardUrl = serverUrl + Constant.CARD_IMG_DRI + "/" + secondCardFileName;
+//			String licenseUrl = serverUrl + Constant.DRIVE_LICENSE_IMG_DRI + "/" + licenseFileName;
+			String cardUrl = baseImageUrl + firstCardFile;
+			String secondCardUrl = baseImageUrl + secondCardFile;
+			String licenseUrl = baseImageUrl + driveLicenseFile;
 			IdCard cardInfo = new IdCard();
 			cardInfo.setPictureUrl(cardUrl + ";" + secondCardUrl);
 			cardInfo.setCreateTime(new Date());
@@ -161,7 +169,7 @@ public class ContactsController {
 	 * @date 2018年7月23日
 	 */
 	@PutMapping("drivingRegistration")
-	public ResultData insertDriveRegistration(@RequestParam("partFile") MultipartFile multipartFile, String carNumber, String birthDate, Long sponsorId, Long contactId, String carType, String token, String version) {
+	public ResultData insertDriveRegistration(String partFile, String carNumber, String birthDate, Long sponsorId, Long contactId, String carType, String token, String version) {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
@@ -180,7 +188,7 @@ public class ContactsController {
 		if (sponsorId == null) {
 			return serverAck.getParamError().setMessage("保荐方id不能为空");
 		}
-		if (multipartFile.isEmpty()) {
+		if (StringUtil.isEmpty(partFile)) {
 			return serverAck.getParamError().setMessage("行驶证照片不能为空");
 		}
 		try {
@@ -211,10 +219,10 @@ public class ContactsController {
 			}
 			
 			// 图片保存
-			String driveRegisrationFilePath = ImageUtil.getDriveRegistrationImgDir();
-			String fileName = ImageUtil.saveImg(multipartFile, driveRegisrationFilePath);
+//			String driveRegisrationFilePath = ImageUtil.getDriveRegistrationImgDir();
+//			String fileName = ImageUtil.saveImg(multipartFile, driveRegisrationFilePath);
 			// 获取图片地址
-			String pictureUrl = serverUrl + Constant.DRIVE_REGISTRATION_IMG_DRI + "/" + fileName;
+			String pictureUrl = baseImageUrl + partFile;
 			// 设置行驶证信息
 			DrivingRegistration dr = new DrivingRegistration();
 			dr.setPlateNumber(carNumber);
