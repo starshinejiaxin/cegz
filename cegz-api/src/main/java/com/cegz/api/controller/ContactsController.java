@@ -203,8 +203,8 @@ public class ContactsController {
 			}
 			
 			// 获取车主信息
-			Contacts contract = contactsService.getContactById(contactId);
-			if (contract == null) {
+			Contacts contact = users.getContact();
+			if (contact == null || contact.getId() == null) {
 				return serverAck.getParamError().setMessage("车主ID有误");
 			}
 			
@@ -224,7 +224,7 @@ public class ContactsController {
 			Date birthday = sdf.parse(birthDate);
 			dr.setCarBirthday(birthday);
 			dr.setSponsor(sponsor);
-			dr.setContact(contract);
+			dr.setContact(contact);
 			// 数据处理
 			int ret = contactsService.insertContractDriveRegist(dr);
 			if (ret == 0) {
@@ -272,7 +272,7 @@ public class ContactsController {
 			}
 			// 车主信息
 			Contacts contact = users.getContact();
-			if (contact == null) {
+			if (contact == null || contact.getId() == null) {
 				return serverAck.getEmptyData();
 			}
 			ContactView view = new ContactView();
@@ -345,7 +345,7 @@ public class ContactsController {
 			}
 			// 车主信息
 			Contacts contact = users.getContact();
-			if (contact == null) {
+			if (contact == null || contact.getId() == null) {
 				return serverAck.getEmptyData();
 			}
 			List<DrivingRegistration> listDr = contact.getListDrivingRegistration();

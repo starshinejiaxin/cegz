@@ -90,7 +90,7 @@ public class Contacts {
 	/**
 	 * 车辆信息列表
 	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "contact")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "contact", fetch = FetchType.LAZY)
 	private List<DrivingRegistration> listDrivingRegistration;
 	
 	
