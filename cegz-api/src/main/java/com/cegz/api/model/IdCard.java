@@ -94,7 +94,7 @@ public class IdCard {
 	 * 修改时间
 	 */
 	@Column(name = "update_time", nullable = false, length = 100)
-	private byte updateTime;
+	private Date updateTime;
 	
 	/**
 	 * 创建用户
@@ -236,11 +236,11 @@ public class IdCard {
 		this.createTime = createTime;
 	}
 
-	public byte getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
 
-	public void setUpdateTime(byte updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 
