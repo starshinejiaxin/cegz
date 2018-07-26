@@ -316,7 +316,7 @@ public class ContactsController {
 	 * @author lijiaxin
 	 * @date 2018年7月26日
 	 */
-	@PostMapping("ListCarNumber")
+	@PostMapping("listCarNumber")
 	public ResultData getCarNumberByUser(String token, String version) {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");

@@ -128,14 +128,14 @@ public class DrivingRegistration {
 	/**
 	 * 保荐方信息
 	 */
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "sponsor_id", nullable = false)
 	private Sponsor sponsor;
 
 	/**
 	 * 联系人信息
 	 */
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "contact_id", nullable = false)
 	private Contacts contact;
 	
