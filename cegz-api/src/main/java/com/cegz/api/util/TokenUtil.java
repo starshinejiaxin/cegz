@@ -2,6 +2,8 @@ package com.cegz.api.util;
 
 import java.util.UUID;
 
+import com.qiniu.util.Auth;
+
 /**
  * token工具
  * @author lijiaxin
@@ -84,4 +86,15 @@ public class TokenUtil {
 		 String uuid = UUID.randomUUID().toString().replaceAll("-","");  
 		 return uuid;
 	}
+	
+	public static String getUpToken (String accessKey, String secretKey,String bucket) {
+		if (StringUtil.isEmpty(accessKey) || StringUtil.isEmail(secretKey) || StringUtil.isEmpty(bucket)) {
+			throw new IllegalArgumentException();
+		}
+		Auth auth = Auth.create(accessKey, secretKey);
+		String upToken = auth.uploadToken(bucket);
+		System.out.println(upToken);
+		return upToken;
+	}
+	
 }

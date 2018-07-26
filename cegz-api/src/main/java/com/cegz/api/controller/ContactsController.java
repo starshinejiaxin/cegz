@@ -64,6 +64,7 @@ public class ContactsController {
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
+	
 	@PutMapping("regist")
 	public ResultData insertContacts(@RequestParam("firstCardFile") MultipartFile multipartCardFile,
 			@RequestParam("secondCardFile") MultipartFile multipartSecondCardFile,
