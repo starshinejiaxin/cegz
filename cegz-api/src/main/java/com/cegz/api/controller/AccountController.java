@@ -1,11 +1,13 @@
 package com.cegz.api.controller;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,7 @@ import com.cegz.api.util.Md5Util;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
+import com.cegz.api.websocket.server.WebSocketServer;
 
 /**
  * 账号控制类
@@ -142,5 +145,21 @@ public class AccountController {
 			e.printStackTrace();
 			return serverAck.getServerError();
 		}
+	}
+	
+	@GetMapping("test")
+	public String test(String imei) {
+		WebSocketServer client = WebSocketServer.webSocketMap.get(imei);
+		if (client != null) {
+			try {
+				client.sendMessage("哈哈哈");
+				return "success";
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+				return "error";
+			}
+		}
+		return "error";
 	}
 }

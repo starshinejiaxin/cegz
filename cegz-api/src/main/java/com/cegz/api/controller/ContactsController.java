@@ -8,13 +8,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.cegz.api.config.pojo.ServerAck;
 import com.cegz.api.model.Contacts;
@@ -29,7 +26,6 @@ import com.cegz.api.service.AccountService;
 import com.cegz.api.service.ContactsService;
 import com.cegz.api.service.SponsorService;
 import com.cegz.api.util.Constant;
-import com.cegz.api.util.ImageUtil;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;

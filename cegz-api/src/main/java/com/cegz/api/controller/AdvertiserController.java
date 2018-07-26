@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.cegz.api.config.pojo.ServerAck;
 import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.AdvertisementType;
@@ -27,7 +24,6 @@ import com.cegz.api.service.AccountService;
 import com.cegz.api.service.AdvertiserService;
 import com.cegz.api.service.PriceService;
 import com.cegz.api.util.Constant;
-import com.cegz.api.util.ImageUtil;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
@@ -53,6 +49,9 @@ public class AdvertiserController {
 	@Autowired
 	private PriceService priceService;
 	
+	/**
+	 * 图片根地址
+	 */
 	@Value("${server.image-url}")
 	private String baseImageUrl;
 	

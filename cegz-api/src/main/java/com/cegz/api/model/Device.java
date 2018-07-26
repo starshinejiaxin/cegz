@@ -5,34 +5,35 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * 广告类型实体类
+ * 设备实体类
+ *
  * @author lijiaxin
- * @date 2018年7月24日
+ * @date 2018年7月26日
  */
 @Entity
-@Table(name = "advertisement_type")
-public class AdvertisementType {
+@Table(name = "device")
+public class Device {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	/**
-	 * 编号
+	 * 设备号
 	 */
-	@Column(name = "type_no", nullable = false, length = 20)
-	private String typeNo;
+	@Column(name = "imei", nullable = false, length = 20)
+	private String imei;
 	
 	/**
-	 * 描述
+	 * 物联网卡号
 	 */
-	@Column(name = "remark", nullable = false, length = 20)
-	private String remark;
+	@Column(name = "number", nullable = false, length = 20)
+	private String number;
 	
 	/**
-	 * 姓名
+	 * 设备状态 0 正常 1 异常
 	 */
-	@Column(name = "name", nullable = false, length = 200)
-	private String name;
+	@Column(name = "status", nullable = false, length = 20)
+	private int status;
 	
 	/**
 	 * 数据是否有效 0 有效，1无效
@@ -55,6 +56,13 @@ public class AdvertisementType {
 	private Users updateUserId;
 	
 	/**
+	 * 修改用户ID
+	 */
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "driving_registration_id", nullable = false)
+	private DrivingRegistration drivingRegistration;
+	
+	/**
 	 * 修改时间
 	 */
 	@Column(name = "update_time", nullable = false, length = 50)
@@ -73,15 +81,6 @@ public class AdvertisementType {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 
@@ -125,23 +124,38 @@ public class AdvertisementType {
 		this.createTime = createTime;
 	}
 
-	public String getTypeNo() {
-		return typeNo;
+	public String getImei() {
+		return imei;
 	}
 
-	public void setTypeNo(String typeNo) {
-		this.typeNo = typeNo;
+	public void setImei(String imei) {
+		this.imei = imei;
 	}
 
-	public String getRemark() {
-		return remark;
+	public String getNumber() {
+		return number;
 	}
 
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setNumber(String number) {
+		this.number = number;
 	}
-	
-	
-	
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public DrivingRegistration getDrivingRegistration() {
+		return drivingRegistration;
+	}
+
+	public void setDrivingRegistration(DrivingRegistration drivingRegistration) {
+		this.drivingRegistration = drivingRegistration;
+	}
+
+
 	
 }

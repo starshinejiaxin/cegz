@@ -26,7 +26,7 @@ public class CheckMoney {
 	 * 描述
 	 */
 	@Column(name = "remark", nullable = false, length = 255)
-	private Integer remark;
+	private String remark;
 	
 	/**
 	 * 账单类型 1 支出， 2 收入
@@ -123,11 +123,11 @@ public class CheckMoney {
 		this.createTime = createTime;
 	}
 
-	public Integer getRemark() {
+	public String getRemark() {
 		return remark;
 	}
 
-	public void setRemark(Integer remark) {
+	public void setRemark(String remark) {
 		this.remark = remark;
 	}
 	

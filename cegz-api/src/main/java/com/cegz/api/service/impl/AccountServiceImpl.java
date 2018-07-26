@@ -2,7 +2,6 @@ package com.cegz.api.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.cegz.api.dao.ContactsRepository;
 import com.cegz.api.dao.UsersRepository;
 import com.cegz.api.model.Users;
 import com.cegz.api.service.AccountService;
@@ -14,8 +13,6 @@ import com.cegz.api.service.AccountService;
 @Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
-	@Autowired
-	private ContactsRepository contactRepository;
 	@Autowired
 	private UsersRepository usersRepository;
 	@Override
