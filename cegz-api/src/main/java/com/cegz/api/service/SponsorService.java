@@ -1,5 +1,7 @@
 package com.cegz.api.service;
 
+import java.util.Optional;
+
 import com.cegz.api.model.Sponsor;
 /**
  * 保荐方服务
@@ -14,7 +16,7 @@ public interface SponsorService {
 	 * @author lijiaxin
 	 * @date 2018年7月23日
 	 */
-	Sponsor getSponSorById(Long id);
+	Optional<Sponsor> getSponSorById(Long id);
 	
 	/**
 	 * 添加保荐方信息

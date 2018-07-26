@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -197,11 +198,11 @@ public class ContactsController {
 				return serverAck.getParamError().setMessage("token无效");
 			}
 			// 获取保荐方信息
-			Sponsor sponsor = sponsorService.getSponSorById(sponsorId);
-			if (sponsor == null || sponsor.getId() == null) {
+			Optional<Sponsor> sponsorOpt = sponsorService.getSponSorById(sponsorId);
+			if (!sponsorOpt.isPresent()) {
 				return serverAck.getParamError().setMessage("保荐方ID有误");
 			}
-			
+			Sponsor sponsor = sponsorOpt.get();
 			// 获取车主信息
 			Contacts contact = users.getContact();
 			if (contact == null || contact.getId() == null) {

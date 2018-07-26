@@ -1,5 +1,7 @@
 package com.cegz.api.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,8 @@ public class SponsorServiceImpl implements SponsorService {
 	private SponsorRepository sponsorRepository;
 
 	@Override
-	public Sponsor getSponSorById(Long id) {
-		return sponsorRepository.getOne((Long)id);
+	public Optional<Sponsor> getSponSorById(Long id) {
+		return sponsorRepository.findById((Long)id);
 	}
 
 	@Override
