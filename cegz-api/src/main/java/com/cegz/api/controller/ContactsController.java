@@ -1,10 +1,14 @@
 package com.cegz.api.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +22,8 @@ import com.cegz.api.model.DrivingRegistration;
 import com.cegz.api.model.IdCard;
 import com.cegz.api.model.Sponsor;
 import com.cegz.api.model.Users;
+import com.cegz.api.model.view.CarView;
+import com.cegz.api.model.view.ContactView;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.service.ContactsService;
 import com.cegz.api.service.SponsorService;
@@ -230,4 +236,138 @@ public class ContactsController {
 			return serverAck.getServerError();
 		}
 	}
+	/**
+	 * 获取车主信息
+	 * @param token
+	 * @param version
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月26日
+	 */
+	@PostMapping("getContact")
+	public ResultData getContactsByUser(String token, String version) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		if (StringUtil.isEmpty(token)) {
+			return serverAck.getParamError().setMessage("token不能为空");
+		}
+		try {
+			// 用户信息查询
+			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
+			if (StringUtil.isEmpty(str)) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String [] datas = str.split(":");
+			if (datas.length < 1) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String userName = datas[0];
+			Users users = accountService.getUserByName(userName);
+			if (users == null) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			// 车主信息
+			Contacts contact = users.getContact();
+			if (contact == null) {
+				return serverAck.getEmptyData();
+			}
+			ContactView view = new ContactView();
+			view.setName(contact.getName());
+			view.setPhone(contact.getPhone());
+			view.setDriveLicenseImageUrl(contact.getDrivingLicenseId().getPictureUrl());
+			String [] pictures = contact.getIdcardId().getPictureUrl().split(",");
+			if (pictures.length == 2) {
+				view.setFirstImageUrl(pictures[0]);
+				view.setSecondImageUrl(pictures[1]);
+			}
+			// 审核状态 0 审核中，1 成功，2失败
+			int status = 0;
+			int licenseStatus = contact.getDrivingLicenseId().getStatus();
+			int cardStatus = contact.getIdcardId().getStatus();
+			if (licenseStatus == 1 && cardStatus == 1) {
+				status = 1;
+			}
+			if (cardStatus == 2 ) {
+				status = 2;
+				view.setReason(contact.getIdcardId().getReason());
+			}
+			if (licenseStatus == 2) {
+				status = 2;
+				view.setReason(view.getReason() + contact.getDrivingLicenseId().getReason());
+			}
+			view.setStatus(status);
+			return serverAck.getSuccess().setData(view);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
+		
+	}
+	/**
+	 * 获取车辆列表
+	 * @param token
+	 * @param version
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月26日
+	 */
+	@PostMapping("ListCarNumber")
+	public ResultData getCarNumberByUser(String token, String version) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		if (StringUtil.isEmpty(token)) {
+			return serverAck.getParamError().setMessage("token不能为空");
+		}
+		
+		try {
+			// 用户信息查询
+			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
+			if (StringUtil.isEmpty(str)) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String [] datas = str.split(":");
+			if (datas.length < 1) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String userName = datas[0];
+			Users users = accountService.getUserByName(userName);
+			if (users == null) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			// 车主信息
+			Contacts contact = users.getContact();
+			if (contact == null) {
+				return serverAck.getEmptyData();
+			}
+			List<DrivingRegistration> listDr = contact.getListDrivingRegistration();
+			if (listDr == null || listDr.size() == 0) {
+				return serverAck.getEmptyData();
+			}
+			List<CarView> resultList = new ArrayList<>();
+			for (int i = 0; i < listDr.size(); i++) {
+				CarView view = new CarView();
+				DrivingRegistration dr = listDr.get(i);
+				view.setId(dr.getId());
+				view.setCarNumber(dr.getPlateNumber());
+				view.setStatus(dr.getStatus());
+				resultList.add(view);
+			}
+			return serverAck.getSuccess().setData(resultList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
+	}
+	
+	
+	
 }

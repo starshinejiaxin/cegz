@@ -31,6 +31,33 @@ public class ContactView {
      * 驾驶证照片
      */
 	private String driveLicenseImageUrl;
+	
+	/**
+	 * 状态 0 审核中 1 审核完成，2 认证失败
+	 */
+	private int status;
+	
+	/**
+	 * 失败原因
+	 */
+	private String reason;
+
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 
 	public String getName() {
 		return name;

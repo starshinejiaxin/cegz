@@ -110,6 +110,36 @@ public class IdCard {
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
 
+	/**
+	 * 审核状态 0 审核中，1 成功，2失败
+	 */
+	@Column(name = "status", nullable = false, length = 11)
+	private int status;
+
+	/**
+	 * 审核结果原因
+	 */
+	@Column(name = "reason", nullable = false, length = 11)
+	private String reason;
+	
+	
+	
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public Long getId() {
 		return id;
 	}

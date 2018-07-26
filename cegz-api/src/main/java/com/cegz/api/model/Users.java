@@ -6,6 +6,7 @@ package com.cegz.api.model;
  */
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -93,7 +94,51 @@ public class Users {
 	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
 	private Wallet wallet;
 	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
+	private Contacts contact;
 	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
+	private Sponsor sponsor;
+	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
+	private Advertiser advertiser;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
+	private List<Order> listOrder;
+	
+	
+
+	public List<Order> getListOrder() {
+		return listOrder;
+	}
+
+	public void setListOrder(List<Order> listOrder) {
+		this.listOrder = listOrder;
+	}
+
+	public Advertiser getAdvertiser() {
+		return advertiser;
+	}
+
+	public void setAdvertiser(Advertiser advertiser) {
+		this.advertiser = advertiser;
+	}
+
+	public Sponsor getSponsor() {
+		return sponsor;
+	}
+
+	public void setSponsor(Sponsor sponsor) {
+		this.sponsor = sponsor;
+	}
+
+	public Contacts getContact() {
+		return contact;
+	}
+
+	public void setContact(Contacts contact) {
+		this.contact = contact;
+	}
 
 	public Wallet getWallet() {
 		return wallet;
