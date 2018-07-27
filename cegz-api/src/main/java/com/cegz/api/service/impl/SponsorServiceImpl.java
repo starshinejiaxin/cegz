@@ -1,5 +1,6 @@
 package com.cegz.api.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class SponsorServiceImpl implements SponsorService {
 	public int save(Sponsor sponsor) {
 		sponsorRepository.save(sponsor);
 		return 1;
+	}
+
+	@Override
+	public List<Sponsor> listSponsor() {
+		return sponsorRepository.findAll();
 	}
 	
 	

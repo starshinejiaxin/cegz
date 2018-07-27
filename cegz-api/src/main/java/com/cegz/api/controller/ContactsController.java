@@ -121,7 +121,7 @@ public class ContactsController {
 			String secondCardUrl = baseImageUrl + secondCardFile;
 			String licenseUrl = baseImageUrl + driveLicenseFile;
 			IdCard cardInfo = new IdCard();
-			cardInfo.setPictureUrl(cardUrl + ";" + secondCardUrl);
+			cardInfo.setPictureUrl(cardUrl + "," + secondCardUrl);
 			cardInfo.setCreateTime(new Date());
 			cardInfo.setCreateUserId(users);
 			// 设置驾驶证信息

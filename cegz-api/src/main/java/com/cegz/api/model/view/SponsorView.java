@@ -62,8 +62,21 @@ public class SponsorView {
 	 * 原因
 	 */
 	private String reason;
-
 	
+	/**
+	 * 保荐方类型 1 网约车，2 教练车
+	 */
+	private int type;
+	
+	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	public int getStatus() {
 		return status;
 	}

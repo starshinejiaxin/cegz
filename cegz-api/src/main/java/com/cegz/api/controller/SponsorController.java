@@ -1,6 +1,8 @@
 package com.cegz.api.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -183,15 +185,6 @@ public class SponsorController {
 		}
 		try {
 			
-			if (StringUtil.isEmpty(version)) {
-				return serverAck.getParamError().setMessage("版本号不能为空");
-			}
-			if (serverVersion != null && !serverVersion.equals(version)) {
-				return serverAck.getParamError().setMessage("版本错误");
-			}
-			if (StringUtil.isEmpty(token)) {
-				return serverAck.getParamError().setMessage("token不能为空");
-			}
 			// 用户信息查询
 			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
 			if (StringUtil.isEmpty(str)) {
@@ -223,7 +216,73 @@ public class SponsorController {
 			view.setProvince(sponsor.getProvince());
 			view.setStatus(sponsor.getStatus());
 			view.setReason(sponsor.getReason());
+			view.setType(sponsor.getType());
 			return serverAck.getSuccess().setData(view);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
+	}
+	/**
+	 * 获取所有保荐方
+	 * @param token
+	 * @param type
+	 * @param version
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月27日
+	 */
+	@PostMapping("listSponsor")
+	public ResultData listSponsor(String token, String version) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		if (StringUtil.isEmpty(token)) {
+			return serverAck.getParamError().setMessage("token不能为空");
+		}
+		try {
+			// 用户信息查询
+			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
+			if (StringUtil.isEmpty(str)) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String [] datas = str.split(":");
+			if (datas.length < 1) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String userName = datas[0];
+			Users users = accountService.getUserByName(userName);
+			if (users == null) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			List<Sponsor> list = sponsorService.listSponsor();
+			if (list == null || list.size() == 0) {
+				return serverAck.getEmptyData();
+			}
+			List<SponsorView> resultList = new ArrayList<>();
+			int length = list.size();
+			for (int i = 0; i < length; i++) {
+				Sponsor sponsor = list.get(i);
+				SponsorView view = new SponsorView();
+				view.setAddress(sponsor.getAddress());
+				view.setAddressDetail(sponsor.getAddressDetail());
+				view.setBusinessNumber(sponsor.getBusinessLicense());
+				view.setCompany(sponsor.getCompany());
+				view.setEmail(sponsor.getEmail());
+				view.setId(sponsor.getId());
+				view.setLicenseImgUrl(sponsor.getPictureUrl());
+				view.setName(sponsor.getName());
+				view.setAddress(sponsor.getPhone());
+				view.setProvince(sponsor.getProvince());
+				view.setStatus(sponsor.getStatus());
+				view.setReason(sponsor.getReason());
+				view.setType(sponsor.getType());
+				resultList.add(view);
+			}
+			return serverAck.getSuccess().setData(resultList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();

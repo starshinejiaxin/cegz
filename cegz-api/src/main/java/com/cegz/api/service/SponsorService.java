@@ -1,5 +1,6 @@
 package com.cegz.api.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.cegz.api.model.Sponsor;
@@ -26,4 +27,12 @@ public interface SponsorService {
 	 * @date 2018年7月24日
 	 */
 	int save(Sponsor sponsor);
+	
+	/**
+	 * 获取保健方列表
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月27日
+	 */
+	List<Sponsor> listSponsor();
 }
