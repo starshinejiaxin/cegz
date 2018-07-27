@@ -67,7 +67,7 @@ public class ContactsController {
 	@Value("${server.image-url}")
 	private String baseImageUrl;
 	
-	@PutMapping("regist")
+	@PostMapping("regist")
 	public ResultData insertContacts(String firstCardFile,
 			String secondCardFile,
 			String driveLicenseFile, String name, String phone, String token, String version) {
@@ -164,7 +164,7 @@ public class ContactsController {
 	 * @author lijiaxin
 	 * @date 2018年7月23日
 	 */
-	@PutMapping("drivingRegistration")
+	@PostMapping("drivingRegistration")
 	public ResultData insertDriveRegistration(String partFile, String carNumber, String birthDate, Long sponsorId, Long contactId, String carType, String token, String version) {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");

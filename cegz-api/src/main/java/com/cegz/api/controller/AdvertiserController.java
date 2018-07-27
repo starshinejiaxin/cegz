@@ -84,7 +84,7 @@ public class AdvertiserController {
 	 * @author lijiaxin
 	 * @date 2018年7月24日
 	 */
-	@PutMapping("regist")
+	@PostMapping("regist")
 	public ResultData insertAdvertiser(String businessFile,String name,
 			String phone,
 			String email,

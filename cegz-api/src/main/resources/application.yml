@@ -17,7 +17,12 @@ oss:
   access-key: b166Tl26Dgw2x0FklVu7CEKg2DMGSwOa6i7fi-_P
   secret-key: xDyKW058j0pLSiK1gkuY0XD8UIxDmJTDlnbFYiSA
   all-bucket: test 
-  
-
+mongo: 
+  read:
+    user: root
+    password: root
+    url: 192.168.0.85
+    port: 27017
+    db: cegz
 
     

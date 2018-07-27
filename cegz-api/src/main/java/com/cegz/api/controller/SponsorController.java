@@ -70,7 +70,7 @@ public class SponsorController {
 	 * @author lijiaxin
 	 * @date 2018年7月24日
 	 */
-	@PutMapping("regist")
+	@PostMapping("regist")
 	public ResultData insertsponsor(String businessFile,String name,
 			String phone,
 			String email,
