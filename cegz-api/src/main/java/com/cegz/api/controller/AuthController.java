@@ -42,7 +42,7 @@ public class AuthController {
 	@Value("${oss.secret-key}")
 	private String secretKey;
 	
-	@Value("${oss.all-bucket")
+	@Value("${oss.all-bucket}")
 	private String bucket;
 	
 	@PostMapping("getUpToken")
