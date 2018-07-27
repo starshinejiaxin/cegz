@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -333,7 +332,6 @@ public class ContactsController {
 		if (StringUtil.isEmpty(token)) {
 			return serverAck.getParamError().setMessage("token不能为空");
 		}
-		
 		try {
 			// 用户信息查询
 			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
@@ -365,6 +363,7 @@ public class ContactsController {
 				view.setId(dr.getId());
 				view.setCarNumber(dr.getPlateNumber());
 				view.setStatus(dr.getStatus());
+				view.setCarType(dr.getSponsor().getType());
 				resultList.add(view);
 			}
 			return serverAck.getSuccess().setData(resultList);

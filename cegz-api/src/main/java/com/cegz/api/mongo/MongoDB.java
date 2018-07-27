@@ -1,7 +1,6 @@
 package com.cegz.api.mongo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +8,8 @@ import java.util.Set;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.BasicDBList;
@@ -18,13 +19,14 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 
-@Component(value="MongoDB")
+@Component(value = "mongodb")
 public class MongoDB {
 
+	@Autowired
+	private MongoDbFactory mongodbFactory;
 	/**
 	 * 获得第一条数据
 	 * @param database 数据库
@@ -32,9 +34,9 @@ public class MongoDB {
 	 * @param queryMap 条件
 	 * @return
 	 */
-	public Document getFirstData(String database, String document, Map<String, Object> queryMap) {
-		MongoClient client = this.openReadClient();
-		MongoDatabase db =client.getDatabase(database);
+	public Document getFirstData(String document, Map<String, Object> queryMap) {
+		
+		MongoDatabase db = mongodbFactory.getDb();
 		// 获取所有查询记录
 		Document retDocument = db.getCollection(document).find(new Document(queryMap)).first();
 		return retDocument;
@@ -48,9 +50,8 @@ public class MongoDB {
 	 * @param queryMap 条件
 	 * @return
 	 */
-	public Document getCurrentData(String database, String document, String timeComlum , Map<String, Object> queryMap) {
-		MongoClient client = this.openReadClient();
-		MongoDatabase db =client.getDatabase(database);
+	public Document getCurrentData(String document, String timeComlum , Map<String, Object> queryMap) {
+		MongoDatabase db =mongodbFactory.getDb();
 		// 获取所有查询记录
 		FindIterable<Document> retDocument = db.getCollection(document).find(new Document(queryMap)).sort(new BasicDBObject(timeComlum,-1));
 		return retDocument.first();
@@ -64,13 +65,12 @@ public class MongoDB {
 	 * @param idList
 	 * @return
 	 */
-	public List<Document> getDataById(String dbName, String collection,BasicDBList idList){ 
+	public List<Document> getDataById(String collection,BasicDBList idList){ 
 				
 			
 			Document mainconditionDoc = new Document();  //主条件
 			
-			MongoClient client = this.openReadClient();
-			MongoDatabase db = client.getDatabase(dbName);
+			MongoDatabase db = mongodbFactory.getDb();
 			
 			MongoCollection<Document> col = db.getCollection(collection);
 			
@@ -100,10 +100,9 @@ public class MongoDB {
 	 * @param queryMap
 	 * @return
 	 */
-	public boolean isDataExistBetween(String collection, String document, Map<String, String> queryMap) {
+	public boolean isDataExistBetween(String document, Map<String, String> queryMap) {
 
-		MongoClient client = this.openReadClient();
-		MongoDatabase db =client.getDatabase(collection);
+		MongoDatabase db = mongodbFactory.getDb();
 		
 		if(!queryMap.containsKey("deviceColumn") || 
 				!queryMap.containsKey("fromTime") || 
@@ -134,11 +133,10 @@ public class MongoDB {
 	 * @param document		数据表
 	 * @param documentList	插入数据库的数据
 	 */
-	public boolean insertListDocuments(String database, String document, 
+	public boolean insertListDocuments(String document, 
 			List<Document> documentList){
 		try {
-			MongoClient client = this.openWriteClient();
-			MongoDatabase db = client.getDatabase(database);
+			MongoDatabase db = mongodbFactory.getDb();
 			db.getCollection(document).insertMany(documentList);
 			return true;
 		} catch (Exception e) {
@@ -154,10 +152,9 @@ public class MongoDB {
 	 * @param dataMap		数据HashMap
 	 * @return
 	 */
-	public boolean dataInsert(String database, String document, Map<String, Object> dataMap) {
+	public boolean dataInsert(String document, Map<String, Object> dataMap) {
 		try {
-			MongoClient client = this.openWriteClient();
-			MongoDatabase db = client.getDatabase(database);
+			MongoDatabase db = mongodbFactory.getDb();
 			Document documentParams = new Document(dataMap);
 			db.getCollection(document).insertOne(documentParams);
 			return true;
@@ -182,9 +179,8 @@ public class MongoDB {
 	 * @modifiedContent 
 	 * @check
 	 */
-	public boolean isExistBiggerData(String collection, String document,Map<String, Object> queryMap, String columName, int value) {
-		MongoClient client = this.openReadClient();
-		MongoDatabase db =client.getDatabase(collection);
+	public boolean isExistBiggerData(String document,Map<String, Object> queryMap, String columName, int value) {
+		MongoDatabase db = mongodbFactory.getDb();
 		Document mainDoc = new Document(queryMap);
 		mainDoc.append(columName, new Document("$gt", value));
 		Document retDocument = db.getCollection(document).find(new Document(mainDoc)).first();
@@ -197,10 +193,9 @@ public class MongoDB {
 	 * @param conditionParams 	多条件map
 	 * @return
 	 */
-	public List<Document> getByMutilCondition(String database, String document, Map<String, Object> conditionParams) {
+	public List<Document> getByMutilCondition( String document, Map<String, Object> conditionParams) {
 		
-		MongoClient client = this.openReadClient();
-		MongoDatabase db  = client.getDatabase(database);
+		MongoDatabase db  = mongodbFactory.getDb();
 		
 		List<Document> resultList = new ArrayList<>();
 		try {
@@ -231,11 +226,10 @@ public class MongoDB {
 	 * @param params		每一个要修改的字段与值
 	 * @return
 	 */
-	public boolean updateDataByMutilCondition(String database, String document, 
+	public boolean updateDataByMutilCondition(String document, 
 		Map<String, Object> condition, Map<String, Object> dest) {
 		
-		MongoClient writeClient = this.openWriteClient();
-		MongoDatabase db =  writeClient.getDatabase(database);
+		MongoDatabase db =  mongodbFactory.getDb();
 		try {
 			MongoCollection<Document> col = db.getCollection(document);
 			Document conDocument = new Document(condition);
@@ -256,9 +250,8 @@ public class MongoDB {
 	 * @param _idLists		mongo表id列表
 	 * @return
 	 */
-	public boolean deleteDocuments(String database, String document, List<String> _idLists) {
-		MongoClient client = this.openWriteClient();
-		MongoDatabase db = client.getDatabase(database);
+	public boolean deleteDocuments(String document, List<String> _idLists) {
+		MongoDatabase db =mongodbFactory.getDb();
 		
 		List<Bson> bsonList = new ArrayList<Bson>();
 		for (int i = 0; i < _idLists.size(); i++) {
@@ -270,47 +263,6 @@ public class MongoDB {
 		return true;
 	}
 	
-	//读源
-	private MongoClient openReadClient() {
-		return MongoUtil.getMongoReadClient();
-	}
-	//写源
-	private MongoClient openWriteClient() {
-		return MongoUtil.getMongoReadClient();
-	}
-	
-	/**
-	 * 判断是否存在
-	 * 
-	 * @param collection
-	 * @param document
-	 * @param columnname
-	 * @param columnValue
-	 * @param columnname2
-	 * @param columnValue2
-	 * @return
-	 */
-	public boolean whetherexist(String collection, String document, String columnname, String columnValue,
-			String columnname2, String columnValue2) {
-		//打开读源
-		MongoClient client = this.openReadClient();
-		DB db = client.getDB(collection);
-		
-		BasicDBObject query = new BasicDBObject();
-		query.put(columnname2, columnValue2);
-		query.put(columnname, columnValue);
-		
-		int iterable = db.getCollection(document).find(query).count();
-		
-		//client.close();
-		//client = null;//一定要写这句话，不然系统不会回收，只是关闭了，连接存在。
-
-		if (iterable != 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 	/**
 	 *  指定字段查询
 	 * @param collection
@@ -320,11 +272,10 @@ public class MongoDB {
 	 * @param targetColumn
 	 * @return
 	 */
-	public String getOneColumn(String collection, String document, String columnname, String columnValue,
+	public String getOneColumn( String document, String columnname, String columnValue,
 			final String targetColumn) {
 		//使用读源
-		MongoClient client = this.openReadClient();
-		MongoDatabase db = client.getDatabase(collection);
+		MongoDatabase db = mongodbFactory.getDb();
 		
 		
 		final ArrayList<String> a = new ArrayList<String>();
@@ -351,33 +302,6 @@ public class MongoDB {
 		return b;
 	}
 	
-	/**
-	 * 获取数据
-	 * 
-	 * @param collection
-	 * @param document
-	 * @param mainColumn
-	 * @param mainValue
-	 * @return
-	 */
-	public int getRows(String collection, String document, String mainColumn, String mainValue) {
-
-		MongoClient client = this.openReadClient();
-		DB db = client.getDB(collection);
-		
-		BasicDBObject query = new BasicDBObject();
-		if (mainColumn == null) {
-			query = null;
-		} else {
-			query.put(mainColumn, mainValue);
-		}
-		int iterable = db.getCollection(document).find(query).count();
-		
-		//client.close();
-		//client = null;//一定要写这句话，不然系统不会回收，只是关闭了，连接存在。
-		return iterable;
-
-	}
 	
 	
 	/**
@@ -390,7 +314,7 @@ public class MongoDB {
 	 * @param endTime
 	 * @return
 	 */
-	public List<Document> getInfoByTime(String dbName, String collection, String timeColum,
+	public List<Document> getInfoByTime( String collection, String timeColum,
 			Map<String, String> paramMap, String startTime, String endTime) {
 		
 		Document mainconditionDoc = new Document();  //主条件
@@ -400,8 +324,7 @@ public class MongoDB {
 				mainconditionDoc.append(key, paramMap.get(key));
 			}
 		}
-		MongoClient client = this.openReadClient();
-		MongoDatabase db = client.getDatabase(dbName);
+		MongoDatabase db = mongodbFactory.getDb();
 		
 		MongoCollection<Document> col = db.getCollection(collection);
 		Document timeConditionDoc = new Document();
@@ -430,10 +353,9 @@ public class MongoDB {
 	 * @param endTime结束时间
 	 * @return
 	 */
-	public List<Document> listDocumentByTime(String database,String document,String columnName,String columnValue,String timeName, String startTime,String endTime){
+	public List<Document> listDocumentByTime(String document,String columnName,String columnValue,String timeName, String startTime,String endTime){
 		
-		MongoClient client=this.openReadClient();
-		MongoDatabase db=client.getDatabase(database);
+		MongoDatabase db=mongodbFactory.getDb();
 		List<Document> list=new ArrayList<>();
 		MongoCollection<Document> cli=db.getCollection(document);
 		Document mainDocument=new Document();
@@ -452,37 +374,4 @@ public class MongoDB {
 		return list;
 	}
 	
-	public void test() {
-		MongoClient client=this.openReadClient();
-		MongoDatabase db=client.getDatabase("test");
-		MongoCollection<Document> collection = db.getCollection("IDSWtest");
-		FindIterable<Document> findIterable=collection.find();
-		if(findIterable.iterator().hasNext()) {
-			System.out.println(findIterable.first());
-		}
-	}
-	//测试
-	public static void main(String[] args) {
-		
-		//更新
-//		Map<String,Object> desMap = new HashMap<String,Object>(); 
-//		desMap.put("IDSWID", "IDSW-J1121");
-		//desMap.put("AvpTime", "20160918134852");
-//		desMap.put("version", "dd");
-		//System.out.println(mongo.updateDataByMutilCondition("IDSW", "AVP", paramMap, desMap));
-//		MongoDB db = new MongoDB();
-//		Map<String,String> queryMap = new HashMap<String,String>(); 
-//		queryMap.put("IMEI", "459432812639566");
-//		List<Document> gg = db.getInfoByTime("IDSW", "GtDrivePeriodData","time", queryMap,"20170101000000","20170901000000");
-//		for(Document document : gg) {
-//			System.out.println(document);
-//		}
-		MongoDB db1 = new MongoDB();
-		db1.test();
-//		System.out.println(db.getInfoByTime("IDSW", "GtDrivePeriodData","time", queryMap,"20170101000000","20170901000000"));
-		//删除
-//		List<String> idList = new ArrayList<String>();
-//		idList.add("58b425e8cc66fb592481bfcf");
-		//System.out.println(mongo.deleteDocuments("IDSW", "AVP", idList));
-	}
 }

@@ -20,6 +20,20 @@ public class CarView {
 	 * 状态 0 审核中，1 完成，2 失败
 	 */
 	private int Status;
+	
+	/**
+	 * 车辆类型，1 网约车，2 教练车
+	 */
+	private int carType;
+	
+	
+	public int getCarType() {
+		return carType;
+	}
+
+	public void setCarType(int carType) {
+		this.carType = carType;
+	}
 
 	public Long getId() {
 		return id;

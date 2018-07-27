@@ -1,7 +1,10 @@
 package com.cegz.api.websocket.server;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -10,16 +13,22 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-@Component
-@ServerEndpoint(value = "/websocket/{imei}")
+
+import com.alibaba.fastjson.JSONObject;
+import com.cegz.api.mongo.MongoDB;
+import com.cegz.api.util.StringUtil;
+import com.google.gson.JsonObject;
+import com.mongodb.util.JSON;
+
 /**
- * websocket服务
- *
+ * websocket服务 
  * @author lijiaxin
  * @date 2018年7月26日
  */
+@ServerEndpoint(value = "/websocket/{imei}")
+@Component
 public class WebSocketServer {
 	
 	/**
@@ -40,8 +49,17 @@ public class WebSocketServer {
      */
     private Session session;
     
+    /**
+     * mongodb数据操作
+     */
+    private static MongoDB mongoDb;
     
-    public String getImei() {
+    @Autowired
+	public void setMongoDb(MongoDB mongoDb) {
+    	WebSocketServer.mongoDb = mongoDb;
+	}
+
+	public String getImei() {
 		return imei;
 	}
 
@@ -94,6 +112,31 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session) {
     	System.out.println("来自客户端的消息:" + message);
+    	// 数据存储
+    	if (!StringUtil.isEmpty(message)) {
+    		JSONObject jsonObject = JSONObject.parseObject(message);
+    		if (!jsonObject.isEmpty()) {
+    			if (!"GPS".equals(jsonObject.getString("head"))) {
+    				return;
+    			}
+    			jsonObject = jsonObject.getJSONObject("body");
+    			Map<String, Object> map = new HashMap<>(16);
+    			// 设备号
+    			map.put("imei", jsonObject.getString("imei"));
+    			// 高德经度
+    			map.put("lng", jsonObject.getString("lng"));
+    			// 高德纬度
+    			map.put("lat", jsonObject.getString("lat"));
+    			// 上传时间
+    			map.put("time", jsonObject.getString("time"));
+    			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+    			// 服务器时间
+    			map.put("create_time", sdf.format(new Date()));
+    			mongoDb.dataInsert("gps", map);
+    		}
+    	}
+    	
+    	
     }
  
 	/**

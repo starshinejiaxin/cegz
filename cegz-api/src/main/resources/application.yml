@@ -9,6 +9,18 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true  
+  data: 
+    mongodb:
+      custom:
+        hosts: 192.168.0.85
+        ports: 27017
+#        replica-set: mgset-3590061
+#        username: root
+#        password: root
+        database: cegz
+        authentication-database: admin
+        connections-per-host: 20
+        min-connections-per-host: 20
 server: 
   url: http://192.168.0.85:8080/
   version: 20180810
@@ -17,12 +29,4 @@ oss:
   access-key: b166Tl26Dgw2x0FklVu7CEKg2DMGSwOa6i7fi-_P
   secret-key: xDyKW058j0pLSiK1gkuY0XD8UIxDmJTDlnbFYiSA
   all-bucket: test 
-mongo: 
-  read:
-    user: root
-    password: root
-    url: 192.168.0.85
-    port: 27017
-    db: cegz
-
     
