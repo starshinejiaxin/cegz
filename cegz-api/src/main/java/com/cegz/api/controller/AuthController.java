@@ -19,32 +19,32 @@ import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
+
 @RestController
 @RequestMapping("auth")
 public class AuthController {
-	
+
 	@Autowired
 	private ServerAck serverAck;
-	
+
 	/**
 	 * 版本号
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
-	
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Value("${oss.access-key}")
 	private String accessKey;
-	
+
 	@Value("${oss.secret-key}")
 	private String secretKey;
-	
+
 	@Value("${oss.all-bucket}")
 	private String bucket;
-	
+
 	@PostMapping("getUpToken")
 	public ResultData getOssUpToken(String token, String version) {
 		if (StringUtil.isEmpty(version)) {
@@ -62,7 +62,7 @@ public class AuthController {
 			if (StringUtil.isEmpty(str)) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
-			String [] datas = str.split(":");
+			String[] datas = str.split(":");
 			if (datas.length < 1) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
@@ -73,7 +73,7 @@ public class AuthController {
 			}
 			String uptoken = TokenUtil.getUpToken(accessKey, secretKey, bucket);
 			return serverAck.getSuccess().setData(uptoken);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();

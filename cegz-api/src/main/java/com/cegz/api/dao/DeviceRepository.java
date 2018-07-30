@@ -13,6 +13,6 @@ import org.springframework.data.jpa.repository.Query;
  */
 import com.cegz.api.model.Device;
 public interface DeviceRepository extends JpaRepository<Device, Long>{
-	@Query(value = "select d.imei from device d  where d.status = 0 limit  ?1", nativeQuery = true)
+	@Query(value = "select * from device d  where d.status = 0 limit  ?1", nativeQuery = true)
 	List<Device> listDeviceByLimit(Long size);
 }

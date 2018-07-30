@@ -158,6 +158,7 @@ public class SponsorController {
 			sponsor.setCreateTime(new Date());
 			sponsor.setCreateUserId(users);
 			sponsor.setPictureUrl(imageUrl);
+			sponsor.setType(Integer.parseInt(type));
 			// 处理
 			int ret = sponsorService.save(sponsor);
 			if (ret == 0) {
