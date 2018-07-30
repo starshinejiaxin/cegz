@@ -107,6 +107,10 @@ public class ContactsController {
 			if (users == null) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
+			Contacts vaildContacts = users.getContact();
+			if (vaildContacts != null && vaildContacts.getId() != null) {
+				return serverAck.getFailure().setMessage("车主已经存在");
+			}
 			// 图片保存
 //			String cardFilePath = ImageUtil.getIdCardImgDir();
 //			String cardFileName = ImageUtil.saveImg(multipartCardFile, cardFilePath);

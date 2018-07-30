@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.cegz.api.mongo.MongoDB;
 import com.cegz.api.util.StringUtil;
-import com.google.gson.JsonObject;
-import com.mongodb.util.JSON;
 
 /**
  * websocket服务 
@@ -65,7 +63,7 @@ public class WebSocketServer {
 
 	public void setImei(String imei) {
 		this.imei = imei;
-	}
+	} 
 
 	/**
 	 * 成功建立连接
@@ -106,7 +104,7 @@ public class WebSocketServer {
      * 接受客户端消息
      * @param message
      * @param session
-     * @author lijiaxin
+     * @author lijiaxin   
      * @date 2018年7月26日
      */
     @OnMessage
@@ -119,7 +117,7 @@ public class WebSocketServer {
     			if (!"GPS".equals(jsonObject.getString("head"))) {
     				return;
     			}
-    			jsonObject = jsonObject.getJSONObject("body");
+    			jsonObject = jsonObject.getJSONObject("body"); 
     			Map<String, Object> map = new HashMap<>(16);
     			// 设备号
     			map.put("imei", jsonObject.getString("imei"));

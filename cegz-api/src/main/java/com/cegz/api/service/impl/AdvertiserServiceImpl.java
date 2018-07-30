@@ -67,5 +67,9 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 		walletRepository.save(wallet);
 		return 1;
 	}
-	
+
+	@Override
+	public Optional<Order> getOrderById(Long id) {
+		return orderRepository.findById(id);
+	}
 }

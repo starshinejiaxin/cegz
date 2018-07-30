@@ -44,4 +44,13 @@ public interface AdvertiserService {
 	 * @date 2018年7月25日
 	 */
 	int publishAdver(List<Advertisement> listAdver, List<Order> listOrder, Wallet wallet);
+	
+	/**
+	 * 获取订单信息
+	 * @param id
+	 * @return
+	 * @author Administrator
+	 * @date 2018年7月30日
+	 */
+	Optional<Order> getOrderById(Long id);
 }
