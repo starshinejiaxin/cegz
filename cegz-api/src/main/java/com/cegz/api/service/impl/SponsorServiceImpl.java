@@ -12,6 +12,7 @@ import com.cegz.api.service.SponsorService;
 
 /**
  * 保荐方服务
+ * 
  * @author lijiaxin
  * @date 2018年7月23日
  */
@@ -22,7 +23,7 @@ public class SponsorServiceImpl implements SponsorService {
 
 	@Override
 	public Optional<Sponsor> getSponSorById(Long id) {
-		return sponsorRepository.findById((Long)id);
+		return sponsorRepository.findById((Long) id);
 	}
 
 	@Override
@@ -35,6 +36,10 @@ public class SponsorServiceImpl implements SponsorService {
 	public List<Sponsor> listSponsor() {
 		return sponsorRepository.findAll();
 	}
-	
-	
+
+	@Override
+	public List<Sponsor> listSponsorExamine() {
+		return sponsorRepository.getSponsorExamineList();
+	}
+
 }
