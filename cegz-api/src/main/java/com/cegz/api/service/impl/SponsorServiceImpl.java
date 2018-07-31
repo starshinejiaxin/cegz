@@ -37,9 +37,4 @@ public class SponsorServiceImpl implements SponsorService {
 		return sponsorRepository.findAll();
 	}
 
-	@Override
-	public List<Sponsor> listSponsorExamine() {
-		return sponsorRepository.getSponsorExamineList();
-	}
-
 }

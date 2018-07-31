@@ -15,6 +15,7 @@ import com.cegz.api.model.Users;
 import com.cegz.api.model.view.SponsorView;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.service.SponsorService;
+import com.cegz.api.system.service.SponsorSystemService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
@@ -34,6 +35,9 @@ public class SponsorSystemController {
 
 	@Autowired
 	private SponsorService sponsorService;
+	
+	@Autowired
+	private SponsorSystemService sponsorSystemService;
 
 	@Autowired
 	private AccountService accountService;
@@ -54,6 +58,26 @@ public class SponsorSystemController {
 	 */
 	@Value("${server.image-url}")
 	private String baseImageUrl;
+	
+
+	/**
+	 * 校验token and version
+	 * @param token
+	 * @param version
+	 * @return
+	 */
+	private ResultData checkTokenAndVersion(String token, String version) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		if (StringUtil.isEmpty(token)) {
+			return serverAck.getParamError().setMessage("token不能为空");
+		}
+		return null;
+	}
 
 	/**
 	 * 获取保荐方待审核列表
@@ -66,14 +90,8 @@ public class SponsorSystemController {
 	 */
 	@PostMapping("getExamineList")
 	public ResultData getExamineList(String token, String version) {
-		if (StringUtil.isEmpty(version)) {
-			return serverAck.getParamError().setMessage("版本号不能为空");
-		}
-		if (serverVersion != null && !serverVersion.equals(version)) {
-			return serverAck.getParamError().setMessage("版本错误");
-		}
-		if (StringUtil.isEmpty(token)) {
-			return serverAck.getParamError().setMessage("token不能为空");
+		if(checkTokenAndVersion(token, version) != null) {
+			return checkTokenAndVersion(token, version);
 		}
 		try {
 			// 用户信息查询
@@ -91,7 +109,7 @@ public class SponsorSystemController {
 				return serverAck.getParamError().setMessage("token无效");
 			}
 			// 保荐方审核数据列表
-			List<Sponsor> sponsorExamines = sponsorService.listSponsorExamine();
+			List<Sponsor> sponsorExamines = sponsorSystemService.listSponsorExamine();
 			return serverAck.getSuccess().setData(sponsorExamines);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,14 +132,8 @@ public class SponsorSystemController {
 		if (id == null) {
 			return serverAck.getParamError().setMessage("主键不能为空");
 		}
-		if (StringUtil.isEmpty(version)) {
-			return serverAck.getParamError().setMessage("版本号不能为空");
-		}
-		if (serverVersion != null && !serverVersion.equals(version)) {
-			return serverAck.getParamError().setMessage("版本错误");
-		}
-		if (StringUtil.isEmpty(token)) {
-			return serverAck.getParamError().setMessage("token不能为空");
+		if(checkTokenAndVersion(token, version) != null) {
+			return checkTokenAndVersion(token, version);
 		}
 		try {
 			// 用户信息查询
@@ -186,14 +198,8 @@ public class SponsorSystemController {
 		if (status != null && status != 0 && status == 2 && StringUtil.isEmpty(reason)) {// 审核状态为未通过原因必填
 			return serverAck.getParamError().setMessage("审核未通过时原因不能为空");
 		}
-		if (StringUtil.isEmpty(version)) {
-			return serverAck.getParamError().setMessage("版本号不能为空");
-		}
-		if (serverVersion != null && !serverVersion.equals(version)) {
-			return serverAck.getParamError().setMessage("版本错误");
-		}
-		if (StringUtil.isEmpty(token)) {
-			return serverAck.getParamError().setMessage("token不能为空");
+		if(checkTokenAndVersion(token, version) != null) {
+			return checkTokenAndVersion(token, version);
 		}
 		try {
 			// 用户信息查询

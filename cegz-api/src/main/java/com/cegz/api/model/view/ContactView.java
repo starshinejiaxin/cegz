@@ -1,4 +1,5 @@
 package com.cegz.api.model.view;
+
 /**
  * 车主视图
  *
@@ -7,42 +8,53 @@ package com.cegz.api.model.view;
  */
 public class ContactView {
 	/**
+	 * id
+	 */
+	private Long id;
+
+	/**
 	 * 姓名
 	 */
 	private String name;
-	
+
 	/**
 	 * 电话
 	 */
 	private String phone;
-	
+
 	/**
 	 * 身份证正面照片
 	 */
 	private String firstImageUrl;
-	
-	
+
 	/**
 	 * 身份证反面照片
 	 */
 	private String secondImageUrl;
-	
-    /**
-     * 驾驶证照片
-     */
+
+	/**
+	 * 驾驶证照片
+	 */
 	private String driveLicenseImageUrl;
-	
+
 	/**
 	 * 状态 0 审核中 1 审核完成，2 认证失败
 	 */
 	private int status;
-	
+
 	/**
 	 * 失败原因
 	 */
 	private String reason;
 
-	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public int getStatus() {
 		return status;
 	}
@@ -98,5 +110,5 @@ public class ContactView {
 	public void setDriveLicenseImageUrl(String driveLicenseImageUrl) {
 		this.driveLicenseImageUrl = driveLicenseImageUrl;
 	}
-	
+
 }

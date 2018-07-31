@@ -40,13 +40,4 @@ public interface SponsorService {
 	 * @date 2018年7月27日
 	 */
 	List<Sponsor> listSponsor();
-
-	/**
-	 * 获取保健方未审核列表
-	 * 
-	 * @return
-	 * @author tenglong
-	 * @date 2018年7月30日
-	 */
-	List<Sponsor> listSponsorExamine();
 }

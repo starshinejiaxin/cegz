@@ -1,5 +1,6 @@
 package com.cegz.api.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.cegz.api.service.ContactsService;
 
 /**
  * 联系人系列服务
+ * 
  * @author lijiaxin
  * @date 2018年7月20日
  */
@@ -25,8 +27,7 @@ public class ContactsServiceImpl implements ContactsService {
 
 	@Autowired
 	private DriveRegistrationRepository drivingRegistrationRepository;
-	
-		
+
 	@Override
 	public int insertData(Contacts contacts) {
 		contactsRepository.save(contacts);
@@ -43,7 +44,5 @@ public class ContactsServiceImpl implements ContactsService {
 	public Optional<Contacts> getContactById(Long id) {
 		return contactsRepository.findById(id);
 	}
-	
-	
-	
+
 }
