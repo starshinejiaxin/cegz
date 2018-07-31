@@ -133,7 +133,7 @@ public class PublishController {
 			Calendar calendar = Calendar.getInstance();
 			Date date = new Date();
 			calendar.setTime(date);
-			calendar.set(Calendar.DAY_OF_MONTH, days);
+			calendar.add(Calendar.DATE, days);
 			Long timestamp = calendar.getTimeInMillis();
 			Date endDate = calendar.getTime();
 			// 消息设置

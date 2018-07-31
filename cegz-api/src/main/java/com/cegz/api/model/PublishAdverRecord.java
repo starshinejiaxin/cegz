@@ -31,6 +31,12 @@ public class PublishAdverRecord {
 	private int publishDay;
 	
 	/**
+	 * 状态，0 无效，1有效
+	 */
+	@JoinColumn(name = "status", nullable = false)
+	private int status;
+	
+	/**
 	 * 发布开始时间
 	 */
 	@JoinColumn(name = "start_time", nullable = false)
@@ -200,4 +206,12 @@ public class PublishAdverRecord {
 		this.order = order;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+    
 }
