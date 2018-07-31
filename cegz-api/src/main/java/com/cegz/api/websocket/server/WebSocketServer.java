@@ -1,8 +1,11 @@
 package com.cegz.api.websocket.server;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,8 +19,14 @@ import javax.websocket.server.ServerEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.Device;
+import com.cegz.api.model.PublishAdverRecord;
+import com.cegz.api.model.view.ListPublishAdverView;
+import com.cegz.api.model.view.PublishAdverView;
+import com.cegz.api.model.view.SocketMessage;
 import com.cegz.api.mongo.MongoDB;
 import com.cegz.api.service.DeviceService;
 import com.cegz.api.util.StringUtil;
@@ -169,7 +178,57 @@ public class WebSocketServer {
     				deviceService.updatePublishStatus(1, new Date(), Long.parseLong(ackId));
     				break;
     			case "advertisement_vaild":
-    				System.out.println(jsonObject.getString("body"));
+    				String [] ids = jsonObject.getString("body").split(",");
+    				Long id = deviceService.getDeviceByImei(imei).getId();
+    				int count = deviceService.countPublishRecordByDevice(id);
+    				if (ids.length == count) {
+    					ListPublishAdverView view = new ListPublishAdverView();
+    					SocketMessage socketMessage = new SocketMessage();
+    					socketMessage.setHead("advertisement_all");
+    					socketMessage.setBody(view);
+    					String messageStr = JSON.toJSONString(socketMessage);
+    					try {
+							this.sendMessage(messageStr);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+    				} else {
+    					List<PublishAdverRecord> list = deviceService.listPublishRecordByDevice(id, 0);
+    					if (list != null && list.size() > 0) {
+    						for (int i = 0; i < list.size(); i++) {
+    							Advertisement advertisement = list.get(i).getAdvertisement();
+    							// 时间处理
+    							Calendar calendar = Calendar.getInstance();
+    							calendar.setTime(list.get(i).getEndTime());   		
+    							Long timestamp = calendar.getTimeInMillis();
+        						// 消息设置
+            					PublishAdverView adverView = new PublishAdverView();
+            					adverView.setTitle(advertisement.getTitle());
+            					adverView.setTitileImg(advertisement.getTitlePicUrl());
+            					adverView.setContent(advertisement.getContent());
+            					adverView.setContentImg(advertisement.getContentPicUrl().split(","));
+            					adverView.setType(advertisement.getAdvertisementType().getId());
+            					adverView.setTimestamp(timestamp);
+            					// 设置socket 广告发布消息
+            					ListPublishAdverView view = new ListPublishAdverView();
+            					List<PublishAdverView> listView = new ArrayList<>();
+            					adverView.setId(list.get(i).getId());
+            					listView.add(adverView);
+            					view.setList(listView);
+            					SocketMessage socketMessage = new SocketMessage();
+            					socketMessage.setHead("advertisement_all");
+            					socketMessage.setBody(view);
+            					// socket 发送
+            					String messageStr = JSON.toJSONString(socketMessage);
+            					System.out.println(messageStr);
+            					try {
+									this.sendMessage(messageStr);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+    						}
+    					}    					
+    				}
     				break;
     			default:
     				

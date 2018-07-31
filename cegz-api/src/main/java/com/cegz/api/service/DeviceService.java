@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.cegz.api.model.Device;
+import com.cegz.api.model.PublishAdverRecord;
 
 /**
  * 设备服务
@@ -60,4 +61,22 @@ public interface DeviceService {
 	 * @date 2018年7月31日
 	 */
 	int updatePublishStatus(int status, Date updateTime, Long id);
+	
+	/**
+	 * 通过设备号获取有效
+	 * @return
+	 * @author Administrator
+	 * @date 2018年7月31日
+	 */
+	int countPublishRecordByDevice(Long id);
+	/**
+	 * 获取发布列表
+	 * @param id
+	 * @param isDeleted
+	 * @return
+	 * @author Administrator
+	 * @date 2018年7月31日
+	 */
+	List<PublishAdverRecord> listPublishRecordByDevice(Long id, int isDeleted);
+	
 }

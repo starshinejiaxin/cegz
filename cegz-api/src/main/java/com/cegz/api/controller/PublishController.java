@@ -166,6 +166,7 @@ public class PublishController {
 				publishAdverRecord.setDevice(deviceList.get(i));
 				publishAdverRecord.setOrder(order);
 				publishAdverRecord.setPublishDay(days);
+				publishAdverRecord.setCarType(order.getCarType());
 				PublishAdverRecord record = publishAdverService.insertPublishRecord(publishAdverRecord);
 				
 				// 设置socket 广告发布消息
@@ -181,6 +182,7 @@ public class PublishController {
 				String message = JSON.toJSONString(socketMessage);
 				System.out.println(message);
 				socket.sendMessage(message);
+				 
 			}
 			
 			return serverAck.getSuccess();

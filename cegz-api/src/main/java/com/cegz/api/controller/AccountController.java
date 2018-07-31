@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cegz.api.config.pojo.ServerAck;
 import com.cegz.api.model.Users;
+import com.cegz.api.redis.RedisUtil;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.Md5Util;
@@ -41,6 +42,9 @@ public class AccountController {
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
+	
+	@Autowired
+	private RedisUtil redisUtil;
 	
 	/**
 	 * 账号注册
@@ -77,7 +81,10 @@ public class AccountController {
 		}
 		try {
 			// 验证验证码
-			// TODO 
+			String vaildCode = (String) redisUtil.get("phone");
+			if (!code.equals(vaildCode)) {
+				return serverAck.getParamError().setMessage("验证码错误");
+			}
 			// 验证账号是否存在
 			userName = userName.trim();
 			password = password.trim();

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cegz.api.dao.DeviceRepository;
 import com.cegz.api.dao.PublishAdverRecordRepository;
 import com.cegz.api.model.Device;
+import com.cegz.api.model.PublishAdverRecord;
 import com.cegz.api.service.DeviceService;
 /**
  * 
@@ -47,6 +48,14 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public int updatePublishStatus(int status, Date updateTime, Long id) {
 		return publishRecordRepository.updateByStatus(status, updateTime, id);
+	}
+	@Override
+	public int countPublishRecordByDevice(Long id) {
+		return publishRecordRepository.countDataByDevice(id);
+	}
+	@Override
+	public List<PublishAdverRecord> listPublishRecordByDevice(Long id, int isDeleted) {
+		return publishRecordRepository.findByDeviceIdAndIsDeleted(id, isDeleted);
 	}
 
 }

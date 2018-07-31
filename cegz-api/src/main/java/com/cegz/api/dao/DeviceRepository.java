@@ -25,3 +25,4 @@ public interface DeviceRepository extends JpaRepository<Device, Long>{
 	@Query(value = "update device set status = ?1, update_time = ?2 where id = ?3", nativeQuery = true)
 	int updateByStatus(int status, Date updateTime, Long id);
 }
+

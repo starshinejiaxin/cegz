@@ -1,6 +1,7 @@
 package com.cegz.api.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,4 +18,9 @@ public interface PublishAdverRecordRepository extends JpaRepository<PublishAdver
 	@Modifying
 	@Query(value = "update publish_advertisement_device set status = ?1, update_time = ?2 where id = ?3", nativeQuery = true)
 	int updateByStatus(int status, Date updateTime, Long id);
+	
+	@Query(value = "select count(id) from publish_advertisement_device where device_id = 1? and is_deleted = 0", nativeQuery = true)
+	int countDataByDevice(Long id);
+	
+	List<PublishAdverRecord> findByDeviceIdAndIsDeleted(Long id, int isDeleted);
 }
