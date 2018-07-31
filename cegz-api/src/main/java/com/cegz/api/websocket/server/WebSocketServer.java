@@ -146,23 +146,35 @@ public class WebSocketServer {
     	if (!StringUtil.isEmpty(message)) {
     		JSONObject jsonObject = JSONObject.parseObject(message);
     		if (!jsonObject.isEmpty()) {
-    			if (!"GPS".equals(jsonObject.getString("head"))) {
-    				return;
+    			String head = jsonObject.getString("head");
+    			switch(head) {
+    			case"GPS":
+    				jsonObject = jsonObject.getJSONObject("body"); 
+        			Map<String, Object> map = new HashMap<>(16);
+        			// 设备号
+        			map.put("imei", jsonObject.getString("imei"));
+        			// 高德经度
+        			map.put("lng", jsonObject.getString("lng"));
+        			// 高德纬度
+        			map.put("lat", jsonObject.getString("lat"));
+        			// 上传时间
+        			map.put("time", jsonObject.getString("time"));
+        			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        			// 服务器时间
+        			map.put("create_time", sdf.format(new Date()));
+        			mongoDb.dataInsert("gps", map);
+    				break;
+    			case "advertisement_ack":
+    				String ackId = jsonObject.getString("body");
+    				deviceService.updatePublishStatus(1, new Date(), Long.parseLong(ackId));
+    				break;
+    			case "advertisement_vaild":
+    				System.out.println(jsonObject.getString("body"));
+    				break;
+    			default:
+    				
     			}
-    			jsonObject = jsonObject.getJSONObject("body"); 
-    			Map<String, Object> map = new HashMap<>(16);
-    			// 设备号
-    			map.put("imei", jsonObject.getString("imei"));
-    			// 高德经度
-    			map.put("lng", jsonObject.getString("lng"));
-    			// 高德纬度
-    			map.put("lat", jsonObject.getString("lat"));
-    			// 上传时间
-    			map.put("time", jsonObject.getString("time"));
-    			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-    			// 服务器时间
-    			map.put("create_time", sdf.format(new Date()));
-    			mongoDb.dataInsert("gps", map);
+    			
     		}
     	}
     	 	

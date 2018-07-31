@@ -136,22 +136,16 @@ public class PublishController {
 			calendar.set(Calendar.DAY_OF_MONTH, days);
 			Long timestamp = calendar.getTimeInMillis();
 			Date endDate = calendar.getTime();
-			// 设置socket 广告发布消息
-			ListPublishAdverView view = new ListPublishAdverView();
-			List<PublishAdverView> listView = new ArrayList<>();
+			// 消息设置
 			PublishAdverView adverView = new PublishAdverView();
-			adverView.setId(advertisement.getId());
 			adverView.setTitle(advertisement.getTitle());
 			adverView.setTitileImg(advertisement.getTitlePicUrl());
 			adverView.setContent(advertisement.getContent());
 			adverView.setContentImg(advertisement.getContentPicUrl().split(","));
 			adverView.setType(advertisement.getAdvertisementType().getId());
 			adverView.setTimestamp(timestamp);
-			listView.add(adverView);
-			view.setList(listView);
-			SocketMessage socketMessage = new SocketMessage();
-			socketMessage.setHead("advertisement");
-			socketMessage.setBody(view);
+			
+			
 			// 发布广告
 			ConcurrentHashMap<String, WebSocketServer> socketMap = WebSocketServer.webSocketMap;
 			for (int i = 0; i < length; i++) {
@@ -161,9 +155,7 @@ public class PublishController {
 				if (socket == null) {
 					return serverAck.getFailure().setMessage("存在离线设备");
 				}
-				String message = JSON.toJSONString(socketMessage);
-				System.out.println(message);
-				socket.sendMessage(message);
+				
 				// 保存记录
 				PublishAdverRecord publishAdverRecord = new PublishAdverRecord();
 				publishAdverRecord.setAdvertisement(advertisement);
@@ -174,7 +166,21 @@ public class PublishController {
 				publishAdverRecord.setDevice(deviceList.get(i));
 				publishAdverRecord.setOrder(order);
 				publishAdverRecord.setPublishDay(days);
-				publishAdverService.insertPublishRecord(publishAdverRecord);
+				PublishAdverRecord record = publishAdverService.insertPublishRecord(publishAdverRecord);
+				
+				// 设置socket 广告发布消息
+				ListPublishAdverView view = new ListPublishAdverView();
+				List<PublishAdverView> listView = new ArrayList<>();
+				adverView.setId(record.getId());
+				listView.add(adverView);
+				view.setList(listView);
+				SocketMessage socketMessage = new SocketMessage();
+				socketMessage.setHead("advertisement");
+				socketMessage.setBody(view);
+				// socket 发送
+				String message = JSON.toJSONString(socketMessage);
+				System.out.println(message);
+				socket.sendMessage(message);
 			}
 			
 			return serverAck.getSuccess();

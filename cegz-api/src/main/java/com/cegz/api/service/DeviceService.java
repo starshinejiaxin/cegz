@@ -49,4 +49,15 @@ public interface DeviceService {
 	 * @date 2018年7月31日
 	 */
 	int updateByStatus(int status, Date updateTime, Long id);
+	
+	/**
+	 *
+	 * @param status
+	 * @param updateTime
+	 * @param id
+	 * @return
+	 * @author Administrator
+	 * @date 2018年7月31日
+	 */
+	int updatePublishStatus(int status, Date updateTime, Long id);
 }

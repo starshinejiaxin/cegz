@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cegz.api.dao.DeviceRepository;
+import com.cegz.api.dao.PublishAdverRecordRepository;
 import com.cegz.api.model.Device;
 import com.cegz.api.service.DeviceService;
 /**
@@ -23,6 +24,9 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Autowired
 	private DeviceRepository deviceRepository;
+	
+	@Autowired
+	private PublishAdverRecordRepository publishRecordRepository;
 	@Override
 	public List<Device> listDevice(Long size) {
 		return deviceRepository.listDeviceByLimit(size);
@@ -39,6 +43,10 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public int updateByStatus(int status, Date updateTime, Long id) {
 		return deviceRepository.updateByStatus(status, updateTime, id);	 
+	}
+	@Override
+	public int updatePublishStatus(int status, Date updateTime, Long id) {
+		return publishRecordRepository.updateByStatus(status, updateTime, id);
 	}
 
 }

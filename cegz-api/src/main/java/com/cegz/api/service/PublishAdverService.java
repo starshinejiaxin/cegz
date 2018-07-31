@@ -16,5 +16,5 @@ public interface PublishAdverService {
 	 * @author Administrator
 	 * @date 2018年7月30日
 	 */
-	int insertPublishRecord(PublishAdverRecord record);
+	PublishAdverRecord insertPublishRecord(PublishAdverRecord record);
 }

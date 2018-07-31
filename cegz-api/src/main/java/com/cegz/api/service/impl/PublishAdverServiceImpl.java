@@ -18,9 +18,8 @@ public class PublishAdverServiceImpl implements PublishAdverService{
 	@Autowired
 	private PublishAdverRecordRepository publishRepository;
 	@Override
-	public int insertPublishRecord(PublishAdverRecord record) {
-		publishRepository.save(record);
-		return 1;
+	public PublishAdverRecord insertPublishRecord(PublishAdverRecord record) {
+		return publishRepository.save(record);
 	}
 	
 }
