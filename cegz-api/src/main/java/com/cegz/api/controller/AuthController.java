@@ -8,6 +8,7 @@ package com.cegz.api.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cegz.api.config.pojo.ServerAck;
 import com.cegz.api.model.Users;
+import com.cegz.api.redis.RedisUtil;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
@@ -62,6 +64,9 @@ public class AuthController {
 	
 	@Value("${message.status}")
 	private Boolean needStatus;
+	
+	@Autowired
+	private RedisUtil redisUtil;
 
 	@PostMapping("getUpToken")
 	public ResultData getOssUpToken(String token, String version) {
@@ -120,17 +125,26 @@ public class AuthController {
 			return serverAck.getParamError().setMessage("版本错误");
 		}
 		try {
+			// 获取随机验证码
+			Random random = new Random();
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < 6; i++) {
+				int part = random.nextInt(10);
+				sb.append(part);
+			}
+			
 			Map<String, Object> paramMap = new HashMap<>(16);
 			paramMap.put("account", account);
 			paramMap.put("pswd", pwd);
 			paramMap.put("mobile", phone);
 			paramMap.put("needstatus", needStatus);
-			paramMap.put("msg", "您的验证码是123456");
+			paramMap.put("msg", "您的验证码是" + sb +",在10分钟内有效。非本人操作请忽略本短信");
 			String ret = URLConnectionUtil.doGet(messageUrl, paramMap);
+			redisUtil.set(phone, sb.toString(), 6000);
 			System.out.println(ret);
 			return serverAck.getSuccess();
 			
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			e.printStackTrace();
 			return serverAck.getServerError();
 		}

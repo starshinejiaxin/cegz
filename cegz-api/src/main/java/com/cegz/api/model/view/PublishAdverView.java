@@ -30,6 +30,19 @@ public class PublishAdverView {
 	 * 图片数组
 	 */
 	private String [] contentImg;
+	
+	/**
+	 * 结束时间时间戳
+	 */
+	private Long timestamp;
+	
+	
+	public Long getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
 	public Long getId() {
 		return id;
 	}

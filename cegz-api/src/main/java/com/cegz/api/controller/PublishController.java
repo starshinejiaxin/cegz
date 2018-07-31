@@ -1,6 +1,8 @@
 package com.cegz.api.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,6 +19,7 @@ import com.cegz.api.config.pojo.ServerAck;
 import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.Device;
 import com.cegz.api.model.Order;
+import com.cegz.api.model.PublishAdverRecord;
 import com.cegz.api.model.Users;
 import com.cegz.api.model.view.ListPublishAdverView;
 import com.cegz.api.model.view.PublishAdverView;
@@ -24,6 +27,7 @@ import com.cegz.api.model.view.SocketMessage;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.service.AdvertiserService;
 import com.cegz.api.service.DeviceService;
+import com.cegz.api.service.PublishAdverService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
@@ -50,6 +54,9 @@ public class PublishController {
 	
 	@Autowired
 	private DeviceService deviceService;
+	
+	@Autowired
+	private PublishAdverService publishAdverService;
 	
 	/**
 	 * 版本号
@@ -122,6 +129,13 @@ public class PublishController {
 			if (length != deviceList.size()) {
 				return serverAck.getFailure().setMessage("当前可用设备不足");
 			}
+			// 时间处理
+			Calendar calendar = Calendar.getInstance();
+			Date date = new Date();
+			calendar.setTime(date);
+			calendar.set(Calendar.DAY_OF_MONTH, days);
+			Long timestamp = calendar.getTimeInMillis();
+			Date endDate = calendar.getTime();
 			// 设置socket 广告发布消息
 			ListPublishAdverView view = new ListPublishAdverView();
 			List<PublishAdverView> listView = new ArrayList<>();
@@ -132,15 +146,16 @@ public class PublishController {
 			adverView.setContent(advertisement.getContent());
 			adverView.setContentImg(advertisement.getContentPicUrl().split(","));
 			adverView.setType(advertisement.getAdvertisementType().getId());
+			adverView.setTimestamp(timestamp);
 			listView.add(adverView);
 			view.setList(listView);
-			
 			SocketMessage socketMessage = new SocketMessage();
 			socketMessage.setHead("advertisement");
-			socketMessage.setBody(view);;
+			socketMessage.setBody(view);
 			// 发布广告
 			ConcurrentHashMap<String, WebSocketServer> socketMap = WebSocketServer.webSocketMap;
 			for (int i = 0; i < length; i++) {
+				// 发布消息
 				String imei = deviceList.get(i).getImei();
 				WebSocketServer socket = socketMap.get(imei);
 				if (socket == null) {
@@ -149,6 +164,17 @@ public class PublishController {
 				String message = JSON.toJSONString(socketMessage);
 				System.out.println(message);
 				socket.sendMessage(message);
+				// 保存记录
+				PublishAdverRecord publishAdverRecord = new PublishAdverRecord();
+				publishAdverRecord.setAdvertisement(advertisement);
+				publishAdverRecord.setCreateTime(date);
+				publishAdverRecord.setStartTime(date);
+				publishAdverRecord.setEndTime(endDate);
+				publishAdverRecord.setCreateUserId(users);
+				publishAdverRecord.setDevice(deviceList.get(i));
+				publishAdverRecord.setOrder(order);
+				publishAdverRecord.setPublishDay(days);
+				publishAdverService.insertPublishRecord(publishAdverRecord);
 			}
 			
 			return serverAck.getSuccess();

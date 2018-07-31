@@ -21,6 +21,22 @@ spring:
         authentication-database: admin
         connections-per-host: 20
         min-connections-per-host: 20
+  redis: 
+    host: 192.168.0.85
+    port: 6379
+    password: 123456
+    # 连接超时时间（毫秒）
+    timeout: 30000
+#    pool: 
+#      # 连接池最大连接数（使用负值表示没有限制）
+#      max-active: 8
+#      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+#      max-wait: -1
+#      # 连接池中的最大空闲连接
+#      max-idle: 8
+#      # 连接池中的最小空闲连接
+#      min-idle: 0
+        
 server: 
   url: http://192.168.0.85:8080/
   version: 20180810
@@ -30,7 +46,7 @@ oss:
   secret-key: xDyKW058j0pLSiK1gkuY0XD8UIxDmJTDlnbFYiSA
   all-bucket: test 
 message: 
-  url: http://sapi.253.com/msg
+  url: http://sapi.253.com/msg/HttpBatchSendSM
   account: ypkj-001
   pwd: Ypkj888888
   status: true
