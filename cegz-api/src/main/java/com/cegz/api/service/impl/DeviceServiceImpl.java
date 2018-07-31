@@ -1,6 +1,9 @@
 package com.cegz.api.service.impl;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import com.cegz.api.service.DeviceService;
  * @date 2018年7月30日
  */
 @Service("deviceService")
+@Transactional
 public class DeviceServiceImpl implements DeviceService {
 
 	@Autowired
@@ -31,6 +35,10 @@ public class DeviceServiceImpl implements DeviceService {
 	public int save(Device device) {
 		deviceRepository.save(device);
 		return 1;
+	}
+	@Override
+	public int updateByStatus(int status, Date updateTime, Long id) {
+		return deviceRepository.updateByStatus(status, updateTime, id);	 
 	}
 
 }

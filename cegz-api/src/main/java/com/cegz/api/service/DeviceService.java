@@ -1,5 +1,6 @@
 package com.cegz.api.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cegz.api.model.Device;
@@ -37,4 +38,15 @@ public interface DeviceService {
 	 * @date 2018年7月31日
 	 */
 	int save(Device device);
+	
+	/**
+	 * 修改设备状态
+	 * @param status
+	 * @param updateTime
+	 * @param imei
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年7月31日
+	 */
+	int updateByStatus(int status, Date updateTime, Long id);
 }
