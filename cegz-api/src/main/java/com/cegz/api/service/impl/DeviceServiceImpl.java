@@ -23,5 +23,14 @@ public class DeviceServiceImpl implements DeviceService {
 	public List<Device> listDevice(Long size) {
 		return deviceRepository.listDeviceByLimit(size);
 	}
+	@Override
+	public Device getDeviceByImei(String imei) {
+		return deviceRepository.getDeviceByImei(imei);
+	}
+	@Override
+	public int save(Device device) {
+		deviceRepository.save(device);
+		return 1;
+	}
 
 }

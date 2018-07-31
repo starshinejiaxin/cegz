@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cegz.api.model.Device;
 import com.cegz.api.mongo.MongoDB;
+import com.cegz.api.service.DeviceService;
 import com.cegz.api.util.StringUtil;
 
 /**
@@ -52,15 +54,23 @@ public class WebSocketServer {
      */
     private static MongoDB mongoDb;
     
+    private static DeviceService deviceService;
+    
     @Autowired
 	public void setMongoDb(MongoDB mongoDb) {
     	WebSocketServer.mongoDb = mongoDb;
+	}
+    
+    @Autowired
+    public void setDeviceService(DeviceService deviceService) {
+		WebSocketServer.deviceService = deviceService;
 	}
 
 	public String getImei() {
 		return imei;
 	}
 
+	
 	public void setImei(String imei) {
 		this.imei = imei;
 	} 
@@ -76,11 +86,21 @@ public class WebSocketServer {
     public void onOpen(Session session, @PathParam("imei") String imei){
         this.session = session;
         this.imei = imei;
-        webSocketMap.put(imei, this);  //加入set中
-        addOnlineCount();           //在线数加1
+        webSocketMap.put(imei, this);  
+        // 设备设置
+        Device device = deviceService.getDeviceByImei(imei);
+        if (device == null) {
+        	device = new Device();
+        	device.setImei(imei);
+        	device.setCreateTime(new Date());
+        }else {
+        	device.setStatus(0);
+        	device.setUpdateTime(new Date());
+        }
+        addOnlineCount();          
         System.out.println("有新连接加入！当前在线设备数为" + getOnlineCount());
         try {
-        	 sendMessage("连接成功");
+        	 sendMessage("{head:'hello', body:''}");
         	 System.out.println("设备号:" + imei);
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,7 +115,17 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-    	webSocketMap.remove(this.imei);  //从set中删除
+    	webSocketMap.remove(this.imei); 
+    	Device device = deviceService.getDeviceByImei(imei);
+        if (device == null) {
+        	device = new Device();
+        	device.setStatus(1);
+        	device.setImei(imei);
+        	device.setCreateTime(new Date());
+        }else {
+        	device.setStatus(1);
+        	device.setUpdateTime(new Date());
+        }
         subOnlineCount();           //在线数减1
         System.out.println("有一连接关闭！当前在线设备数为" + getOnlineCount());
     }
@@ -133,8 +163,7 @@ public class WebSocketServer {
     			mongoDb.dataInsert("gps", map);
     		}
     	}
-    	
-    	
+    	 	
     }
  
 	/**

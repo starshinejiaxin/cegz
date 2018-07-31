@@ -15,4 +15,7 @@ import com.cegz.api.model.Device;
 public interface DeviceRepository extends JpaRepository<Device, Long>{
 	@Query(value = "select * from device d  where d.status = 0 limit  ?1", nativeQuery = true)
 	List<Device> listDeviceByLimit(Long size);
+	
+	@Query(value = "select * from device d where d.imei = ?1", nativeQuery = true)
+	Device getDeviceByImei(String imei);
 }
