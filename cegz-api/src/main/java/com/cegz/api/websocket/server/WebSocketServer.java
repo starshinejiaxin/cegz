@@ -92,11 +92,13 @@ public class WebSocketServer {
         if (device == null) {
         	device = new Device();
         	device.setImei(imei);
+        	device.setStatus(1);
         	device.setCreateTime(new Date());
+        	deviceService.save(device);
         }else {
-        	device.setStatus(0);
-        	device.setUpdateTime(new Date());
+        	deviceService.updateByStatus(1, new Date(), device.getId());
         }
+        
         addOnlineCount();          
         System.out.println("有新连接加入！当前在线设备数为" + getOnlineCount());
         try {
@@ -122,9 +124,9 @@ public class WebSocketServer {
         	device.setStatus(1);
         	device.setImei(imei);
         	device.setCreateTime(new Date());
+        	deviceService.save(device);
         }else {
-        	device.setStatus(1);
-        	device.setUpdateTime(new Date());
+        	deviceService.updateByStatus(0, new Date(), device.getId());
         }
         subOnlineCount();           //在线数减1
         System.out.println("有一连接关闭！当前在线设备数为" + getOnlineCount());

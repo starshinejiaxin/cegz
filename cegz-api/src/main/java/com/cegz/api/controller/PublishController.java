@@ -147,6 +147,7 @@ public class PublishController {
 					return serverAck.getFailure().setMessage("存在离线设备");
 				}
 				String message = JSON.toJSONString(socketMessage);
+				System.out.println(message);
 				socket.sendMessage(message);
 			}
 			
