@@ -29,4 +29,9 @@ oss:
   access-key: b166Tl26Dgw2x0FklVu7CEKg2DMGSwOa6i7fi-_P
   secret-key: xDyKW058j0pLSiK1gkuY0XD8UIxDmJTDlnbFYiSA
   all-bucket: test 
+message: 
+  url: http://sapi.253.com/msg
+  account: ypkj-001
+  pwd: Ypkj888888
+  status: true
     

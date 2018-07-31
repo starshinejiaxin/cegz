@@ -6,8 +6,13 @@ package com.cegz.api.controller;
  * @date 2018年7月26日
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +24,7 @@ import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
+import com.cegz.api.util.URLConnectionUtil;
 
 @RestController
 @RequestMapping("auth")
@@ -44,6 +50,18 @@ public class AuthController {
 
 	@Value("${oss.all-bucket}")
 	private String bucket;
+	
+	@Value("${message.url}")
+	private String messageUrl;
+	
+	@Value("${message.account}")
+	private String account;
+	
+	@Value("${message.pwd}")
+	private String pwd;
+	
+	@Value("${message.status}")
+	private Boolean needStatus;
 
 	@PostMapping("getUpToken")
 	public ResultData getOssUpToken(String token, String version) {
@@ -78,5 +96,44 @@ public class AuthController {
 			e.printStackTrace();
 			return serverAck.getServerError();
 		}
+	}
+	@GetMapping("getCode")
+	/**
+	 * 获取code
+	 * @param phone
+	 * @param version
+	 * @return
+	 * @author Administrator
+	 * @date 2018年7月31日
+	 */
+	public ResultData getPhoneCode(String phone, String version) {
+		if (StringUtil.isEmpty(phone)) {
+			return serverAck.getParamError().setMessage("手机号不能为空");
+		}
+		if (!StringUtil.isMobile(phone)) {
+			return serverAck.getParamError().setMessage("手机号格式有误");
+		}
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		try {
+			Map<String, Object> paramMap = new HashMap<>(16);
+			paramMap.put("account", account);
+			paramMap.put("pswd", pwd);
+			paramMap.put("mobile", phone);
+			paramMap.put("needstatus", needStatus);
+			paramMap.put("msg", "您的验证码是123456");
+			String ret = URLConnectionUtil.doGet(messageUrl, paramMap);
+			System.out.println(ret);
+			return serverAck.getSuccess();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
+		
 	}
 }
