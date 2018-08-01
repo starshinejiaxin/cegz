@@ -1,5 +1,7 @@
 package com.cegz.api.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,11 @@ public class DrivingRegistrationServiceImpl implements DrivingRegistrationServic
 	@Override
 	public DrivingRegistration getDrivingRegistrationByPlateNumber(String plateNumber) {
 		return driveRegistrationRepository.getDrivingRegistrationByPlateNumber(plateNumber);
+	}
+
+	@Override
+	public List<DrivingRegistration> listDrivingRegistration(Long sponsorId, Long pageSize, Long pageCount) {
+		return driveRegistrationRepository.listDrivingRegistration(sponsorId, pageSize, pageCount);
 	}
 
 }

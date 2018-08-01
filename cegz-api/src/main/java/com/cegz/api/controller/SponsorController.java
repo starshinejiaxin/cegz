@@ -9,11 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.cegz.api.config.pojo.ServerAck;
+import com.cegz.api.model.DrivingRegistration;
 import com.cegz.api.model.Sponsor;
 import com.cegz.api.model.Users;
+import com.cegz.api.model.view.DrivingRegistrationView;
 import com.cegz.api.model.view.SponsorView;
 import com.cegz.api.service.AccountService;
+import com.cegz.api.service.DrivingRegistrationService;
 import com.cegz.api.service.SponsorService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
@@ -22,6 +26,7 @@ import com.cegz.api.util.TokenUtil;
 
 /**
  * 保荐方服务
+ * 
  * @author lijiaxin
  * @date 2018年7月24日
  */
@@ -30,32 +35,36 @@ import com.cegz.api.util.TokenUtil;
 public class SponsorController {
 	@Autowired
 	private ServerAck serverAck;
-	
+
 	@Autowired
 	private SponsorService sponsorService;
-	
+
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private DrivingRegistrationService drivingRegistrationService;
 	/**
 	 * 服务url
 	 */
 	@Value("${server.url}")
 	private String serverUrl;
-	
+
 	/**
 	 * 版本号
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
-	
+
 	/**
 	 * 图片根地址
 	 */
 	@Value("${server.image-url}")
 	private String baseImageUrl;
-	
+
 	/**
 	 * 广告方信息录入
+	 * 
 	 * @param name
 	 * @param phone
 	 * @param email
@@ -72,16 +81,8 @@ public class SponsorController {
 	 * @date 2018年7月24日
 	 */
 	@PostMapping("regist")
-	public ResultData insertsponsor(String businessFile,String name,
-			String phone,
-			String email,
-			String address,
-			String addressDetail,
-			String province,
-			String company,
-			String businessLicense,
-			String token,
-			String type,
+	public ResultData insertsponsor(String businessFile, String name, String phone, String email, String address,
+			String addressDetail, String province, String company, String businessLicense, String token, String type,
 			String version) {
 		if (StringUtil.isEmpty(name)) {
 			return serverAck.getParamError().setMessage("姓名不能为空");
@@ -131,7 +132,7 @@ public class SponsorController {
 			if (StringUtil.isEmpty(str)) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
-			String [] datas = str.split(":");
+			String[] datas = str.split(":");
 			if (datas.length < 1) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
@@ -162,7 +163,7 @@ public class SponsorController {
 			// 处理
 			int ret = sponsorService.save(sponsor);
 			if (ret == 0) {
-				return  serverAck.getFailure();
+				return serverAck.getFailure();
 			}
 			return serverAck.getSuccess();
 		} catch (Exception e) {
@@ -170,8 +171,10 @@ public class SponsorController {
 			return serverAck.getServerError();
 		}
 	}
+
 	/**
 	 * 获取保荐方信息
+	 * 
 	 * @param token
 	 * @param version
 	 * @return
@@ -191,13 +194,13 @@ public class SponsorController {
 			return serverAck.getParamError().setMessage("token不能为空");
 		}
 		try {
-			
+
 			// 用户信息查询
 			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
 			if (StringUtil.isEmpty(str)) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
-			String [] datas = str.split(":");
+			String[] datas = str.split(":");
 			if (datas.length < 1) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
@@ -230,8 +233,10 @@ public class SponsorController {
 			return serverAck.getServerError();
 		}
 	}
+
 	/**
 	 * 获取所有保荐方
+	 * 
 	 * @param token
 	 * @param type
 	 * @param version
@@ -256,7 +261,7 @@ public class SponsorController {
 			if (StringUtil.isEmpty(str)) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
-			String [] datas = str.split(":");
+			String[] datas = str.split(":");
 			if (datas.length < 1) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
@@ -290,6 +295,71 @@ public class SponsorController {
 				resultList.add(view);
 			}
 			return serverAck.getSuccess().setData(resultList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
+	}
+
+	/**
+	 * 获取保荐方下车辆列表信息
+	 * 
+	 * @param token
+	 * @param version
+	 * @return
+	 * @author tenglong
+	 * @date 2018年8月1日
+	 * 
+	 */
+	@PostMapping("getSponsorCarList")
+	public ResultData getSponsorCarList(Long pageSize, Long pageCount, String token, String version) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		if (StringUtil.isEmpty(token)) {
+			return serverAck.getParamError().setMessage("token不能为空");
+		}
+		try {
+			// 用户信息查询
+			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
+			if (StringUtil.isEmpty(str)) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String[] datas = str.split(":");
+			if (datas.length < 1) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String userName = datas[0];
+			Users users = accountService.getUserByName(userName);
+			if (users == null) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			Sponsor sponsor = users.getSponsor();
+			if (sponsor == null) {
+				return serverAck.getEmptyData();
+			}
+			// 通过保荐方id或者车辆列表分页信息
+			List<DrivingRegistration> listDr = drivingRegistrationService.listDrivingRegistration(sponsor.getId(),
+					pageSize == null ? 0 : pageSize, pageCount == null ? 10 : pageCount);
+			List<DrivingRegistrationView> drViews = new ArrayList<>();
+			if (listDr != null && listDr.size() > 0) {
+				for (DrivingRegistration dr : listDr) {
+					DrivingRegistrationView view = new DrivingRegistrationView();
+					view.setId(dr.getId());
+					view.setInstallTime(dr.getInstallTime());
+					view.setStatus(dr.getStatus());
+					view.setPlateNumber(dr.getPlateNumber());
+					view.setCarBirthday(dr.getCarBirthday());
+					view.setName(dr.getContact().getName());
+					view.setPhone(dr.getContact().getPhone());
+					view.setModel(dr.getModel());
+					drViews.add(view);
+				}
+			}
+			return serverAck.getSuccess().setData(drViews);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();

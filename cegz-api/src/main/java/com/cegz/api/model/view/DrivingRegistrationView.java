@@ -54,6 +54,21 @@ public class DrivingRegistrationView {
 	 */
 	private String reason;
 
+	/**
+	 * 安装时间
+	 */
+	private Date installTime;
+
+	/**
+	 * 姓名
+	 */
+	private String name;
+
+	/**
+	 * 电话
+	 */
+	private String phone;
+
 	public Long getId() {
 		return id;
 	}
@@ -124,6 +139,30 @@ public class DrivingRegistrationView {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public Date getInstallTime() {
+		return installTime;
+	}
+
+	public void setInstallTime(Date installTime) {
+		this.installTime = installTime;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }
