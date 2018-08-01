@@ -11,7 +11,7 @@ import com.cegz.api.model.Advertiser;
 import com.cegz.api.system.service.AdvertiserSystemService;
 
 /**
- * 联系人系列服务
+ * 广告主后台服务
  * 
  * @author tenglong
  * @date 2018年7月31日

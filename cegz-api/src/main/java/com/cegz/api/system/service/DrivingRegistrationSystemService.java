@@ -10,7 +10,7 @@ import com.cegz.api.model.DrivingRegistration;
  * @author tenglong
  * @date 2018年7月31日
  */
-public interface DriveRegistrationRepositorySystemService {
+public interface DrivingRegistrationSystemService {
 	/**
 	 * 获取行驶证单条数据
 	 * 

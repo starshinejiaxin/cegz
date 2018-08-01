@@ -8,17 +8,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cegz.api.dao.DriveRegistrationRepository;
 import com.cegz.api.model.DrivingRegistration;
-import com.cegz.api.system.service.DriveRegistrationRepositorySystemService;
+import com.cegz.api.system.service.DrivingRegistrationSystemService;
 
 /**
- * 联系人系列服务
+ * 行驶证后台服务
  * 
  * @author tenglong
  * @date 2018年7月31日
  */
-@Service("driveRegistrationRepositorySystemService")
+@Service("drivingRegistrationSystemService")
 @Transactional
-public class DriveRegistrationRepositorySystemServiceImpl implements DriveRegistrationRepositorySystemService {
+public class DrivingRegistrationSystemServiceImpl implements DrivingRegistrationSystemService {
 	@Autowired
 	private DriveRegistrationRepository driveRegistrationRepository;
 
