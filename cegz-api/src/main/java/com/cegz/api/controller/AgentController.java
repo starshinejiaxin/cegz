@@ -23,7 +23,7 @@ import com.cegz.api.util.TokenUtil;
  * 
  * @author lijiaxin
  * @date 2018年8月1日
- */
+ */       
 @RestController
 @RequestMapping("agent")
 public class AgentController {
@@ -76,6 +76,7 @@ public class AgentController {
 			String company,
 			String businessLicense,
 			String token,
+			String type,
 			String version) {
 		if (StringUtil.isEmpty(name)) {
 			return serverAck.getParamError().setMessage("姓名不能为空");
@@ -107,7 +108,12 @@ public class AgentController {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
-		
+		if (StringUtil.isEmpty(type)) {
+			return serverAck.getParamError().setMessage("类型不能为空");
+		}
+		if (!"12".contains(type)) {
+			return serverAck.getParamError().setMessage("类型有吴");
+		}
 		if (StringUtil.isEmpty(businessFile)) {
 			return serverAck.getParamError().setMessage("营业执照图片不能为空");
 		}
