@@ -24,11 +24,9 @@ public interface DrivingRegistrationService {
 	/**
 	 * 通过车牌号获取行驶证数据
 	 * 
-	 * @param pageSize
-	 * @param pageCount
 	 * @return
 	 * @author tenglong
 	 * @date 2018年8月1日
 	 */
-	List<DrivingRegistration> listDrivingRegistration(Long sponsorId, Long pageSize, Long pageCount);
+	List<DrivingRegistration> listDrivingRegistration(Long sponsorId);
 }

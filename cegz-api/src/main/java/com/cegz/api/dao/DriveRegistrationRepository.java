@@ -32,6 +32,6 @@ public interface DriveRegistrationRepository extends JpaRepository<DrivingRegist
 	 * @param size
 	 * @return
 	 */
-	@Query(value = "select * from driving_registration dr where 1=1 and sponsor_id = ?1 limit ?2, ?3", nativeQuery = true)
-	List<DrivingRegistration> listDrivingRegistration(Long sponsorId, Long pageSize, Long pageCount);
+	@Query(value = "select * from driving_registration dr where 1=1 and sponsor_id = ?1", nativeQuery = true)
+	List<DrivingRegistration> listDrivingRegistration(Long sponsorId);
 }

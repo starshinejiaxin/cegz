@@ -67,7 +67,7 @@ public interface AdvertiserService {
 	 * @author Administrator
 	 * @date 2018年7月30日
 	 */
-	List<Order> listOrder(Long createUserId, Long pageSize, Long pageCount);
+	List<Order> listOrder(Long createUserId);
 
 	/**
 	 * 通过ID获取广告信息

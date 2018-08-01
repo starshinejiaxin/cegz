@@ -51,23 +51,12 @@ public class AdvertiserSystemController {
 
 	@Autowired
 	private OrderSystemService orderSystemService;
-	/**
-	 * 服务url
-	 */
-	@Value("${server.url}")
-	private String serverUrl;
 
 	/**
 	 * 版本号
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
-
-	/**
-	 * 图片根地址
-	 */
-	@Value("${server.image-url}")
-	private String baseImageUrl;
 
 	/**
 	 * 校验token and version
@@ -140,7 +129,7 @@ public class AdvertiserSystemController {
 	 * @date 2018年7月31日
 	 */
 	@PostMapping("getExamineById")
-	public ResultData getExamineById(Long id, Long pageSize, Long pageCount, String token, String version) {
+	public ResultData getExamineById(Long id, String token, String version) {
 		if (id == null) {
 			return serverAck.getParamError().setMessage("主键不能为空");
 		}
@@ -185,8 +174,7 @@ public class AdvertiserSystemController {
 			List<OrderView> advertisementList = new ArrayList<>();
 			if (createUserId != null) {// 未查询出创建人则不去查询订单
 				// 广告订单审核数据列表
-				List<Order> listOrder = advertiserService.listOrder(createUserId, pageSize == null ? 0 : pageSize,
-						pageCount == null ? 10 : pageCount);
+				List<Order> listOrder = advertiserService.listOrder(createUserId);
 				if (listOrder != null && listOrder.size() > 0) {
 					for (Order order : listOrder) {
 						OrderView orderView = new OrderView();

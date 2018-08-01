@@ -18,6 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	 * @param size
 	 * @return
 	 */
-	@Query(value = "select * from order_advertiser o where 1=1 and create_user_id = ?1 limit ?2, ?3", nativeQuery = true)
-	List<Order> listOrderByLimit(Long createUserId, Long pageSize, Long pageCount);
+	@Query(value = "select * from order_advertiser o where 1=1 and create_user_id = ?1", nativeQuery = true)
+	List<Order> listOrderByLimit(Long createUserId);
 }

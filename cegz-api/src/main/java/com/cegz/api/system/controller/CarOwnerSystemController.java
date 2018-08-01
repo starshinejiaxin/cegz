@@ -51,23 +51,12 @@ public class CarOwnerSystemController {
 
 	@Autowired
 	private AccountService accountService;
-	/**
-	 * 服务url
-	 */
-	@Value("${server.url}")
-	private String serverUrl;
 
 	/**
 	 * 版本号
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
-
-	/**
-	 * 图片根地址
-	 */
-	@Value("${server.image-url}")
-	private String baseImageUrl;
 
 	/**
 	 * 校验token and version

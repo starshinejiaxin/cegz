@@ -81,7 +81,7 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 	}
 
 	@Override
-	public List<Order> listOrder(Long createUserId, Long pageSize, Long pageCount) {
-		return orderRepository.listOrderByLimit(createUserId, pageSize, pageCount);
+	public List<Order> listOrder(Long createUserId) {
+		return orderRepository.listOrderByLimit(createUserId);
 	}
 }

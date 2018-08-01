@@ -11,34 +11,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cegz.api.config.pojo.ServerAck;
-import com.cegz.api.model.Sponsor;
+import com.cegz.api.model.Agent;
 import com.cegz.api.model.Users;
-import com.cegz.api.model.view.SponsorView;
+import com.cegz.api.model.view.AgentView;
 import com.cegz.api.service.AccountService;
-import com.cegz.api.service.SponsorService;
-import com.cegz.api.system.service.SponsorSystemService;
+import com.cegz.api.service.AgentService;
+import com.cegz.api.system.service.AgentSystemService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
 
 /**
- * 保荐方后台服务
+ * 代理商后台服务
  * 
  * @author tenglong
- * @date 2018年7月30日
+ * @date 2018年8月1日
  */
 @RestController
-@RequestMapping("/system/sponsor")
-public class SponsorSystemController {
+@RequestMapping("/system/agent")
+public class AgentSystemController {
 	@Autowired
 	private ServerAck serverAck;
 
 	@Autowired
-	private SponsorService sponsorService;
+	private AgentService agentService;
 
 	@Autowired
-	private SponsorSystemService sponsorSystemService;
+	private AgentSystemService agentSystemService;
 
 	@Autowired
 	private AccountService accountService;
@@ -70,13 +70,13 @@ public class SponsorSystemController {
 	}
 
 	/**
-	 * 获取保荐方待审核列表
+	 * 获取代理商待审核列表
 	 * 
 	 * @param token
 	 * @param version
 	 * @return
 	 * @author tenglong
-	 * @date 2018年7月30日
+	 * @date 2018年8月1日
 	 */
 	@PostMapping("getExamineList")
 	public ResultData getExamineList(String token, String version) {
@@ -98,9 +98,9 @@ public class SponsorSystemController {
 			if (users == null) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
-			// 保荐方审核数据列表
-			List<Sponsor> sponsorExamines = sponsorSystemService.listSponsorExamine();
-			return serverAck.getSuccess().setData(sponsorExamines);
+			// 代理商审核数据列表
+			List<Agent> agentExamines = agentSystemService.listAgentExamine();
+			return serverAck.getSuccess().setData(agentExamines);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();
@@ -108,7 +108,7 @@ public class SponsorSystemController {
 	}
 
 	/**
-	 * 通过id获取单条保荐方审核数据
+	 * 通过id获取单条代理商审核数据
 	 * 
 	 * @param id
 	 * @param token
@@ -140,26 +140,25 @@ public class SponsorSystemController {
 			if (users == null) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
-			// 保荐方单条审核数据
-			Optional<Sponsor> sponsorOpt = sponsorService.getSponSorById(id);
-			if (!sponsorOpt.isPresent()) {
-				return serverAck.getParamError().setMessage("保荐方ID有误");
+			// 代理商单条审核数据
+			Optional<Agent> agentOpt = agentService.getAgentById(id);
+			if (!agentOpt.isPresent()) {
+				return serverAck.getParamError().setMessage("代理商ID有误");
 			}
-			Sponsor sponsor = sponsorOpt.get();
-			SponsorView view = new SponsorView();
-			view.setId(sponsor.getId());
-			view.setAddress(sponsor.getAddress());
-			view.setAddressDetail(sponsor.getAddressDetail());
-			view.setBusinessNumber(sponsor.getBusinessLicense());
-			view.setCompany(sponsor.getCompany());
-			view.setName(sponsor.getName());
-			view.setPhone(sponsor.getPhone());
-			view.setLicenseImgUrl(sponsor.getPictureUrl());
-			view.setProvince(sponsor.getProvince());
-			view.setStatus(sponsor.getStatus());
-			view.setType(sponsor.getType());
-			view.setEmail(sponsor.getEmail());
-			view.setReason(sponsor.getReason());
+			Agent agent = agentOpt.get();
+			AgentView view = new AgentView();
+			view.setId(agent.getId());
+			view.setCity(agent.getCity());
+			view.setCompany(agent.getCompany());
+			view.setBusinessNumber(agent.getBusiness());
+			view.setLicenseImgUrl(agent.getPictureUrl());
+			view.setName(agent.getName());
+			view.setPhone(agent.getPhone());
+			view.setEmail(agent.getEmail());
+			view.setAddress(agent.getAddress());
+			view.setAddressDetail(agent.getAddressDetail());
+			view.setStatus(agent.getStatus());
+			view.setReason(agent.getReason());
 			return serverAck.getSuccess().setData(view);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -175,7 +174,7 @@ public class SponsorSystemController {
 	 * @param reason
 	 * @return
 	 * @author tenglong
-	 * @date 2018年7月30日
+	 * @date 2018年8月1日
 	 */
 	@PostMapping("statusExamine")
 	public ResultData statusExamine(Long id, Integer status, String reason, String token, String version) {
@@ -207,17 +206,17 @@ public class SponsorSystemController {
 				return serverAck.getParamError().setMessage("token无效");
 			}
 			// 处理
-			// 获取保荐方信息
-			Optional<Sponsor> sponsorOpt = sponsorService.getSponSorById(id);
-			if (!sponsorOpt.isPresent()) {
-				return serverAck.getParamError().setMessage("保荐方ID有误");
+			// 获取代理商信息
+			Optional<Agent> agentOpt = agentService.getAgentById(id);
+			if (!agentOpt.isPresent()) {
+				return serverAck.getParamError().setMessage("代理商ID有误");
 			}
-			Sponsor sponsor = sponsorOpt.get();
-			sponsor.setStatus(status.byteValue());
-			sponsor.setReason(status.byteValue() == 1 ? null : reason);// 如果状态为1，原因置为null
-			sponsor.setUpdateTime(new Date());
-			int ret = sponsorService.save(sponsor);
-			if (ret == 0) {
+			Agent agent = agentOpt.get();
+			agent.setStatus(status.byteValue());
+			agent.setReason(status.byteValue() == 1 ? null : reason);// 如果状态为1，原因置为null
+			agent.setUpdateTime(new Date());
+			agent = agentService.insert(agent);
+			if (agent == null || agent.getId() == null) {
 				return serverAck.getFailure();
 			}
 			return serverAck.getSuccess();

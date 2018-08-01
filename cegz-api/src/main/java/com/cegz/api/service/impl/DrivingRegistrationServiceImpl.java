@@ -28,8 +28,8 @@ public class DrivingRegistrationServiceImpl implements DrivingRegistrationServic
 	}
 
 	@Override
-	public List<DrivingRegistration> listDrivingRegistration(Long sponsorId, Long pageSize, Long pageCount) {
-		return driveRegistrationRepository.listDrivingRegistration(sponsorId, pageSize, pageCount);
+	public List<DrivingRegistration> listDrivingRegistration(Long sponsorId) {
+		return driveRegistrationRepository.listDrivingRegistration(sponsorId);
 	}
 
 }

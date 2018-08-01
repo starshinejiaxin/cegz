@@ -312,7 +312,7 @@ public class SponsorController {
 	 * 
 	 */
 	@PostMapping("getSponsorCarList")
-	public ResultData getSponsorCarList(Long pageSize, Long pageCount, String token, String version) {
+	public ResultData getSponsorCarList(String token, String version) {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
@@ -342,8 +342,7 @@ public class SponsorController {
 				return serverAck.getEmptyData();
 			}
 			// 通过保荐方id或者车辆列表分页信息
-			List<DrivingRegistration> listDr = drivingRegistrationService.listDrivingRegistration(sponsor.getId(),
-					pageSize == null ? 0 : pageSize, pageCount == null ? 10 : pageCount);
+			List<DrivingRegistration> listDr = drivingRegistrationService.listDrivingRegistration(sponsor.getId());
 			List<DrivingRegistrationView> drViews = new ArrayList<>();
 			if (listDr != null && listDr.size() > 0) {
 				for (DrivingRegistration dr : listDr) {
