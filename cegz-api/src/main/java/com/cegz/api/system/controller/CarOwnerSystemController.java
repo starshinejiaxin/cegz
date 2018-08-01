@@ -22,7 +22,7 @@ import com.cegz.api.model.view.DrivingRegistrationView;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.service.ContactsService;
 import com.cegz.api.system.service.ContactsSystemService;
-import com.cegz.api.system.service.DriveRegistrationRepositorySystemService;
+import com.cegz.api.system.service.DrivingRegistrationSystemService;
 import com.cegz.api.util.Constant;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
@@ -47,7 +47,7 @@ public class CarOwnerSystemController {
 	private ContactsSystemService contactsSystemService;
 
 	@Autowired
-	private DriveRegistrationRepositorySystemService driveRegistrationRepositorySystemService;
+	private DrivingRegistrationSystemService drivingRegistrationSystemService;
 
 	@Autowired
 	private AccountService accountService;
@@ -309,8 +309,7 @@ public class CarOwnerSystemController {
 			}
 			// 处理
 			// 获取车辆信息
-			Optional<DrivingRegistration> drOpt = driveRegistrationRepositorySystemService
-					.getDrivingRegistrationById(id);
+			Optional<DrivingRegistration> drOpt = drivingRegistrationSystemService.getDrivingRegistrationById(id);
 			if (!drOpt.isPresent()) {
 				return serverAck.getParamError().setMessage("行驶证ID有误");
 			}
@@ -318,7 +317,7 @@ public class CarOwnerSystemController {
 			drivingRegistration.setStatus(status.byteValue());
 			drivingRegistration.setReason(status.byteValue() == 1 ? null : reason);// 如果状态为1，原因置为null
 			drivingRegistration.setUpdateTime(new Date());
-			int ret = driveRegistrationRepositorySystemService.save(drivingRegistration);
+			int ret = drivingRegistrationSystemService.save(drivingRegistration);
 			if (ret == 0) {
 				return serverAck.getFailure();
 			}
