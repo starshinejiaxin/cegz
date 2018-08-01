@@ -13,67 +13,72 @@ import javax.persistence.*;
 @Entity
 @Table(name = "device")
 public class Device {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	/**
 	 * 设备号
 	 */
 	@Column(name = "imei", nullable = false, length = 20)
 	private String imei;
-	
+
 	/**
 	 * 物联网卡号
 	 */
 	@Column(name = "number", nullable = false, length = 20)
 	private String number;
-	
+
 	/**
 	 * 设备状态 0 正常 1 异常
 	 */
 	@Column(name = "status", nullable = false, length = 20)
 	private int status;
-	
+
 	/**
 	 * 数据是否有效 0 有效，1无效
 	 */
 	@Column(name = "is_deleted", nullable = false, length = 10)
 	private byte isDeleted;
-	
+
 	/**
 	 * 创建用户id
 	 */
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
-	
+
 	/**
 	 * 修改用户ID
 	 */
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
-	
+
 	/**
 	 * 修改用户ID
 	 */
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "driving_registration_id", nullable = false)
 	private DrivingRegistration drivingRegistration;
-	
+
 	/**
 	 * 修改时间
 	 */
 	@Column(name = "update_time", nullable = false, length = 50)
 	private Date updateTime;
-	
+
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
-	
+
+	/**
+	 * 安装时间
+	 */
+	@Column(name = "install_time", nullable = false, length = 50)
+	private Date installTime;
 
 	public Long getId() {
 		return id;
@@ -83,7 +88,6 @@ public class Device {
 		this.id = id;
 	}
 
-
 	public byte getIsDeleted() {
 		return isDeleted;
 	}
@@ -91,7 +95,7 @@ public class Device {
 	public void setIsDeleted(byte isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-    
+
 	public Users getCreateUserId() {
 		return createUserId;
 	}
@@ -156,6 +160,12 @@ public class Device {
 		this.drivingRegistration = drivingRegistration;
 	}
 
+	public Date getInstallTime() {
+		return installTime;
+	}
 
-	
+	public void setInstallTime(Date installTime) {
+		this.installTime = installTime;
+	}
+
 }
