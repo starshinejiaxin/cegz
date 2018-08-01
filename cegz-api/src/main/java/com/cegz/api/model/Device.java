@@ -74,12 +74,6 @@ public class Device {
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
 
-	/**
-	 * 安装时间
-	 */
-	@Column(name = "install_time", nullable = false, length = 50)
-	private Date installTime;
-
 	public Long getId() {
 		return id;
 	}
@@ -158,14 +152,6 @@ public class Device {
 
 	public void setDrivingRegistration(DrivingRegistration drivingRegistration) {
 		this.drivingRegistration = drivingRegistration;
-	}
-
-	public Date getInstallTime() {
-		return installTime;
-	}
-
-	public void setInstallTime(Date installTime) {
-		this.installTime = installTime;
 	}
 
 }
