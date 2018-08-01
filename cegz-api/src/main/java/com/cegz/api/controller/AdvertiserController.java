@@ -249,7 +249,7 @@ public class AdvertiserController {
 				Price price = priceOpt.get();
 				adver.setTitle(titleArray[i]);
 				// 获取广告类型  图片广告默认ID为1 文字广告ID默认为2
-				if (!StringUtil.isEmpty(titleImagesArray[i])) {
+				if (!StringUtil.isEmpty(contentImagesArray[i])) {
 					Optional<AdvertisementType> adverTypeOpt = advertiserService.getTypeById((long)1);
 					if (!adverTypeOpt.isPresent()) {
 						return serverAck.getServerError();
@@ -264,9 +264,25 @@ public class AdvertiserController {
 					AdvertisementType adverType = adverTypeOpt.get();
 					adver.setAdvertisementType(adverType);
 				}
-				adver.setContent(contentArray[i]);
-				adver.setTitlePicUrl(titleImagesArray[i]);
-				adver.setContentPicUrl(contentImagesArray[i]);
+				if (!StringUtil.isEmpty(contentArray[i])) {
+					adver.setContent(contentArray[i]);
+				}
+				if (!StringUtil.isEmpty(titleImagesArray[i])) {
+					adver.setTitlePicUrl(baseImageUrl + titleImagesArray[i]);
+				}
+				if (!StringUtil.isEmpty(contentImagesArray[i])) {
+					String [] imageArray = contentImagesArray[i].split(",");
+					String split2 = "";
+					StringBuffer sb = new StringBuffer();
+					for (int h = 0; h < imageArray.length; h++) {
+						sb.append(split2);
+						sb.append(baseImageUrl);
+						sb.append(imageArray[h]);
+						split2 = ",";
+					}
+					adver.setContentPicUrl(sb.toString());
+				}
+				
 				adver.setCreateUserId(users);
 				adver.setCreateTime(new Date());
 				// 订单
