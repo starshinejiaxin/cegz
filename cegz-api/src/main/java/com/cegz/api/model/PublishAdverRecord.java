@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @date 2018年7月30日
  */
 @Entity
-@Table(name = "publish_advertisement_device")
+@Table(name = "publish_advertisement_record")
 public class PublishAdverRecord {
 	
 	@Id

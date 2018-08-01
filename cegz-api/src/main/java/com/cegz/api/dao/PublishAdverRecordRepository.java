@@ -16,10 +16,10 @@ import com.cegz.api.model.PublishAdverRecord;
  */ 
 public interface PublishAdverRecordRepository extends JpaRepository<PublishAdverRecord, Long>{
 	@Modifying
-	@Query(value = "update publish_advertisement_device set status = ?1, update_time = ?2 where id = ?3", nativeQuery = true)
+	@Query(value = "update publish_advertisement_record set status = ?1, update_time = ?2 where id = ?3", nativeQuery = true)
 	int updateByStatus(int status, Date updateTime, Long id);
 	
-	@Query(value = "select count(id) from publish_advertisement_device where is_deleted = 0 and device_id = ?1", nativeQuery = true)
+	@Query(value = "select count(id) from publish_advertisement_record where is_deleted = 0 and device_id = ?1", nativeQuery = true)
 	int countDataByDevices(Long id);
 	List<PublishAdverRecord> findByDeviceIdAndIsDeleted(Long id, byte isDeleted);
 }
