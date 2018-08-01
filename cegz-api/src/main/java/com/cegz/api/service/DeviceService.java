@@ -2,7 +2,9 @@ package com.cegz.api.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.Device;
 import com.cegz.api.model.PublishAdverRecord;
 
@@ -77,6 +79,14 @@ public interface DeviceService {
 	 * @author Administrator
 	 * @date 2018年7月31日
 	 */
-	List<PublishAdverRecord> listPublishRecordByDevice(Long id, int isDeleted);
+	List<PublishAdverRecord> listPublishRecordByDevice(Long id, Byte isDeleted);
+	/**
+	 * 获取广告
+	 * @param id
+	 * @return
+	 * @author lijiaxin
+	 * @date 2018年8月1日
+	 */
+	Optional<Advertisement> getAdvertisementById(Long id);
 	
 }

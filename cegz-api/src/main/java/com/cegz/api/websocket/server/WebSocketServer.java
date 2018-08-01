@@ -175,7 +175,12 @@ public class WebSocketServer {
     				break;
     			case "advertisement_ack":
     				String ackId = jsonObject.getString("body");
-    				deviceService.updatePublishStatus(1, new Date(), Long.parseLong(ackId));
+    				if (!StringUtil.isEmpty(ackId)) {
+    					String [] strs = ackId.split(",");
+    					for (int i = 0; i < strs.length; i++) {
+    						deviceService.updatePublishStatus(1, new Date(), Long.parseLong(strs[i]));
+    					}
+    				}
     				break;
     			case "advertisement_vaild":
     				String [] ids = jsonObject.getString("body").split(",");
@@ -193,7 +198,10 @@ public class WebSocketServer {
 							e.printStackTrace();
 						}
     				} else {
-    					List<PublishAdverRecord> list = deviceService.listPublishRecordByDevice(id, 0);
+    					// 设置socket 广告发布消息
+    					ListPublishAdverView view = new ListPublishAdverView();
+    					List<PublishAdverView> listView = new ArrayList<>();
+    					List<PublishAdverRecord> list = deviceService.listPublishRecordByDevice(id, (byte)0);
     					if (list != null && list.size() > 0) {
     						for (int i = 0; i < list.size(); i++) {
     							Advertisement advertisement = list.get(i).getAdvertisement();
@@ -209,24 +217,22 @@ public class WebSocketServer {
             					adverView.setContentImg(advertisement.getContentPicUrl().split(","));
             					adverView.setType(advertisement.getAdvertisementType().getId());
             					adverView.setTimestamp(timestamp);
-            					// 设置socket 广告发布消息
-            					ListPublishAdverView view = new ListPublishAdverView();
-            					List<PublishAdverView> listView = new ArrayList<>();
             					adverView.setId(list.get(i).getId());
             					listView.add(adverView);
-            					view.setList(listView);
-            					SocketMessage socketMessage = new SocketMessage();
-            					socketMessage.setHead("advertisement_all");
-            					socketMessage.setBody(view);
-            					// socket 发送
-            					String messageStr = JSON.toJSONString(socketMessage);
-            					System.out.println(messageStr);
-            					try {
-									this.sendMessage(messageStr);
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
+     					
     						}
+    						view.setList(listView);
+        					SocketMessage socketMessage = new SocketMessage();
+        					socketMessage.setHead("advertisement_all");
+        					socketMessage.setBody(view);
+        					// socket 发送
+        					String messageStr = JSON.toJSONString(socketMessage);
+        					System.out.println(messageStr);
+        					try {
+								this.sendMessage(messageStr);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
     					}    					
     				}
     				break;

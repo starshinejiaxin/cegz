@@ -51,7 +51,7 @@ public class PublishAdverRecord {
 	/**
 	 * 广告信息
 	 */
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "advertisement_id", nullable = false)
 	private Advertisement advertisement;
 	
@@ -65,7 +65,7 @@ public class PublishAdverRecord {
 	/**
 	 * 设备信息
 	 */
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "device_id", nullable = false)
 	private Device device;
 	

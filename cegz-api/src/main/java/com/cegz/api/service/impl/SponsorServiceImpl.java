@@ -3,6 +3,8 @@ package com.cegz.api.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import com.cegz.api.service.SponsorService;
  * @date 2018年7月23日
  */
 @Service("sponsorService")
+@Transactional
 public class SponsorServiceImpl implements SponsorService {
 	@Autowired
 	private SponsorRepository sponsorRepository;

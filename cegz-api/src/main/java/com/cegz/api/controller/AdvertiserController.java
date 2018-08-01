@@ -243,7 +243,7 @@ public class AdvertiserController {
 				}
 				Advertisement adver = new Advertisement();
 				Optional<Price> priceOpt = priceService.getPriceById(Long.parseLong(priceIdArray[i]));
-				if (priceOpt.isPresent()) {
+				if (!priceOpt.isPresent()) {
 					return serverAck.getParamError().setMessage("套餐错误");
 				}
 				Price price = priceOpt.get();

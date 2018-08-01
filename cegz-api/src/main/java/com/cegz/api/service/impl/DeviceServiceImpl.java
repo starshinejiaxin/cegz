@@ -2,14 +2,17 @@ package com.cegz.api.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cegz.api.dao.AdvertisementRepository;
 import com.cegz.api.dao.DeviceRepository;
 import com.cegz.api.dao.PublishAdverRecordRepository;
+import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.Device;
 import com.cegz.api.model.PublishAdverRecord;
 import com.cegz.api.service.DeviceService;
@@ -28,6 +31,9 @@ public class DeviceServiceImpl implements DeviceService {
 	
 	@Autowired
 	private PublishAdverRecordRepository publishRecordRepository;
+	
+	@Autowired
+	private AdvertisementRepository advertisementRepository;
 	@Override
 	public List<Device> listDevice(Long size) {
 		return deviceRepository.listDeviceByLimit(size);
@@ -51,11 +57,15 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 	@Override
 	public int countPublishRecordByDevice(Long id) {
-		return publishRecordRepository.countDataByDevice(id);
+		return publishRecordRepository.countDataByDevices(id);
 	}
 	@Override
-	public List<PublishAdverRecord> listPublishRecordByDevice(Long id, int isDeleted) {
+	public List<PublishAdverRecord> listPublishRecordByDevice(Long id, Byte isDeleted) {
 		return publishRecordRepository.findByDeviceIdAndIsDeleted(id, isDeleted);
+	}
+	@Override
+	public Optional<Advertisement> getAdvertisementById(Long id) {
+		return advertisementRepository.findById(id);
 	}
 
 }

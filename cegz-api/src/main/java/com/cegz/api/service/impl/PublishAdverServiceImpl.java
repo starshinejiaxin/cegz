@@ -1,5 +1,7 @@
 package com.cegz.api.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import com.cegz.api.service.PublishAdverService;
  * @date 2018年7月30日
  */
 @Service("publishAdverService")
+@Transactional
 public class PublishAdverServiceImpl implements PublishAdverService{
 
 	@Autowired

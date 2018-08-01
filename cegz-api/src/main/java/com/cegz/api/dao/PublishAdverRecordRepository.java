@@ -19,8 +19,7 @@ public interface PublishAdverRecordRepository extends JpaRepository<PublishAdver
 	@Query(value = "update publish_advertisement_device set status = ?1, update_time = ?2 where id = ?3", nativeQuery = true)
 	int updateByStatus(int status, Date updateTime, Long id);
 	
-	@Query(value = "select count(id) from publish_advertisement_device where device_id = 1? and is_deleted = 0", nativeQuery = true)
-	int countDataByDevice(Long id);
-	
-	List<PublishAdverRecord> findByDeviceIdAndIsDeleted(Long id, int isDeleted);
+	@Query(value = "select count(id) from publish_advertisement_device where is_deleted = 0 and device_id = ?1", nativeQuery = true)
+	int countDataByDevices(Long id);
+	List<PublishAdverRecord> findByDeviceIdAndIsDeleted(Long id, byte isDeleted);
 }

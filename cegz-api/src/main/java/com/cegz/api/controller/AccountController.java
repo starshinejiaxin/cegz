@@ -81,7 +81,7 @@ public class AccountController {
 		}
 		try {
 			// 验证验证码
-			String vaildCode = (String) redisUtil.get("phone");
+			String vaildCode = (String) redisUtil.get(userName);
 			if (!code.equals(vaildCode)) {
 				return serverAck.getParamError().setMessage("验证码错误");
 			}
