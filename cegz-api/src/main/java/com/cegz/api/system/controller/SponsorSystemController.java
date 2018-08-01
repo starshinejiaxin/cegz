@@ -22,7 +22,7 @@ import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
 
 /**
- * 保荐方服务
+ * 保荐方后台服务
  * 
  * @author tenglong
  * @date 2018年7月30日

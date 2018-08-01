@@ -19,27 +19,29 @@ import com.cegz.api.model.Advertiser;
 import com.cegz.api.model.Order;
 import com.cegz.api.model.Wallet;
 import com.cegz.api.service.AdvertiserService;
+
 /**
  * 广告方接口实现类
+ * 
  * @author lijiaxin
  * @date 2018年7月24日
  */
 @Service("advertiserService")
 @Transactional
 public class AdvertiserServiceImpl implements AdvertiserService {
-	
+
 	@Autowired
 	private AdvertiserRepository advertiserRepository;
-	
+
 	@Autowired
 	private AdvertisementRepository advertisementRepository;
-	
+
 	@Autowired
 	private AdvertisementTypeRepository adverTypeRepository;
-	
+
 	@Autowired
 	private WalletRepository walletRepository;
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
 
@@ -71,5 +73,15 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 	@Override
 	public Optional<Order> getOrderById(Long id) {
 		return orderRepository.findById(id);
+	}
+
+	@Override
+	public Optional<Advertiser> getAdvertiserById(Long id) {
+		return advertiserRepository.findById(id);
+	}
+
+	@Override
+	public List<Order> listOrder(Long createUserId, Long pageSize, Long pageCount) {
+		return orderRepository.listOrderByLimit(createUserId, pageSize, pageCount);
 	}
 }

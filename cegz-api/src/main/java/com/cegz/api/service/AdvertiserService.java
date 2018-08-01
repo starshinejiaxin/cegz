@@ -11,31 +11,35 @@ import com.cegz.api.model.Wallet;
 
 /**
  * 广告方接口
+ * 
  * @author lijiaxin
  * @date 2018年7月24日
  */
 public interface AdvertiserService {
-	
+
 	/**
 	 * 保存广告方信息
+	 * 
 	 * @param advertiser
 	 * @return
 	 * @author lijiaxin
 	 * @date 2018年7月24日
 	 */
 	int save(Advertiser advertiser);
-	
+
 	/**
 	 * 获取广告类型
+	 * 
 	 * @param Id
 	 * @return
 	 * @author lijiaxin
 	 * @date 2018年7月25日
 	 */
 	Optional<AdvertisementType> getTypeById(Long id);
-	
+
 	/**
 	 * 发布广告
+	 * 
 	 * @param listAdver
 	 * @param listOrder
 	 * @param wallet
@@ -44,13 +48,34 @@ public interface AdvertiserService {
 	 * @date 2018年7月25日
 	 */
 	int publishAdver(List<Advertisement> listAdver, List<Order> listOrder, Wallet wallet);
-	
+
 	/**
 	 * 获取订单信息
+	 * 
 	 * @param id
 	 * @return
 	 * @author Administrator
 	 * @date 2018年7月30日
 	 */
 	Optional<Order> getOrderById(Long id);
+
+	/**
+	 * 获取所有订单信息
+	 * 
+	 * @param size
+	 * @return
+	 * @author Administrator
+	 * @date 2018年7月30日
+	 */
+	List<Order> listOrder(Long createUserId, Long pageSize, Long pageCount);
+
+	/**
+	 * 通过ID获取广告信息
+	 * 
+	 * @param id
+	 * @return
+	 * @author tenglong
+	 * @date 2018年7月31日
+	 */
+	Optional<Advertiser> getAdvertiserById(Long id);
 }

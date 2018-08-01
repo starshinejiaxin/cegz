@@ -2,69 +2,85 @@ package com.cegz.api.model;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * 订单实体类
+ * 
  * @author lijiaxin
  * @date 2018年7月24日
  */
 @Entity
 @Table(name = "order_advertiser")
 public class Order {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	/**
 	 * 编号
 	 */
 	@Column(name = "order_no", nullable = false, length = 255)
 	private String orderNo;
-	
+
 	/**
 	 * 名称
 	 */
 	@Column(name = "order_name", nullable = false, length = 255)
 	private String name;
-	
+
 	/**
-	 * 订单状态，0 无效，1 进行中，2 完成
+	 * 订单状态 0 审核中，1进行中，2 完成，3 失败
 	 */
-	@Column(name = "status", nullable = false, length = 255)
+	@Column(name = "status", nullable = false, length = 10)
 	private byte status;
-	
+
+	/**
+	 * 审核结论
+	 */
+	@Column(name = "reason", nullable = false, length = 255)
+	private String reason;
+
 	/**
 	 * 发布广告的设备数量
 	 */
 	@Column(name = "total_advertisement", nullable = false, length = 255)
 	private Integer totalAdvertisement;
-	
+
 	/**
 	 * 总金额
 	 */
 	@Column(name = "total_money", nullable = false, length = 255)
 	private Double totalMoney;
-	
+
 	/**
 	 * 实际总金额
 	 */
 	@Column(name = "real_money", nullable = false, length = 255)
 	private Double realMoney;
-	
+
 	/**
 	 * 开始投放时间
 	 */
 	@Column(name = "start_time", nullable = false, length = 255)
 	private Date startTime;
-	
+
 	/**
 	 * 结束投放时间
 	 */
 	@Column(name = "end_time", nullable = false, length = 255)
 	private Date endTime;
-	
+
 	/**
 	 * 价格信息
 	 */
@@ -72,46 +88,45 @@ public class Order {
 	@JoinColumn(name = "price_id", nullable = false)
 	private Price price;
 
-	
 	/**
 	 * 广告信息
 	 */
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "advertisement_id", nullable = false)
 	private Advertisement advertisement;
-	
+
 	/**
 	 * 数据是否有效 0 有效，1无效
 	 */
 	@Column(name = "is_deleted", nullable = false, length = 10)
 	private byte isDeleted;
-	
+
 	/**
 	 * 创建用户id
 	 */
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
-	
+
 	/**
 	 * 修改用户ID
 	 */
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
-	
+
 	/**
 	 * 修改时间
 	 */
 	@Column(name = "update_time", nullable = false, length = 50)
 	private Date updateTime;
-	
+
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
-	
+
 	/**
 	 * 投放天数
 	 */
@@ -123,9 +138,7 @@ public class Order {
 	 */
 	@Column(name = "car_type", nullable = false, length = 50)
 	private Integer carType;
-	
-	
-	
+
 	public Integer getCarType() {
 		return carType;
 	}
@@ -150,7 +163,6 @@ public class Order {
 		this.id = id;
 	}
 
-
 	public String getName() {
 		return name;
 	}
@@ -159,7 +171,6 @@ public class Order {
 		this.name = name;
 	}
 
-
 	public byte getIsDeleted() {
 		return isDeleted;
 	}
@@ -167,7 +178,7 @@ public class Order {
 	public void setIsDeleted(byte isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-    
+
 	public Users getCreateUserId() {
 		return createUserId;
 	}
@@ -214,6 +225,14 @@ public class Order {
 
 	public void setStatus(byte status) {
 		this.status = status;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 	public Integer getTotalAdvertisement() {
@@ -272,7 +291,4 @@ public class Order {
 		this.advertisement = advertisement;
 	}
 
-	
-
-	
 }

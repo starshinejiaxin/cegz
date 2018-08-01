@@ -13,61 +13,59 @@ import javax.persistence.*;
 @Entity
 @Table(name = "wallet")
 public class Wallet {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	/**
 	 * 编号
 	 */
 	@Column(name = "wallet_no", nullable = false, length = 20)
 	private String walletNo;
-	
+
 	/**
 	 * 金额
 	 */
 	@Column(name = "money", nullable = false, length = 20)
 	private double money;
-	
+
 	/**
 	 * 描述
 	 */
 	@Column(name = "remark", nullable = false, length = 20)
 	private Integer remark;
-	
+
 	/**
 	 * 数据是否有效 0 有效，1无效
 	 */
 	@Column(name = "is_deleted", nullable = false, length = 10)
 	private byte isDeleted;
-	
+
 	/**
 	 * 创建用户id
 	 */
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user_id", nullable = false)
 	private Users createUserId;
-	
+
 	/**
 	 * 修改用户ID
 	 */
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "update_user_id", nullable = false)
 	private Users updateUserId;
-	
+
 	/**
 	 * 修改时间
 	 */
 	@Column(name = "update_time", nullable = false, length = 50)
 	private Date updateTime;
-	
+
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
-	
-
 
 	public Long getId() {
 		return id;
@@ -92,7 +90,7 @@ public class Wallet {
 	public void setIsDeleted(byte isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-    
+
 	public Users getCreateUserId() {
 		return createUserId;
 	}
@@ -140,8 +138,5 @@ public class Wallet {
 	public void setRemark(Integer remark) {
 		this.remark = remark;
 	}
-	
-	
-	
-	
+
 }

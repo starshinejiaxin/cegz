@@ -29,7 +29,7 @@ import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
 
 /**
- * 车主服务
+ * 车主后台服务
  * 
  * @author tenglong
  * @date 2018年7月31日
