@@ -1,5 +1,6 @@
 package com.cegz.api.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -358,12 +359,13 @@ public class SponsorController {
 			List<DrivingRegistrationView> drViews = new ArrayList<>();
 			if (listDr != null && listDr.size() > 0) {
 				for (DrivingRegistration dr : listDr) {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					DrivingRegistrationView view = new DrivingRegistrationView();
 					view.setId(dr.getId());
-					view.setInstallTime(dr.getInstallTime());
+					view.setInstallTime(sdf.format(dr.getInstallTime() == null ? new Date() : dr.getInstallTime()));
 					view.setStatus(dr.getStatus());
 					view.setPlateNumber(dr.getPlateNumber());
-					view.setCarBirthday(dr.getCarBirthday());
+					view.setCarBirthday(sdf.format(dr.getCarBirthday() == null ? new Date() : dr.getCarBirthday()));
 					view.setName(dr.getContact().getName());
 					view.setPhone(dr.getContact().getPhone());
 					view.setModel(dr.getModel());

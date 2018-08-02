@@ -32,7 +32,7 @@ public class DrivingRegistrationView {
 	/**
 	 * 出厂日期
 	 */
-	private Date carBirthday;
+	private String carBirthday;
 
 	/**
 	 * 使用性质
@@ -57,7 +57,7 @@ public class DrivingRegistrationView {
 	/**
 	 * 安装时间
 	 */
-	private Date installTime;
+	private String installTime;
 
 	/**
 	 * 姓名
@@ -101,14 +101,6 @@ public class DrivingRegistrationView {
 		this.model = model;
 	}
 
-	public Date getCarBirthday() {
-		return carBirthday;
-	}
-
-	public void setCarBirthday(Date carBirthday) {
-		this.carBirthday = carBirthday;
-	}
-
 	public String getUseCharacter() {
 		return useCharacter;
 	}
@@ -141,14 +133,6 @@ public class DrivingRegistrationView {
 		this.reason = reason;
 	}
 
-	public Date getInstallTime() {
-		return installTime;
-	}
-
-	public void setInstallTime(Date installTime) {
-		this.installTime = installTime;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -163,6 +147,22 @@ public class DrivingRegistrationView {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getCarBirthday() {
+		return carBirthday;
+	}
+
+	public void setCarBirthday(String carBirthday) {
+		this.carBirthday = carBirthday;
+	}
+
+	public String getInstallTime() {
+		return installTime;
+	}
+
+	public void setInstallTime(String installTime) {
+		this.installTime = installTime;
 	}
 
 }

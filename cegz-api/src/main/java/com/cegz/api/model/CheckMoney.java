@@ -17,7 +17,7 @@ public class CheckMoney {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	/**
-	 * 编号
+	 * 金额
 	 */
 	@Column(name = "money", nullable = false, length = 20)
 	private Double money;
