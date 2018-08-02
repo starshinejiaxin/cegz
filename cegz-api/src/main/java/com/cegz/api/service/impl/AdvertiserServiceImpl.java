@@ -76,6 +76,7 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 			check.setCreateTime(new Date());
 			check.setCreateUserId(order.getCreateUserId());
 			check.setOrder(order);
+			check.setRemark("广告付费");
 			check.setMoney(-order.getRealMoney());
 			// 账单类型 1 支出， 2 收入
 			check.setType(1);
