@@ -229,7 +229,7 @@ public class ContactsController {
 			dr.setPictureUrl(pictureUrl);
 			dr.setCreateUserId(users);
 			dr.setCreateTime(new Date());
-			SimpleDateFormat sdf = new  SimpleDateFormat("yyyyMMdd");
+			SimpleDateFormat sdf = new  SimpleDateFormat("yyyy-MM-dd");
 			Date birthday = sdf.parse(birthDate);
 			dr.setCarBirthday(birthday);
 			dr.setSponsor(sponsor);
