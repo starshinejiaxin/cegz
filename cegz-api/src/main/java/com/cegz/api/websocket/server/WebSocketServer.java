@@ -168,6 +168,18 @@ public class WebSocketServer {
     			switch(head) {
     			case"GPS":
     				jsonObject = jsonObject.getJSONObject("body"); 
+    				// 存储进redis
+    				Map<String, Object> redisMap = new HashMap<>(16);
+    				StringBuffer sb = new StringBuffer();
+    				sb.append(jsonObject.getString("lng"));
+    				sb.append(",");
+    				sb.append(jsonObject.getString("lat"));
+    				sb.append(",");
+    				sb.append(jsonObject.getString("time"));
+    				redisMap.put("gps",sb.toString());
+    				redisUtil.hmset(imei, redisMap);
+    				
+    				// 存储进MongoDB
         			Map<String, Object> map = new HashMap<>(16);
         			// 设备号
         			map.put("imei", jsonObject.getString("imei"));
