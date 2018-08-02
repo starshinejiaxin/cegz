@@ -183,10 +183,16 @@ public class WebSocketServer {
     				}
     				break;
     			case "advertisement_vaild":
-    				String [] ids = jsonObject.getString("body").split(",");
+    				String body = jsonObject.getString("body");
+    				int idLength = 0;
+    				if (!StringUtil.isEmpty(body)) {
+    					String [] ids = jsonObject.getString("body").split(",");
+    					idLength = ids.length;
+    				}
+    				
     				Long id = deviceService.getDeviceByImei(imei).getId();
     				int count = deviceService.countPublishRecordByDevice(id);
-    				if (ids.length == count) {
+    				if (idLength == count) {
     					ListPublishAdverView view = new ListPublishAdverView();
     					SocketMessage socketMessage = new SocketMessage();
     					socketMessage.setHead("advertisement_all");
@@ -222,21 +228,22 @@ public class WebSocketServer {
             					listView.add(adverView);
      					
     						}
-    						view.setList(listView);
-        					SocketMessage socketMessage = new SocketMessage();
-        					socketMessage.setHead("advertisement_all");
-        					socketMessage.setBody(view);
-        					socketMessage.setStatus(0);
-        					// socket 发送
-        					String messageStr = JSON.toJSONString(socketMessage);
-        					System.out.println(messageStr);
-        					try {
-								this.sendMessage(messageStr);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-    					}    					
-    				}
+    					}
+						view.setList(listView);
+    					SocketMessage socketMessage = new SocketMessage();
+    					socketMessage.setHead("advertisement_all");
+    					socketMessage.setBody(view);
+    					socketMessage.setStatus(0);
+    					// socket 发送
+    					String messageStr = JSON.toJSONString(socketMessage);
+    					System.out.println(messageStr);
+    					try {
+							this.sendMessage(messageStr);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+    						
     				break;
     			default:
     				
