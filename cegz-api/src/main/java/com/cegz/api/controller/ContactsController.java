@@ -113,7 +113,7 @@ public class ContactsController {
 					return serverAck.getFailure().setMessage("车主已经存在");
 				}
 			} else {
-				if (id.equals(vaildContacts.getId())) {
+				if (!id.equals(vaildContacts.getId())) {
 					return serverAck.getParamError().setMessage("ID错误");
 				}
 			}
@@ -136,7 +136,7 @@ public class ContactsController {
 				cardInfo = new IdCard();
 				cardInfo.setCreateTime(new Date());
 			} else {
-				cardInfo = vaildContacts.getCard();
+				cardInfo = vaildContacts.getIdcardId();
 				cardInfo.setUpdateTime(new Date());
 			}
 			 

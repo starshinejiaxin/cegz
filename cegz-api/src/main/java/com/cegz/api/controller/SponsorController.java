@@ -143,6 +143,17 @@ public class SponsorController {
 			if (users == null) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
+			Sponsor vaildSponsor = users.getSponsor();
+			if (id == null) {
+				if (vaildSponsor != null && vaildSponsor.getId() != null) {
+					return serverAck.getParamError().setMessage("保荐方已经存在");
+				}
+			} else {
+				if (!id.equals(vaildSponsor.getId())) {
+					return serverAck.getParamError().setMessage("ID错误");
+							
+				}
+			}
 			// 图片保存
 //			String filePath = ImageUtil.getSponsorDir();
 //			String fileName = ImageUtil.saveImg(businessFile, filePath);
@@ -151,15 +162,12 @@ public class SponsorController {
 			// 设置广告方信息
 			Sponsor sponsor = null;
 			if (id != null) {
-				Optional<Sponsor> opt = sponsorService.getSponSorById(id);
-				if (!opt.isPresent()) {
-					return serverAck.getParamError().setMessage("id无效");
-				}
-				sponsor = opt.get();
+				sponsor = vaildSponsor;
 				sponsor.setUpdateTime(new Date());
 			} else {
 				sponsor = new Sponsor();
 				sponsor.setCreateTime(new Date());
+				sponsor.setCreateUserId(users);
 			}
 			
 			sponsor.setAddress(address);
@@ -170,7 +178,6 @@ public class SponsorController {
 			sponsor.setCompany(company);
 			sponsor.setBusinessLicense(businessLicense);
 			sponsor.setEmail(email);
-			sponsor.setCreateUserId(users);
 			sponsor.setPictureUrl(imageUrl);
 			sponsor.setType(Integer.parseInt(type));
 			// 处理

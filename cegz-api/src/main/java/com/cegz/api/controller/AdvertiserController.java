@@ -93,7 +93,8 @@ public class AdvertiserController {
 			String company,
 			String businessLicense,
 			String token,
-			String version) {
+			String version,
+			Long id) {
 		if (StringUtil.isEmpty(name)) {
 			return serverAck.getParamError().setMessage("姓名不能为空");
 		}
@@ -142,13 +143,32 @@ public class AdvertiserController {
 			if (users == null) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
+			Advertiser vaildAdvertiser = users.getAdvertiser();
+			if (id == null) {
+				if (vaildAdvertiser != null && vaildAdvertiser.getId() != null) {
+					return serverAck.getParamError().setMessage("广告主已经存在");
+				}
+			} else {
+				if (!id.equals(vaildAdvertiser.getId())) {
+					return serverAck.getParamError().setMessage("ID错误");
+				}
+			}
 			// 图片保存
 //			String filePath = ImageUtil.getAdvertiserDir();
 //			String fileName = ImageUtil.saveImg(businessFile, filePath);
 //			String imageUrl = serverUrl + Constant.ADVERTISER_IMG_DRI + "/" + fileName;
 			String imageUrl = baseImageUrl + businessFile;
 			// 设置广告方信息
-			Advertiser advertiser = new Advertiser();
+			Advertiser advertiser = null;
+			if (id == null) {
+				advertiser = new Advertiser();
+				advertiser.setCreateTime(new Date());
+				
+			} else {
+				advertiser = vaildAdvertiser;
+				advertiser.setUpdateTime(new Date());
+			}
+			
 			advertiser.setAddress(address);
 			advertiser.setAddressDetail(addressDetail);
 			advertiser.setName(name);
@@ -156,8 +176,7 @@ public class AdvertiserController {
 			advertiser.setCity(city);
 			advertiser.setCompany(company);
 			advertiser.setBusinessLicense(businessLicense);
-			//advertiser.setEmail(email);
-			advertiser.setCreateTime(new Date());
+			advertiser.setEmail(email);
 			advertiser.setCreateUserId(users);
 			advertiser.setPictureUrl(imageUrl);
 			// 处理

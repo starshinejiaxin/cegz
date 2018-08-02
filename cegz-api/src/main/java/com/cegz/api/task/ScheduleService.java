@@ -18,7 +18,7 @@ import com.cegz.api.service.PublishAdverService;
 public class ScheduleService {
 	 @Autowired
 	 private PublishAdverService publishService;
-	 @Scheduled(cron = "0 0 4 * * *")
+	 @Scheduled(cron = "0 45 13 * * *")
 //	 @Scheduled(cron = "0/5 * * * * *")
 	 public void scheduled(){
 		 System.out.println("task");
