@@ -20,7 +20,7 @@ public class CheckMoney {
 	 * 编号
 	 */
 	@Column(name = "money", nullable = false, length = 20)
-	private String money;
+	private Double money;
 	
 	/**
 	 * 描述
@@ -73,6 +73,31 @@ public class CheckMoney {
 	@Column(name = "create_time", nullable = false, length = 50)
 	private Date createTime;
 	
+
+	
+	public Double getMoney() {
+		return money;
+	}
+
+	public void setMoney(Double money) {
+		this.money = money;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 
 	public Long getId() {
 		return id;

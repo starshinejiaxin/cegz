@@ -1,5 +1,6 @@
 package com.cegz.api.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Service;
 import com.cegz.api.dao.AdvertisementRepository;
 import com.cegz.api.dao.AdvertisementTypeRepository;
 import com.cegz.api.dao.AdvertiserRepository;
+import com.cegz.api.dao.CheckMoneyRepository;
 import com.cegz.api.dao.OrderRepository;
 import com.cegz.api.dao.WalletRepository;
 import com.cegz.api.model.Advertisement;
 import com.cegz.api.model.AdvertisementType;
 import com.cegz.api.model.Advertiser;
+import com.cegz.api.model.CheckMoney;
 import com.cegz.api.model.Order;
 import com.cegz.api.model.Wallet;
 import com.cegz.api.service.AdvertiserService;
@@ -44,6 +47,9 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private CheckMoneyRepository checkMoneyRepository;
 
 	@Override
 	public int save(Advertiser advertiser) {
@@ -64,7 +70,16 @@ public class AdvertiserServiceImpl implements AdvertiserService {
 		}
 		// 订单
 		for (int j = 0; j < listOrder.size(); j++) {
-			orderRepository.save(listOrder.get(j));
+			Order order = orderRepository.save(listOrder.get(j));
+			// 设置账单
+			CheckMoney check = new CheckMoney();
+			check.setCreateTime(new Date());
+			check.setCreateUserId(order.getCreateUserId());
+			check.setOrder(order);
+			check.setMoney(-order.getRealMoney());
+			// 账单类型 1 支出， 2 收入
+			check.setType(1);
+			checkMoneyRepository.save(check);
 		}
 		walletRepository.save(wallet);
 		return 1;
