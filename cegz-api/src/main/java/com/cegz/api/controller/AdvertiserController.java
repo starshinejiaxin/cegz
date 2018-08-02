@@ -25,6 +25,7 @@ import com.cegz.api.model.PublishAdverRecord;
 import com.cegz.api.model.Users;
 import com.cegz.api.model.Wallet;
 import com.cegz.api.model.view.AdvertisementView;
+import com.cegz.api.model.view.AdvertiserView;
 import com.cegz.api.service.AccountService;
 import com.cegz.api.service.AdvertiserService;
 import com.cegz.api.service.DeviceService;
@@ -478,6 +479,66 @@ public class AdvertiserController {
 			map.put("adverRecordNum", adverRecordNum);
 			map.put("resultList", resultList);
 			return serverAck.getSuccess().setData(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
+	}
+
+	/**
+	 * 获取广告方信息
+	 * 
+	 * @param token
+	 * @param version
+	 * @return
+	 * @author tenglong
+	 * @date 2018年8月2日
+	 * 
+	 */
+	@PostMapping("getAdvertisement")
+	public ResultData getAdvertisement(String token, String version) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		if (StringUtil.isEmpty(token)) {
+			return serverAck.getParamError().setMessage("token不能为空");
+		}
+		try {
+			// 用户信息查询
+			String str = TokenUtil.decodeToken(Constant.DES_KEY, token);
+			if (StringUtil.isEmpty(str)) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String[] datas = str.split(":");
+			if (datas.length < 1) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			String userName = datas[0];
+			Users users = accountService.getUserByName(userName);
+			if (users == null) {
+				return serverAck.getParamError().setMessage("token无效");
+			}
+			Advertiser advertiser = users.getAdvertiser();
+			if (advertiser == null) {
+				return serverAck.getEmptyData();
+			}
+			AdvertiserView view = new AdvertiserView();
+			view.setId(advertiser.getId());
+			view.setCity(advertiser.getCity());
+			view.setCompany(advertiser.getCompany());
+			view.setBusinessLicense(advertiser.getBusinessLicense());
+			view.setPictureUrl(advertiser.getPictureUrl());
+			view.setName(advertiser.getName());
+			view.setPhone(advertiser.getPhone());
+			view.setEmail(advertiser.getEmail());
+			view.setAddress(advertiser.getAddress());
+			view.setAddressDetail(advertiser.getAddressDetail());
+			view.setStatus(advertiser.getStatus());
+			view.setReason(advertiser.getReason());
+			return serverAck.getSuccess().setData(view);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();

@@ -51,7 +51,7 @@ public class AdvertiserView {
 	/**
 	 * 详细地址
 	 */
-	private String address_detail;
+	private String addressDetail;
 
 	/**
 	 * 审核状态 0 审核中，1 进行中，2 完成，3 失败
@@ -135,12 +135,12 @@ public class AdvertiserView {
 		this.address = address;
 	}
 
-	public String getAddress_detail() {
-		return address_detail;
+	public String getAddressDetail() {
+		return addressDetail;
 	}
 
-	public void setAddress_detail(String address_detail) {
-		this.address_detail = address_detail;
+	public void setAddressDetail(String addressDetail) {
+		this.addressDetail = addressDetail;
 	}
 
 	public int getStatus() {

@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -151,7 +150,7 @@ public class SponsorController {
 			} else {
 				if (!id.equals(vaildSponsor.getId())) {
 					return serverAck.getParamError().setMessage("ID错误");
-							
+
 				}
 			}
 			// 图片保存
@@ -169,7 +168,7 @@ public class SponsorController {
 				sponsor.setCreateTime(new Date());
 				sponsor.setCreateUserId(users);
 			}
-			
+
 			sponsor.setAddress(address);
 			sponsor.setAddressDetail(addressDetail);
 			sponsor.setName(name);
@@ -307,7 +306,7 @@ public class SponsorController {
 				view.setId(sponsor.getId());
 				view.setLicenseImgUrl(sponsor.getPictureUrl());
 				view.setName(sponsor.getName());
-				view.setAddress(sponsor.getPhone());
+				view.setPhone(sponsor.getPhone());
 				view.setProvince(sponsor.getProvince());
 				view.setStatus(sponsor.getStatus());
 				view.setReason(sponsor.getReason());

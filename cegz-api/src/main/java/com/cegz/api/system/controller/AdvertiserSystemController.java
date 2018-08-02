@@ -167,7 +167,7 @@ public class AdvertiserSystemController {
 			view.setPhone(advertiser.getPhone());
 			view.setEmail(advertiser.getEmail());
 			view.setAddress(advertiser.getAddress());
-			view.setAddress_detail(advertiser.getAddressDetail());
+			view.setAddressDetail(advertiser.getAddressDetail());
 			// 广告创建者id，用于订单查询
 			Long createUserId = advertiser.getCreateUserId().getId();
 
