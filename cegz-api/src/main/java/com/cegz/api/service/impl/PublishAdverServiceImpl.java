@@ -1,5 +1,9 @@
 package com.cegz.api.service.impl;
 
+import java.util.Date;
+
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,14 @@ public class PublishAdverServiceImpl implements PublishAdverService{
 	@Override
 	public PublishAdverRecord insertPublishRecord(PublishAdverRecord record) {
 		return publishRepository.save(record);
+	}
+	@Override
+	public int updatePublishRecord(Date time) {
+		return publishRepository.updateStatusByDate(time);
+	}
+	@Override
+	public List<PublishAdverRecord> listPublishAdverByDeviceId(Long deviceId) {
+		return publishRepository.listPublishAdverByDeviceId(deviceId);
 	}
 	
 }
