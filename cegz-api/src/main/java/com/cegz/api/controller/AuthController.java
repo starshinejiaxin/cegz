@@ -102,7 +102,7 @@ public class AuthController {
 			return serverAck.getServerError();
 		}
 	}
-	@GetMapping("getCode")
+	@PostMapping("getCode")
 	/**
 	 * 获取code
 	 * @param phone
