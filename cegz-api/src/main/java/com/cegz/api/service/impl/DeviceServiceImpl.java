@@ -67,5 +67,9 @@ public class DeviceServiceImpl implements DeviceService {
 	public Optional<Advertisement> getAdvertisementById(Long id) {
 		return advertisementRepository.findById(id);
 	}
+	@Override
+	public Device getDeviceByDrivingRegistrationId(Long drivingRegistrationId) {
+		return deviceRepository.getDeviceByDrivingRegistrationId(drivingRegistrationId);
+	}
 
 }

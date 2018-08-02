@@ -25,6 +25,7 @@ public interface PublishAdverService {
 
 	/**
 	 * 修改过期广告
+	 * 
 	 * @param status
 	 * @param time
 	 * @return
@@ -32,7 +33,7 @@ public interface PublishAdverService {
 	 * @date 2018年8月2日
 	 */
 	int updatePublishRecord(Date time);
-	
+
 	/**
 	 * 通过设备id获取广告发布数据
 	 * 
@@ -42,4 +43,5 @@ public interface PublishAdverService {
 	 * @date 2018年8月2日
 	 */
 	List<PublishAdverRecord> listPublishAdverByDeviceId(Long deviceId);
+
 }
