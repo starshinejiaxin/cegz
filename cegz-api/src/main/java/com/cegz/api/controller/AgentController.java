@@ -77,7 +77,7 @@ public class AgentController {
 			String businessLicense,
 			String token,
 			String type,
-			String version) {
+			String version, Long id) {
 		if (StringUtil.isEmpty(name)) {
 			return serverAck.getParamError().setMessage("姓名不能为空");
 		}
@@ -135,13 +135,32 @@ public class AgentController {
 			if (users == null) {
 				return serverAck.getParamError().setMessage("token无效");
 			}
+			Agent vaildAgent = users.getAgent();
+			if (id == null) {
+				if (vaildAgent != null && vaildAgent.getId() != null) {
+					return serverAck.getParamError().setMessage("代理商已经存在");
+				}
+			} else {
+				if (id.equals(vaildAgent.getId())) {
+					return serverAck.getParamError().setMessage("ID错误");
+				}
+			}
+			
 			// 图片保存
 //			String filePath = ImageUtil.getSponsorDir();
 //			String fileName = ImageUtil.saveImg(businessFile, filePath);
 //			String imageUrl = serverUrl + Constant.SPONSOR_IMG_DRI + "/" + fileName;
 			String imageUrl = baseImageUrl + businessFile;
 			// 设置代理商信息
-			Agent agent = new Agent();
+			Agent agent = null;
+			if (id == null) {
+				agent = new Agent();
+				agent.setCreateTime(new Date());
+			} else {
+				agent = vaildAgent;
+				agent.setUpdateTime(new Date());
+			}
+			
 			agent.setAddress(address);
 			agent.setAddressDetail(addressDetail);
 			agent.setName(name);
@@ -150,7 +169,6 @@ public class AgentController {
 			agent.setCompany(company);
 			agent.setBusiness(businessLicense);
 			agent.setEmail(email);
-			agent.setCreateTime(new Date());
 			agent.setCreateUserId(users);
 			agent.setPictureUrl(imageUrl);
 			// 处理

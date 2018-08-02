@@ -69,7 +69,7 @@ public class ContactsController {
 	@PostMapping("regist")
 	public ResultData insertContacts(String firstCardFile,
 			String secondCardFile,
-			String driveLicenseFile, String name, String phone, String token, String version) {
+			String driveLicenseFile, String name, String phone, String token, String version, Long id) {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
@@ -108,9 +108,16 @@ public class ContactsController {
 				return serverAck.getParamError().setMessage("token无效");
 			}
 			Contacts vaildContacts = users.getContact();
-			if (vaildContacts != null && vaildContacts.getId() != null) {
-				return serverAck.getFailure().setMessage("车主已经存在");
+			if (id == null) {
+				if (vaildContacts != null && vaildContacts.getId() != null) {
+					return serverAck.getFailure().setMessage("车主已经存在");
+				}
+			} else {
+				if (id.equals(vaildContacts.getId())) {
+					return serverAck.getParamError().setMessage("ID错误");
+				}
 			}
+			
 			// 图片保存
 //			String cardFilePath = ImageUtil.getIdCardImgDir();
 //			String cardFileName = ImageUtil.saveImg(multipartCardFile, cardFilePath);
@@ -124,20 +131,43 @@ public class ContactsController {
 			String cardUrl = baseImageUrl + firstCardFile;
 			String secondCardUrl = baseImageUrl + secondCardFile;
 			String licenseUrl = baseImageUrl + driveLicenseFile;
-			IdCard cardInfo = new IdCard();
+			IdCard cardInfo = null;
+			if (id == null) {
+				cardInfo = new IdCard();
+				cardInfo.setCreateTime(new Date());
+			} else {
+				cardInfo = vaildContacts.getCard();
+				cardInfo.setUpdateTime(new Date());
+			}
+			 
 			cardInfo.setPictureUrl(cardUrl + "," + secondCardUrl);
-			cardInfo.setCreateTime(new Date());
 			cardInfo.setCreateUserId(users);
 			// 设置驾驶证信息
-			DrivingLicense licenseInfo = new DrivingLicense();
+			DrivingLicense licenseInfo = null;
+			if (id == null) {
+				licenseInfo = new DrivingLicense();
+				licenseInfo.setCreateTime(new Date());
+
+			} else {
+				licenseInfo = vaildContacts.getDrivingLicenseId();
+				licenseInfo.setUpdateTime(new Date());
+			}
+			
 			licenseInfo.setPictureUrl(licenseUrl);
-			licenseInfo.setCreateTime(new Date());
 			licenseInfo.setCreateUserId(users);
 			// 设置联系人信息
-			Contacts contactsInfo = new Contacts();
+			Contacts contactsInfo = null;
+			if (id == null) {
+				 contactsInfo = new Contacts();
+				 contactsInfo.setCreateTime(new Date());
+				 
+			} else {
+				contactsInfo = vaildContacts;
+				contactsInfo.setUpdateTime(new Date());
+			}
 			contactsInfo.setName(name);
 			contactsInfo.setPhone(phone);
-			contactsInfo.setCreateTime(new Date());
+			
 			contactsInfo.setCreateUserId(users);
 			contactsInfo.setDrivingLicenseId(licenseInfo);
 			contactsInfo.setIdcardId(cardInfo);
@@ -168,7 +198,7 @@ public class ContactsController {
 	 * @date 2018年7月23日
 	 */
 	@PostMapping("drivingRegistration")
-	public ResultData insertDriveRegistration(String partFile, String carNumber, String birthDate, Long sponsorId, Long contactId, String carType, String token, String version) {
+	public ResultData insertDriveRegistration(String partFile, String carNumber, String birthDate, Long sponsorId, Long contactId, String carType, String token, String version, Long id) {
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
@@ -216,19 +246,29 @@ public class ContactsController {
 			if (contact == null || contact.getId() == null) {
 				return serverAck.getParamError().setMessage("车主ID有误");
 			}
-			
+						
 			// 图片保存
 //			String driveRegisrationFilePath = ImageUtil.getDriveRegistrationImgDir();
 //			String fileName = ImageUtil.saveImg(multipartFile, driveRegisrationFilePath);
 			// 获取图片地址
 			String pictureUrl = baseImageUrl + partFile;
 			// 设置行驶证信息
-			DrivingRegistration dr = new DrivingRegistration();
+			DrivingRegistration dr = null;
+			if (id == null) {
+				dr = new DrivingRegistration();
+				dr.setCreateTime(new Date());
+			} else {
+				Optional<DrivingRegistration> opt = contactsService.getRegistrationById(id);
+				if (!opt.isPresent()) {
+					return serverAck.getParamError().setMessage("ID错误");
+				}
+				dr = opt.get();
+				dr.setUpdateTime(new Date());
+			}
 			dr.setPlateNumber(carNumber);
 			dr.setModel(carType);
 			dr.setPictureUrl(pictureUrl);
 			dr.setCreateUserId(users);
-			dr.setCreateTime(new Date());
 			SimpleDateFormat sdf = new  SimpleDateFormat("yyyy-MM-dd");
 			Date birthday = sdf.parse(birthDate);
 			dr.setCarBirthday(birthday);

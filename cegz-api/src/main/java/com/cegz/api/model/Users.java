@@ -106,7 +106,18 @@ public class Users {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
 	private List<Order> listOrder;
 	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy  = "createUserId", fetch = FetchType.LAZY)
+	private Agent agent;
 	
+	
+
+	public Agent getAgent() {
+		return agent;
+	}
+
+	public void setAgent(Agent agent) {
+		this.agent = agent;
+	}
 
 	public List<Order> getListOrder() {
 		return listOrder;

@@ -3,6 +3,7 @@ package com.cegz.api.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,7 +84,7 @@ public class SponsorController {
 	@PostMapping("regist")
 	public ResultData insertsponsor(String businessFile, String name, String phone, String email, String address,
 			String addressDetail, String province, String company, String businessLicense, String token, String type,
-			String version) {
+			String version, Long id) {
 		if (StringUtil.isEmpty(name)) {
 			return serverAck.getParamError().setMessage("姓名不能为空");
 		}
@@ -147,7 +148,19 @@ public class SponsorController {
 //			String imageUrl = serverUrl + Constant.SPONSOR_IMG_DRI + "/" + fileName;
 			String imageUrl = baseImageUrl + businessFile;
 			// 设置广告方信息
-			Sponsor sponsor = new Sponsor();
+			Sponsor sponsor = null;
+			if (id != null) {
+				Optional<Sponsor> opt = sponsorService.getSponSorById(id);
+				if (!opt.isPresent()) {
+					return serverAck.getParamError().setMessage("id无效");
+				}
+				sponsor = opt.get();
+				sponsor.setUpdateTime(new Date());
+			} else {
+				sponsor = new Sponsor();
+				sponsor.setCreateTime(new Date());
+			}
+			
 			sponsor.setAddress(address);
 			sponsor.setAddressDetail(addressDetail);
 			sponsor.setName(name);
@@ -156,7 +169,6 @@ public class SponsorController {
 			sponsor.setCompany(company);
 			sponsor.setBusinessLicense(businessLicense);
 			sponsor.setEmail(email);
-			sponsor.setCreateTime(new Date());
 			sponsor.setCreateUserId(users);
 			sponsor.setPictureUrl(imageUrl);
 			sponsor.setType(Integer.parseInt(type));

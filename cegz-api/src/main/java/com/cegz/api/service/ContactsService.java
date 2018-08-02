@@ -41,4 +41,13 @@ public interface ContactsService {
 	 * @date 2018年7月23日
 	 */
 	Optional<Contacts> getContactById(Long id);
+	
+	/**
+	 * 获取行驶证信息
+	 * @param id
+	 * @return
+	 * @author Administrator
+	 * @date 2018年8月2日
+	 */
+	Optional<DrivingRegistration> getRegistrationById(Long id);
 }

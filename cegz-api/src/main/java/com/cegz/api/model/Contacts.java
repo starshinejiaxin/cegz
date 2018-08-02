@@ -92,8 +92,21 @@ public class Contacts {
 	 */
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "contact", fetch = FetchType.LAZY)
 	private List<DrivingRegistration> listDrivingRegistration;
+	/**
+	 * 身份证
+	 */
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private IdCard card;
 	
 	
+	public IdCard getCard() {
+		return card;
+	}
+
+	public void setCard(IdCard card) {
+		this.card = card;
+	}
+
 	public List<DrivingRegistration> getListDrivingRegistration() {
 		return listDrivingRegistration;
 	}

@@ -28,6 +28,7 @@ import com.cegz.api.model.view.ListPublishAdverView;
 import com.cegz.api.model.view.PublishAdverView;
 import com.cegz.api.model.view.SocketMessage;
 import com.cegz.api.mongo.MongoDB;
+import com.cegz.api.redis.RedisUtil;
 import com.cegz.api.service.DeviceService;
 import com.cegz.api.util.StringUtil;
 
@@ -65,7 +66,15 @@ public class WebSocketServer {
     
     private static DeviceService deviceService;
     
+    private static RedisUtil redisUtil;
+    
+    
     @Autowired
+	public void setRedisUtil(RedisUtil redisUtil) {
+		WebSocketServer.redisUtil = redisUtil;
+	}
+
+	@Autowired
 	public void setMongoDb(MongoDB mongoDb) {
     	WebSocketServer.mongoDb = mongoDb;
 	}
