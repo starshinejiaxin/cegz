@@ -37,4 +37,27 @@ public interface PublishAdverRecordRepository extends JpaRepository<PublishAdver
 	 */
 	@Query(value = "select * from publish_advertisement_record where is_deleted = 0 and status = 1 and device_id = ?1", nativeQuery = true)
 	List<PublishAdverRecord> listPublishAdverByDeviceId(Long deviceId);
+
+	/**
+	 * 查询首页数据总条数
+	 * 
+	 * @author tenglong
+	 * @date 2018年8月2日
+	 */
+	@Query(value = "select count(1) from publish_advertisement_record par "
+			+ "left join advertisement a on par.advertisement_id = a.id "
+			+ "left join advertisement_type at on a.advertisement_type_id = at.id and at.type_no = '001' "
+			+ "where 1=1 and par.is_deleted = 0 and par.status = 1", nativeQuery = true)
+	Long queryHomePageTotalCount();
+
+	/**
+	 * 通过设备id获取广告发布数据
+	 * 
+	 * @author tenglong
+	 * @date 2018年8月2日
+	 */
+	@Query(value = "select * from publish_advertisement_record par " + "left join advertisement a on par.advertisement_id = a.id "
+			+ "left join advertisement_type at on a.advertisement_type_id = at.id and at.type_no = '001' "
+			+ "where 1=1 and par.is_deleted = 0 and par.status = 1 limit ?1, ?2", nativeQuery = true)
+	List<PublishAdverRecord> queryHomePageList(int curPage, int pageSize);
 }

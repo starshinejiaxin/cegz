@@ -1,8 +1,8 @@
 package com.cegz.api.service.impl;
 
 import java.util.Date;
-
 import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,16 @@ public class PublishAdverServiceImpl implements PublishAdverService {
 	@Override
 	public List<PublishAdverRecord> listPublishAdverByDeviceId(Long deviceId) {
 		return publishRepository.listPublishAdverByDeviceId(deviceId);
+	}
+
+	@Override
+	public Long queryHomePageTotalCount() {
+		return publishRepository.queryHomePageTotalCount();
+	}
+
+	@Override
+	public List<PublishAdverRecord> queryHomePageList(int curPage, int pageSize) {
+		return publishRepository.queryHomePageList(curPage, pageSize);
 	}
 
 }

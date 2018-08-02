@@ -1,7 +1,6 @@
 package com.cegz.api.service;
 
 import java.util.Date;
-
 import java.util.List;
 
 import com.cegz.api.model.PublishAdverRecord;
@@ -43,5 +42,21 @@ public interface PublishAdverService {
 	 * @date 2018年8月2日
 	 */
 	List<PublishAdverRecord> listPublishAdverByDeviceId(Long deviceId);
+
+	/**
+	 * 查询首页数据总条数
+	 * 
+	 * @author tenglong
+	 * @date 2018年8月2日
+	 */
+	Long queryHomePageTotalCount();
+
+	/**
+	 * 通过设备id获取广告发布数据
+	 * 
+	 * @author tenglong
+	 * @date 2018年8月2日
+	 */
+	List<PublishAdverRecord> queryHomePageList(int curPage, int pageSize);
 
 }
