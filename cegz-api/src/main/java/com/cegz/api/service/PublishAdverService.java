@@ -1,5 +1,7 @@
 package com.cegz.api.service;
 
+import java.util.Date;
+
 import com.cegz.api.model.PublishAdverRecord;
 
 /**
@@ -17,4 +19,14 @@ public interface PublishAdverService {
 	 * @date 2018年7月30日
 	 */
 	PublishAdverRecord insertPublishRecord(PublishAdverRecord record);
+	
+	/**
+	 * 修改过期广告
+	 * @param status
+	 * @param time
+	 * @return
+	 * @author Administrator
+	 * @date 2018年8月2日
+	 */
+	int updatePublishRecord(Date time);
 }

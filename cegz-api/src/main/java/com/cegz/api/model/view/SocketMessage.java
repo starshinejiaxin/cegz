@@ -15,6 +15,19 @@ public class SocketMessage {
 	 * 消息体
 	 */
 	private Object body;
+	
+	/**
+	 * 状态 0 失败，1 成功
+	 */
+	private Integer status;
+	
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
 	public String getHead() {
 		return head;

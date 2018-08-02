@@ -191,6 +191,7 @@ public class WebSocketServer {
     					SocketMessage socketMessage = new SocketMessage();
     					socketMessage.setHead("advertisement_all");
     					socketMessage.setBody(view);
+    					socketMessage.setStatus(1);
     					String messageStr = JSON.toJSONString(socketMessage);
     					try {
 							this.sendMessage(messageStr);
@@ -225,6 +226,7 @@ public class WebSocketServer {
         					SocketMessage socketMessage = new SocketMessage();
         					socketMessage.setHead("advertisement_all");
         					socketMessage.setBody(view);
+        					socketMessage.setStatus(0);
         					// socket 发送
         					String messageStr = JSON.toJSONString(socketMessage);
         					System.out.println(messageStr);
