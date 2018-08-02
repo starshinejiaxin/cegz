@@ -1,5 +1,6 @@
 package com.cegz.api.system.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -176,7 +177,8 @@ public class CarOwnerSystemController {
 					drView.setCompany(dr.getSponsor().getCompany());
 					drView.setPlateNumber(dr.getPlateNumber());
 					drView.setModel(dr.getModel());
-					drView.setCarBirthday(dr.getCarBirthday());
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					drView.setCarBirthday(sdf.format(dr.getCarBirthday() == null ? new Date() : dr.getCarBirthday()));
 					drView.setUseCharacter(dr.getUseCharacter());
 					drView.setPictureUrl(dr.getPictureUrl());
 					drView.setStatus(dr.getStatus());
