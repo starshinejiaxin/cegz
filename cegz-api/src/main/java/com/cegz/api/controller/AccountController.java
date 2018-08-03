@@ -1,13 +1,11 @@
 package com.cegz.api.controller;
 
-import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +19,10 @@ import com.cegz.api.util.Md5Util;
 import com.cegz.api.util.ResultData;
 import com.cegz.api.util.StringUtil;
 import com.cegz.api.util.TokenUtil;
-import com.cegz.api.websocket.server.WebSocketServer;
 
 /**
  * 账号控制类
+ * 
  * @author lijiaxin
  * @date 2018年7月19日
  */
@@ -33,21 +31,22 @@ import com.cegz.api.websocket.server.WebSocketServer;
 public class AccountController {
 	@Autowired
 	private ServerAck serverAck;
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	/**
 	 * 版本号
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
-	
+
 	@Autowired
 	private RedisUtil redisUtil;
-	
+
 	/**
 	 * 账号注册
+	 * 
 	 * @param userName
 	 * @param password
 	 * @param phone
@@ -57,7 +56,7 @@ public class AccountController {
 	 */
 	@PostMapping("regist")
 	public ResultData regist(String userName, String password, String code, String version) {
-		
+
 		if (StringUtil.isEmpty(version)) {
 			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
@@ -73,7 +72,7 @@ public class AccountController {
 		if (StringUtil.isEmpty(password)) {
 			return serverAck.getParamError().setMessage("密码不能为空");
 		}
-		if(password.length() > 6) {
+		if (password.length() < 6) {
 			return serverAck.getParamError().setMessage("密码长度不能小于6位");
 		}
 		if (StringUtil.isEmpty(code)) {
@@ -112,10 +111,12 @@ public class AccountController {
 			e.printStackTrace();
 			return serverAck.getServerError();
 		}
-		
+
 	}
+
 	/**
 	 * 登陆
+	 * 
 	 * @param userName
 	 * @param password
 	 * @param session
@@ -153,20 +154,96 @@ public class AccountController {
 			return serverAck.getServerError();
 		}
 	}
-	
-	@GetMapping("test")
-	public String test(String imei) {
-		WebSocketServer client = WebSocketServer.webSocketMap.get(imei);
-		if (client != null) {
-			try {
-				client.sendMessage("哈哈哈");
-				return "success";
-			} catch (IOException e) {
-				
-				e.printStackTrace();
-				return "error";
-			}
+
+	/**
+	 * 登出
+	 * 
+	 * @param userName
+	 * @param password
+	 * @param session
+	 * @return
+	 * @author tenglong
+	 * @date 2018年8月3日
+	 */
+	@PostMapping("loginOut")
+	public ResultData loginOut(String version, HttpSession session) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
 		}
-		return "error";
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		try {
+//			Object object = session.getAttribute(Constant.SESSION_KEY);
+//			if(object == null) {
+//				return serverAck.getEmptyData().setMessage("该账号已登出，请勿重复提交");
+//			}
+			session.removeAttribute(Constant.SESSION_KEY);
+			return serverAck.getFailure().setMessage("登出成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
+	}
+
+	/**
+	 * 修改密码
+	 * 
+	 * @param userName
+	 * @param validateCode    验证码
+	 * @param passWord
+	 * @param confirmPassWord 确认密码
+	 * @return
+	 * @author tenglong
+	 * @date 2018年8月3日
+	 */
+	@PostMapping("updatePassWord")
+	public ResultData updatePassWord(String userName, String validateCode, String passWord, String confirmPassWord,
+			String version, HttpSession session) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getParamError().setMessage("版本错误");
+		}
+		if (StringUtil.isEmpty(userName)) {
+			return serverAck.getParamError().setMessage("账号不能为空");
+		}
+		if (StringUtil.isEmpty(validateCode)) {
+			return serverAck.getParamError().setMessage("验证码不能为空");
+		}
+		if (StringUtil.isEmpty(passWord)) {
+			return serverAck.getParamError().setMessage("密码不能为空");
+		}
+		if (StringUtil.isEmpty(confirmPassWord)) {
+			return serverAck.getParamError().setMessage("确认密码不能为空");
+		}
+		if (!passWord.equals(confirmPassWord)) {
+			return serverAck.getParamError().setMessage("密码和确认密码不一致");
+		}
+		try {
+			Users user = accountService.getUserByName(userName);
+			if (user == null) {
+				return serverAck.getEmptyData().setMessage("手机号未注册");
+			}
+			Object object = redisUtil.get(userName);
+			if (object == null) {
+				return serverAck.getEmptyData().setMessage("修改失败，请重新获取验证码");
+			}
+			if (!validateCode.equals(object)) {
+				return serverAck.getFailure().setMessage("验证码错误");
+			}
+			passWord = Md5Util.EncoderByMd5(passWord).trim();
+			user.setPassword(passWord);
+			int ret = accountService.regist(user);
+			if (ret != 0) {
+				session.removeAttribute(Constant.SESSION_KEY);
+				return serverAck.getSuccess().setMessage("操作成功");
+			}
+			return serverAck.getFailure().setMessage("操作失败，账号异常，请联系管理员");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return serverAck.getServerError();
+		}
 	}
 }
