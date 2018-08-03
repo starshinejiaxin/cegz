@@ -10,10 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,9 +63,28 @@ public class AuthController {
 	@Value("${message.status}")
 	private Boolean needStatus;
 	
+	@Value("${apk.url}")
+	private String apkUrl;
+	
 	@Autowired
 	private RedisUtil redisUtil;
 
+	/**
+	 * 版本校验
+	 * @param version
+	 * @return
+	 */
+	@PostMapping("checkApkVersion")
+	public ResultData checkApkVersion(String version) {
+		if (StringUtil.isEmpty(version)) {
+			return serverAck.getParamError().setMessage("版本号不能为空");
+		}
+		if (serverVersion != null && !serverVersion.equals(version)) {
+			return serverAck.getEmptyData().setMessage(apkUrl);
+		}
+		return serverAck.getSuccess();
+	}
+	
 	@PostMapping("getUpToken")
 	public ResultData getOssUpToken(String token, String version) {
 		if (StringUtil.isEmpty(version)) {
@@ -96,7 +113,7 @@ public class AuthController {
 			}
 			String uptoken = TokenUtil.getUpToken(accessKey, secretKey, bucket);
 			return serverAck.getSuccess().setData(uptoken);
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();
