@@ -38,7 +38,7 @@ public class AuthController {
 	 */
 	@Value("${server.version}")
 	private String serverVersion;
-	
+
 	/**
 	 * apk版本号
 	 */
@@ -56,27 +56,28 @@ public class AuthController {
 
 	@Value("${oss.all-bucket}")
 	private String bucket;
-	
+
 	@Value("${message.url}")
 	private String messageUrl;
-	
+
 	@Value("${message.account}")
 	private String account;
-	
+
 	@Value("${message.pwd}")
 	private String pwd;
-	
+
 	@Value("${message.status}")
 	private Boolean needStatus;
-	
+
 	@Value("${apk.url}")
 	private String apkUrl;
-	
+
 	@Autowired
 	private RedisUtil redisUtil;
 
 	/**
 	 * 版本校验
+	 * 
 	 * @param version
 	 * @return
 	 */
@@ -90,7 +91,7 @@ public class AuthController {
 		}
 		return serverAck.getSuccess();
 	}
-	
+
 	@PostMapping("getUpToken")
 	public ResultData getOssUpToken(String token, String version) {
 		if (StringUtil.isEmpty(version)) {
@@ -119,15 +120,17 @@ public class AuthController {
 			}
 			String uptoken = TokenUtil.getUpToken(accessKey, secretKey, bucket);
 			return serverAck.getSuccess().setData(uptoken);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();
 		}
 	}
+
 	@PostMapping("getCode")
 	/**
 	 * 获取code
+	 * 
 	 * @param phone
 	 * @param version
 	 * @return
@@ -155,22 +158,22 @@ public class AuthController {
 				int part = random.nextInt(10);
 				sb.append(part);
 			}
-			
+
 			Map<String, Object> paramMap = new HashMap<>(16);
 			paramMap.put("account", account);
 			paramMap.put("pswd", pwd);
 			paramMap.put("mobile", phone);
 			paramMap.put("needstatus", needStatus);
-			paramMap.put("msg", "您的验证码是" + sb +",在10分钟内有效。非本人操作请忽略本短信");
+			paramMap.put("msg", "您的验证码是" + sb + ",在10分钟内有效。非本人操作请忽略本短信");
 			String ret = URLConnectionUtil.doGet(messageUrl, paramMap);
 			redisUtil.set(phone, sb.toString(), 6000);
 			System.out.println(ret);
 			return serverAck.getSuccess();
-			
-		} catch (Exception e) { 
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			return serverAck.getServerError();
 		}
-		
+
 	}
 }
